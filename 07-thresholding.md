@@ -32,11 +32,6 @@ a *binary image*, i.e., one that is simply black and white.
 Most frequently,
 we use thresholding as a way to select areas of interest of an image,
 while ignoring the parts we are not concerned with.
-We have already done some simple thresholding,
-in the "Manipulating pixels" section of
-[the *Working with scikit-image* episode](03-skimage-images.md).
-In that case, we used a simple NumPy array manipulation to
-separate the pixels belonging to the root system of a plant from the black background.
 In this episode, we will learn how to use scikit-image functions to perform thresholding.
 Then, we will use the masks returned by these functions to
 select the parts of an image we are interested in.
@@ -57,21 +52,21 @@ import skimage as ski
 
 ## Simple thresholding
 
-Consider the image `data/shapes-01.jpg` with a series of
-crudely cut shapes set against a white background.
+Consider the hematoxylin and DAB stained immunohistochemistry image that we saved from the scikit example data
+in [the *Working with scikit-image* episode](03-skimage-images.md).
 
 ```python
 # load the image
-shapes01 = iio.imread(uri="data/shapes-01.jpg")
+hed_image = iio.imread(uri="data/immunohistochemistry.tif")
 
 fig, ax = plt.subplots()
-ax.imshow(shapes01)
+ax.imshow(hed_image)
 ```
 
-![](data/shapes-01.jpg){alt='Image with geometric shapes on white background' .image-with-shadow}
+![](data/immunohistochemistry.jpg){alt='HED IHC scikit example image'}
 
-Now suppose we want to select only the shapes from the image.
-In other words, we want to leave the pixels belonging to the shapes "on,"
+Now suppose we want to select only the stained portion of the image.
+In other words, we want to leave the pixels belonging to the stained tissue "on,"
 while turning the rest of the pixels "off,"
 by setting their colour channel values to zeros.
 The scikit-image library has several different methods of thresholding.
@@ -86,16 +81,30 @@ and de-noise it as in [the *Blurring Images* episode](06-blurring.md).
 
 ```python
 # convert the image to grayscale
-gray_shapes = ski.color.rgb2gray(shapes01)
+hed_gray = ski.color.rgb2gray(hed_image)
 
 # blur the image to denoise
-blurred_shapes = ski.filters.gaussian(gray_shapes, sigma=1.0)
+hed_blurred = ski.filters.gaussian(hed_gray, sigma=1.0)
 
 fig, ax = plt.subplots()
-ax.imshow(blurred_shapes, cmap="gray")
+ax.imshow(hed_blurred, cmap="gray")
 ```
 
-![](fig/shapes-01-grayscale.png){alt='Grayscale image of the geometric shapes' .image-with-shadow}
+![](fig/ihc-grayscale-blurred.jpg){alt='Grayscale and blurred ihc image'}
+
+:::::::::::::::::::::::::::::::::::::::::  callout
+
+## Denoising an image before thresholding
+
+In practice, it is often necessary to denoise the image before
+thresholding, which can be done with one of the methods from
+[the *Blurring Images* episode](06-blurring.md).
+
+It may also be helpful to perform other types of denoising or background subtraction,
+such as [rolling ball](https://scikit-image.org/docs/stable/api/skimage.restoration.html#skimage.restoration.rolling_ball)
+or [tophat transforms](https://scikit-image.org/docs/stable/api/skimage.morphology.html#skimage.morphology.black_tophat).
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
 
 Next, we would like to apply the threshold `t` such that
 pixels with grayscale values on one side of `t` will be turned "on",
@@ -103,19 +112,19 @@ while pixels with grayscale values on the other side will be turned "off".
 How might we do that?
 Remember that grayscale images contain pixel values in the range from 0 to 1,
 so we are looking for a threshold `t` in the closed range [0\.0, 1.0].
-We see in the image that the geometric shapes are "darker" than
+We see in the image that the stained tissue is "darker" than
 the white background but there is also some light gray noise on the background.
 One way to determine a "good" value for `t` is
 to look at the grayscale histogram of the image
-and try to identify what grayscale ranges correspond to the shapes in the image
+and try to identify what grayscale ranges correspond to the staining in the image
 or the background.
 
-The histogram for the shapes image shown above can be produced as in
+The histogram can be produced as in
 [the *Creating Histograms* episode](05-creating-histograms.md).
 
 ```python
 # create a histogram of the blurred grayscale image
-histogram, bin_edges = np.histogram(blurred_shapes, bins=256, range=(0.0, 1.0))
+histogram, bin_edges = np.histogram(hed_blurred, bins=256, range=(0.0, 1.0))
 
 fig, ax = plt.subplots()
 ax.plot(bin_edges[0:-1], histogram)
@@ -125,18 +134,18 @@ ax.set_ylabel("pixels")
 ax.set_xlim(0, 1.0)
 ```
 
-![](fig/shapes-01-histogram.png){alt='Grayscale histogram of the geometric shapes image'}
+![](fig/ihc-blurred-grayscale-histogram.png){alt='Grayscale histogram of the blurred ihc image'}
 
 Since the image has a white background,
-most of the pixels in the image are white.
+most of the pixels in the image are almost-white.
 This corresponds nicely to what we see in the histogram:
-there is a peak near the value of 1.0.
-If we want to select the shapes and not the background,
+there is a peak above 0.8.
+If we want to select the stained tissue and not the background,
 we want to turn off the white background pixels,
-while leaving the pixels for the shapes turned on.
+while leaving the pixels for the staining turned on.
 So, we should choose a value of `t` somewhere before the large peak and
 turn pixels above that value "off".
-Let us choose `t=0.8`.
+Let us choose `t=0.7`.
 
 To apply the threshold `t`,
 we can use the NumPy comparison operators to create a mask.
@@ -151,16 +160,16 @@ where the `False` entries are shown as black pixels
 
 ```python
 # create a mask based on the threshold
-t = 0.8
-binary_mask = blurred_shapes < t
+t = 0.7
+binary_mask = hed_blurred < t
 
 fig, ax = plt.subplots()
 ax.imshow(binary_mask, cmap="gray")
 ```
 
-![](fig/shapes-01-mask.png){alt='Binary mask of the geometric shapes created by thresholding'}
+![](fig/ihc-mask.jpg){alt='Binary mask of the stained tissue created by thresholding'}
 
-You can see that the areas where the shapes were in the original area are now white,
+You can see that the areas where the staining was in the original area are now white,
 while the rest of the mask image is black.
 
 :::::::::::::::::::::::::::::::::::::::::  callout
@@ -172,7 +181,7 @@ In the example above, we could have just switched off all
 the white background pixels by choosing `t=1.0`,
 but this would leave us with some background noise in the mask image.
 On the other hand, if we choose too low a value for the threshold,
-we could lose some of the shapes that are too bright.
+we could lose some of the staining that as too light.
 You can experiment with the threshold by re-running the above code lines with
 different values for `t`.
 In practice, it is a matter of domain knowledge and
@@ -194,57 +203,108 @@ in the range [0, 255] as we have already seen in
 
 We can now apply the `binary_mask` to the original coloured image as we
 have learned in [the *Drawing and Bitwise Operations* episode](04-drawing.md).
-What we are left with is only the coloured shapes from the original.
+What we are left with is only the stained tissue from the original.
 
 ```python
 # use the binary_mask to select the "interesting" part of the image
-selection = shapes01.copy()
-selection[~binary_mask] = 0
+foreground = hed_image.copy()
+foreground[~binary_mask] = 0
 
 fig, ax = plt.subplots()
-ax.imshow(selection)
+ax.imshow(foreground)
 ```
 
-![](fig/shapes-01-selected.png){alt='Selected shapes after applying binary mask'}
+![](fig/ihc-foreground.jpg){alt='Selected foreground after applying binary mask'}
+
+:::::::::::::::::::::::::::::::::::::::::  callout
+
+## Code cheatsheet for "More practice with simple thresholding":
+
+```python
+import imageio.v3 as iio
+import ipympl
+import matplotlib.pyplot as plt
+import numpy as np
+import skimage as ski
+%matplotlib widget
+
+# Read in image (from the uri path to the image file)
+image = iio.imread(uri)
+# Select single channel (where c is the index of the channel)
+channel = image[:,:,c]
+# Blur image
+blurred_image = skimage.filters.gaussian(channel, sigma=1.0)
+
+# Create and display image
+histogram, bin_edges = np.histogram(blurred_image, bins=256, range=(0.0,1.0))
+fig,ax = plt.subplots()
+plt.plot(bin_edges[0:-1], histogram)
+plt.title("Channel histogram")
+plt.xlabel("pixel value")
+plt.ylabel("pixels")
+plt.xlim(0, 1.0)
+
+# Threshold image, keeping pixels with value > t
+binary_mask = blurred_image > t
+
+# Plot threshold image
+fig, ax = plt.subplots()
+plt.imshow(binary_mask, cmap="gray")
+
+# Copy image so we don't change the original
+foreground = image.copy()
+
+# Turn off all the pixels that are not our thresholded foreground
+foreground[~binary_mask] = 0
+
+# Display the image with only foreground pixels
+fig, ax = plt.subplots()
+plt.imshow(foreground)
+```
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## More practice with simple thresholding (15 min)
+## More practice with simple thresholding (20 min)
 
 Now, it is your turn to practice. Suppose we want to use simple thresholding
-to select only the coloured shapes (in this particular case we consider grayish to be a colour, too) from the image `data/shapes-02.jpg`:
+to select only the nuclei from the image `data/hela-cells-8bit.tif`:
 
-![](data/shapes-02.jpg){alt='Another image with geometric shapes on white background'}
+![](fig/hela-cells-8bit.jpg){alt='HeLa cells color image'}
 
-First, plot the grayscale histogram as in the [Creating
-Histogram](05-creating-histograms.md) episode and
-examine the distribution of grayscale values in the image. What do
-you think would be a good value for the threshold `t`?
+Since the nuclei are marked in this multichannel image by high values of the blue channel,
+there are a few differences. Instead of using the grayscale image, select the blue channel using
+`image[:,:,2]`. This will act as your grayscale image, since it also has only one value per pixel.
+
+![](fig/cells-nuclei-gray.jpg){alt='HeLa cells gray nuclei'}
 
 :::::::::::::::  solution
 
 ## Solution
 
-The histogram for the `data/shapes-02.jpg` image can be shown with
+The histogram for the blue channel of `data/hela-cells-8bit.tif` image can be shown with
 
 ```python
-shapes = iio.imread(uri="data/shapes-02.jpg")
-gray_shapes = ski.color.rgb2gray(shapes)
-histogram, bin_edges = np.histogram(gray_shapes, bins=256, range=(0.0, 1.0))
+cells = iio.imread(uri="data/hela-cells-8bit.tif")
+blue_channel = cells[:,:,2]
+blurred_image = skimage.filters.gaussian(blue_channel, sigma=1.0)
 
-fig, ax = plt.subplots()
+histogram, bin_edges = np.histogram(blurred_image, bins=256, range=(0.0,1.0))
+
+fig,ax = plt.subplots()
 ax.plot(bin_edges[0:-1], histogram)
-ax.set_title("Graylevel histogram")
-ax.set_xlabel("gray value")
-ax.set_ylabel("pixel count")
+ax.set_title("Blue (nuclei) channel histogram")
+ax.set_xlabel("pixel value")
+ax.set_ylabel("pixels")
 ax.set_xlim(0, 1.0)
 ```
 
-![](fig/shapes-02-histogram.png){alt='Grayscale histogram of the second geometric shapes image'}
+![](fig/cells-blue-histogram.png){alt='Histogram of the blue channel from the HeLa cells image'}
 
-We can see a large spike around 0.3, and a smaller spike around 0.7. The
-spike near 0.3 represents the darker background, so it seems like a value
-close to `t=0.5` would be a good choice.
+We can see a large spike around 0, and a very low bump around 0.3. The
+spike near 0 represents the darker background, and the bump around 0.3 represents the nuclei signal.
+So it seems like a value between the two would be a good choice. Let's choose `t=0.1`.
 
 
 :::::::::::::::::::::::::
@@ -252,11 +312,11 @@ close to `t=0.5` would be a good choice.
 Next, create a mask to turn the pixels above the threshold `t` on
 and pixels below the threshold `t` off. Note that unlike the image
 with a white background we used above, here the peak for the
-background colour is at a lower gray level than the
-shapes. Therefore, change the comparison operator less `<` to
+background colour is darker than the foreground objects or nuclei.
+Therefore, change the comparison operator less `<` to
 greater `>` to create the appropriate mask. Then apply the mask to
 the image and view the thresholded image. If everything works as it
-should, your output should show only the coloured shapes on a black
+should, your output should show only the coloured nuclei on a black
 background.
 
 :::::::::::::::  solution
@@ -266,27 +326,26 @@ background.
 Here are the commands to create and view the binary mask
 
 ```python
-t = 0.5
-binary_mask = gray_shapes > t
+t = 0.1
+binary_mask = blurred_image > t
 
 fig, ax = plt.subplots()
 ax.imshow(binary_mask, cmap="gray")
 ```
 
-![](fig/shapes-02-mask.png){alt='Binary mask created by thresholding the second geometric shapes image'}
+![](fig/cells-mask.jpg){alt='Binary mask created by thresholding the HeLa cells image'}
 
 And here are the commands to apply the mask and view the thresholded image
 
 ```python
-shapes02 = iio.imread(uri="data/shapes-02.jpg")
-selection = shapes02.copy()
-selection[~binary_mask] = 0
+nuclei_only = cells.copy()
+nuclei_only[~binary_mask] = 0
 
 fig, ax = plt.subplots()
-ax.imshow(selection)
+ax.imshow(nuclei_only)
 ```
 
-![](fig/shapes-02-selected.png){alt='Selected shapes after applying binary mask to the second geometric shapes image'}
+![](fig/nuclei-selected.jpg){alt='Selected nuclei after applying binary mask to the HeLa cells image'}
 
 :::::::::::::::::::::::::
 
@@ -300,59 +359,36 @@ There are also *automatic thresholding* methods that can determine
 the threshold automatically for us.
 One such method is *[Otsu's method](https://en.wikipedia.org/wiki/Otsu%27s_method)*.
 It is particularly useful for situations where the grayscale histogram of an image
-has two peaks that correspond to background and objects of interest.
+has two peaks that correspond to background and objects of interest. Other automated methods
+might work better depending on the shape of the histogram.
 
-:::::::::::::::::::::::::::::::::::::::::  callout
-
-## Denoising an image before thresholding
-
-In practice, it is often necessary to denoise the image before
-thresholding, which can be done with one of the methods from
-[the *Blurring Images* episode](06-blurring.md).
-
-
-::::::::::::::::::::::::::::::::::::::::::::::::::
-
-Consider the image `data/maize-root-cluster.jpg` of a maize root system which
-we have seen before in
-[the *Working with scikit-image* episode](03-skimage-images.md).
+Let's apply automated thresholding methods to identify the nuclei in the HeLa cells image:
 
 ```python
-maize_roots = iio.imread(uri="data/maize-root-cluster.jpg")
+cells = iio.imread(uri="data/hela-cells-8bit.tif")
 
-fig, ax = plt.subplots()
-ax.imshow(maize_roots)
-```
-
-![](data/maize-root-cluster.jpg){alt='Image of a maize root'}
-
-We use Gaussian blur with a sigma of 1.0 to denoise the root image.
-Let us look at the grayscale histogram of the denoised image.
-
-```python
-# convert the image to grayscale
-gray_image = ski.color.rgb2gray(maize_roots)
+# select only the nuclei channel
+blue_channel = cells[:,:,2]
 
 # blur the image to denoise
-blurred_image = ski.filters.gaussian(gray_image, sigma=1.0)
+blurred_image = ski.filters.gaussian(blue_channel, sigma=1.0)
 
 # show the histogram of the blurred image
 histogram, bin_edges = np.histogram(blurred_image, bins=256, range=(0.0, 1.0))
 fig, ax = plt.subplots()
 ax.plot(bin_edges[0:-1], histogram)
-ax.set_title("Graylevel histogram")
-ax.set_xlabel("gray value")
+ax.set_title("Blue (nuclei) channel histogram")
+ax.set_xlabel("pixel value")
 ax.set_ylabel("pixel count")
 ax.set_xlim(0, 1.0)
 ```
 
-![](fig/maize-root-cluster-histogram.png){alt='Grayscale histogram of the maize root image'}
+![](fig/cells-blue-histogram.png){alt='Histogram of the blue channel on the HeLa cells image'}
 
-The histogram has a significant peak around 0.2 and then a broader "hill" around 0.6 followed by a 
-smaller peak near 1.0. Looking at the grayscale image, we can identify the peak at 0.2 with the
-background and the broader peak with the foreground.
-Thus, this image is a good candidate for thresholding with Otsu's method.
-The mathematical details of how this works are complicated (see
+The histogram has a significant peak around 0 and then a broader "hill" around 0.3.
+Looking at the grayscale image, we can identify the peak at 0 with the
+background and the broader hill around 0.3 with the foreground.
+The mathematical details of how automated thresholders work are complicated (see
 [the scikit-image documentation](https://scikit-image.org/docs/dev/api/skimage.filters.html#threshold-otsu)
 if you are interested),
 but the outcome is that Otsu's method finds a threshold value between the two peaks of a grayscale
@@ -361,10 +397,9 @@ application.
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
 
-The histogram of the maize root image may prompt questions from learners about the interpretation 
-of the peaks and the broader region around 0.6. The focus here is on the separation of background 
-and foreground pixel values. We note that Otsu's method does not work well 
-for the image with the shapes used earlier in this episode, as the foreground pixel values are more 
+The histogram  may prompt questions from learners about the interpretation 
+of the peaks and the broader region. The focus here is on the separation of background 
+and foreground pixel values. We note that Otsu's method does not work very well as the foreground pixel values are more 
 distributed. These examples could be augmented with a discussion of unimodal, bimodal, and multimodal
 histograms. While these points can lead to fruitful considerations, the text in this episode attempts 
 to reduce cognitive load and deliberately simplifies the discussion.
@@ -386,9 +421,9 @@ print("Found automatic threshold t = {}.".format(t))
 Found automatic threshold t = 0.4172454549881862.
 ```
 
-For this root image and a Gaussian blur with the chosen sigma of 1.0,
-the computed threshold value is 0.42.
-No we can create a binary mask with the comparison operator `>`.
+For this image, after blurring with the chosen sigma of 1.0,
+the computed threshold value is 0.21.
+Now we can create a binary mask with the comparison operator `>`.
 As we have seen before, pixels above the threshold value will be turned on,
 those below the threshold will be turned off.
 
@@ -400,369 +435,80 @@ fig, ax = plt.subplots()
 ax.imshow(binary_mask, cmap="gray")
 ```
 
-![](fig/maize-root-cluster-mask.png){alt='Binary mask of the maize root system'}
+![](fig/cells-otsu-mask.jpg){alt='Binary mask of nuclei using otsu thresholding'}
 
-Finally, we use the mask to select the foreground:
+Otsu's method generates a fairly conservative mask on this image, meaning that
+the threshold was fairly high and less of the foreground is kept by the mask.
+There may be other automated thresholders that work better in this application.
+Scikit image provides a method that can give a visual test of all of them at once.
 
 ```python
-# apply the binary mask to select the foreground
-selection = maize_roots.copy()
-selection[~binary_mask] = 0
-
-fig, ax = plt.subplots()
-ax.imshow(selection)
+fig, ax = ski.filters.try_all_threshold(blurred_image, figsize=(10, 8), verbose=False)
+ax.show()
 ```
 
-![](fig/maize-root-cluster-selected.png){alt='Masked selection of the maize root system'}
+![](fig/cells-thresholder-test.png){alt='Overview test of all automated thresholders in scikit image'}
 
-## Application: measuring root mass
-
-Let us now turn to an application where we can apply thresholding and
-other techniques we have learned to this point.
-Consider these four maize root system images,
-which you can find in the files
-`data/trial-016.jpg`,
-`data/trial-020.jpg`,
-`data/trial-216.jpg`,
-and `data/trial-293.jpg`.
-
-![](fig/four-maize-roots.jpg){alt='Four images of maize roots'}
-
-Suppose we are interested in the amount of plant material in each image,
-and in particular how that amount changes from image to image.
-Perhaps the images represent the growth of the plant over time,
-or perhaps the images show four different maize varieties at the
-same phase of their growth.
-The question we would like to answer is, "how much root mass is in each image?"
-
-We will first construct a Python program to measure this value for a single image.
-Our strategy will be this:
-
-1. Read the image, converting it to grayscale as it is read. For this
-  application we do not need the colour image.
-2. Blur the image.
-3. Use Otsu's method of thresholding to create a binary image, where
-  the pixels that were part of the maize plant are white, and everything
-  else is black.
-4. Save the binary image so it can be examined later.
-5. Count the white pixels in the binary image, and divide by the
-  number of pixels in the image. This ratio will be a measure of the
-  root mass of the plant in the image.
-6. Output the name of the image processed and the root mass ratio.
-
-Our intent is to perform these steps and produce the numeric result -
-a measure of the root mass in the image -
-without human intervention.
-Implementing the steps within a Python function will
-enable us to call this function for different images.
-
-Here is a Python function that implements this root-mass-measuring strategy.
-Since the function is intended to produce numeric output without human interaction,
-it does not display any of the images.
-Almost all of the commands should be familiar, and in fact,
-it may seem simpler than the code we have worked on thus far,
-because we are not displaying any of the images.
+## Measuring thresholded areas
+There are many reasons why we might want to measure the percentage or size of a thresholded foreground in an image, for instance to assess tumor percentage in a tissue section or confluence of a cell culture. Here we will use it to compare the results of different automated thresholding methods.
 
 ```python
-def measure_root_mass(filename, sigma=1.0):
+# Load and denoise the image
+hed_image = iio.imread(uri="data/immunohistochemistry.tif")
+gray_image = skimage.color.rgb2gray(hed_image)
+blurred_image = skimage.filters.gaussian(gray_image, sigma=1.0)
 
-    # read the original image, converting to grayscale on the fly
-    image = iio.imread(uri=filename, mode="L")
+# Visually compare automated thresholding methods
+fig, ax = ski.filters.try_all_threshold(blurred_image, figsize=(10, 8), verbose=False)
+plt.show()
+```
 
-    # blur before thresholding
-    blurred_image = ski.filters.gaussian(image, sigma=sigma)
-
-    # perform automatic thresholding to produce a binary image
-    t = ski.filters.threshold_otsu(blurred_image)
-    binary_mask = blurred_image > t
-
-    # determine root mass ratio
-    root_pixels = np.count_nonzero(binary_mask)
+Write a function to calculate the percentage of thresholded foreground in the image by counting the number of nonzero (or true) pixels in the binary mask and dividing by the total count of pixels.
+```python
+def measure_foreground(blurred_image, t):
+    binary_mask = blurred_image < t
+    foreground_pixels = np.count_nonzero(binary_mask)
     w = binary_mask.shape[1]
     h = binary_mask.shape[0]
-    density = root_pixels / (w * h)
-
-    return density
+    percentage = foreground_pixels / (w * h) * 100
+    return(percentage)
 ```
 
-The function begins with reading the original image from the file `filename`.
-We use `iio.imread()` with the optional argument `mode="L"` to
-automatically convert it to grayscale.
-Next, the grayscale image is blurred with a Gaussian filter with
-the value of `sigma` that is passed to the function.
-Then we determine the threshold `t` with Otsu's method and
-create a binary mask just as we did in the previous section.
-Up to this point, everything should be familiar.
-
-The final part of the function determines the root mass ratio in the image.
-Recall that in the `binary_mask`, every pixel has either a value of
-zero (black/background) or one (white/foreground).
-We want to count the number of white pixels,
-which can be accomplished with a call to the NumPy function `np.count_nonzero`.
-Then we determine the width and height of the image by using
-the elements of `binary_mask.shape`
-(that is, the dimensions of the NumPy array that stores the image).
-Finally, the density ratio is calculated by dividing the number of white pixels
-by the total number of pixels `w*h` in the image.
-The function returns then root density of the image.
-
-We can call this function with any filename and
-provide a sigma value for the blurring.
-If no sigma value is provided, the default value 1.0 will be used.
-For example, for the file `data/trial-016.jpg` and a sigma value of 1.5,
-we would call the function like this:
-
+Calculate the percentage pixels kept by the Otsu thresholding method
 ```python
-measure_root_mass(filename="data/trial-016.jpg", sigma=1.5)
+t_otsu = ski.filters.threshold_otsu(blurred_image)
+percentage_otsu = measure_foreground(blurred_image, t_otsu)
+print("Otsu thresholding: {:.2f}%".format(percentage_otsu))
 ```
 
 ```output
-0.0482436835106383`
-```
-
-Now we can use the function to process the series of four images shown above.
-In a real-world scientific situation, there might be dozens, hundreds,
-or even thousands of images to process.
-To save us the tedium of calling the function for each image by hand,
-we can write a loop that processes all files automatically.
-The following code block assumes that the files are located in the same directory
-and the filenames all start with the **trial-** prefix and
-end with the **.jpg** suffix.
-
-```python
-all_files = glob.glob("data/trial-*.jpg")
-for filename in all_files:
-    density = measure_root_mass(filename=filename, sigma=1.5)
-    # output in format suitable for .csv
-    print(filename, density, sep=",")
-```
-
-```output
-data/trial-016.jpg,0.0482436835106383
-data/trial-020.jpg,0.06346941489361702
-data/trial-216.jpg,0.14073969414893617
-data/trial-293.jpg,0.13607895611702128
+Otsu thresholding: 57.96%
 ```
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## Ignoring more of the images -- brainstorming (10 min)
+# Measure results of automated threshold methods
 
-Let us take a closer look at the binary masks produced by the `measure_root_mass` function.
-
-![](fig/four-maize-roots-binary.jpg){alt='Binary masks of the four maize root images'}
-
-You may have noticed in the section on automatic thresholding that
-the thresholded image does include regions of the image aside of the
-plant root: the numbered labels and the white circles in each image
-are preserved during the thresholding, because their grayscale
-values are above the threshold.
-Therefore, our calculated root mass ratios include the white pixels
-of the label and white circle that are not part of the plant root.
-Those extra pixels affect how accurate the root mass calculation is!
-
-How might we remove the labels and circles before calculating the ratio,
-so that our results are more accurate?
-Think about some options given what we have learned so far.
+Following the pipeline from above, measure the percentage of pixels kept by two different automated threshold methods.
 
 :::::::::::::::  solution
 
-## Solution
-
-One approach we might take is to try to completely mask out a region
-from each image, particularly,
-the area containing the white circle and the numbered label.
-If we had coordinates for a rectangular area on the image
-that contained the circle and the label,
-we could mask the area out by using techniques we learned in
-[the *Drawing and Bitwise Operations* episode](04-drawing.md).
-
-However, a closer inspection of the binary images raises some issues with
-that approach.
-Since the roots are not always constrained to a certain area in the image,
-and since the circles and labels are in different locations each time,
-we would have difficulties coming up with a single rectangle that would
-work for *every* image.
-We could create a different masking rectangle for each image,
-but that is not a practicable approach
-if we have hundreds or thousands of images to process.
-
-Another approach we could take is
-to apply two thresholding steps to the image.
-Look at the graylevel histogram of the file `data/trial-016.jpg` shown
-above again:
-Notice the peak near 1.0?
-Recall that a grayscale value of 1.0 corresponds to white pixels:
-the peak corresponds to the white label and circle.
-So, we could use simple binary thresholding to mask the white circle and
-label from the image,
-and then we could use Otsu's method to select the pixels in
-the plant portion of the image.
-
-Note that most of this extra work in processing the image could have been
-avoided during the experimental design stage,
-with some careful consideration of how the resulting images would be used.
-For example, all of the following measures could have made the images easier
-to process, by helping us predict and/or detect where the label is in the image
-and subsequently mask it from further processing:
-
-- Using labels with a consistent size and shape
-- Placing all the labels in the same position, relative to the sample
-- Using a non-white label, with non-black writing
-
-:::::::::::::::::::::::::
-
-::::::::::::::::::::::::::::::::::::::::::::::::::
-
-:::::::::::::::::::::::::::::::::::::::  challenge
-
-## Ignoring more of the images -- implementation (30 min - optional, not included in timing)
-
-Implement an enhanced version of the function `measure_root_mass`
-that applies simple binary thresholding to remove the white circle
-and label from the image before applying Otsu's method.
-
-:::::::::::::::  solution
-
-## Solution
-
-We can apply a simple binary thresholding with a threshold
-`t=0.95` to remove the label and circle from the image. We can then use the
-binary mask to calculate the Otsu threshold without the pixels from the label and circle.
+## Solution with Triangle and Yen thresholding methods
 
 ```python
-def enhanced_root_mass(filename, sigma):
+t_triangle = ski.filters.threshold_triangle(blurred_image)
+percentage_triangle = measure_foreground(blurred_image, t_triangle)
+print("Triangle thresholding: {:.2f}%".format(percentage_triangle))
 
-    # read the original image, converting to grayscale on the fly
-    image = iio.imread(uri=filename, mode="L")
-
-    # blur before thresholding
-    blurred_image = ski.filters.gaussian(image, sigma=sigma)
-
-    # perform binary thresholding to mask the white label and circle
-    binary_mask = blurred_image < 0.95
-    
-    # perform automatic thresholding using only the pixels with value True in the binary mask
-    t = ski.filters.threshold_otsu(blurred_image[binary_mask])
-    
-    # update binary mask to identify pixels which are both less than 0.95 and greater than t
-    binary_mask = (blurred_image < 0.95) & (blurred_image > t)
-
-    # determine root mass ratio
-    root_pixels = np.count_nonzero(binary_mask)
-    w = binary_mask.shape[1]
-    h = binary_mask.shape[0]
-    density = root_pixels / (w * h)
-
-    return density
-
-
-all_files = glob.glob("data/trial-*.jpg")
-for filename in all_files:
-    density = enhanced_root_mass(filename=filename, sigma=1.5)
-    # output in format suitable for .csv
-    print(filename, density, sep=",")
+t_yen = ski.filters.threshold_yen(blurred_image)
+percentage_yen = measure_foreground(blurred_image, t_yen)
+print("Yen thresholding: {:.2f}%".format(percentage_yen))
 ```
-
-The output of the improved program does illustrate that the white circles
-and labels were skewing our root mass ratios:
 
 ```output
-data/trial-016.jpg,0.046250166223404256
-data/trial-020.jpg,0.05886968085106383
-data/trial-216.jpg,0.13712117686170214
-data/trial-293.jpg,0.13190342420212767
+Triangle thresholding: 96.88%
+Yen thresholding: 48.77%
 ```
-:::::::::::::::::::::::::::::::::::::::::: spoiler
-
-### What is `&` doing in the example above?
-
-The `&` operator above means that we have defined a logical AND statement. This combines the two tests of pixel intensities in the blurred image such that both must be true for a pixel's position to be set to `True` in the resulting mask.
-
-| Result of `t < blurred_image` | Result of `blurred_image < 0.95` | Resulting value in `binary_mask` |
-|----------|---------|---------|
-| False | True | False |
-| True | False | False |
-| True | True | True |
- 
-Knowing how to construct this kind of logical operation can be very helpful in image processing. The University of Minnesota Library's [guide to Boolean operators](https://libguides.umn.edu/BooleanOperators) is a good place to start if you want to learn more.
-
-::::::::::::::::::::::::::::::::::::::::::::::::::
-
-Here are the binary images produced by the additional thresholding.
-Note that we have not completely removed the offending white pixels.
-Outlines still remain.
-However, we have reduced the number of extraneous pixels,
-which should make the output more accurate.
-
-![](fig/four-maize-roots-binary-improved.jpg){alt='Improved binary masks of the four maize root images'}
-
-:::::::::::::::::::::::::
-
-::::::::::::::::::::::::::::::::::::::::::::::::::
-
-:::::::::::::::::::::::::::::::::::::::  challenge
-
-## Thresholding a bacteria colony image (15 min)
-
-In the images directory `data/`, you will find an image named `colonies-01.tif`.
-
-![](fig/colonies-01.jpg){alt='Image of bacteria colonies in a petri dish'}
-
-This is one of the images you will be working with in the
-morphometric challenge at the end of the workshop.
-
-1. Plot and inspect the grayscale histogram of the image to
-  determine a good threshold value for the image.
-2. Create a binary mask that leaves the pixels in the bacteria
-  colonies "on" while turning the rest of the pixels in the image
-  "off".
-
-:::::::::::::::  solution
-
-## Solution
-
-Here is the code to create the grayscale histogram:
-
-```python
-bacteria = iio.imread(uri="data/colonies-01.tif")
-gray_image = ski.color.rgb2gray(bacteria)
-blurred_image = ski.filters.gaussian(gray_image, sigma=1.0)
-histogram, bin_edges = np.histogram(blurred_image, bins=256, range=(0.0, 1.0))
-fig, ax = plt.subplots()
-ax.plot(bin_edges[0:-1], histogram)
-ax.set_title("Graylevel histogram")
-ax.set_xlabel("gray value")
-ax.set_ylabel("pixel count")
-ax.set_xlim(0, 1.0)
-```
-
-![](fig/colonies-01-histogram.png){alt='Grayscale histogram of the bacteria colonies image'}
-
-The peak near one corresponds to the white image background,
-and the broader peak around 0.5 corresponds to the yellow/brown
-culture medium in the dish.
-The small peak near zero is what we are after: the dark bacteria colonies.
-A reasonable choice thus might be to leave pixels below `t=0.2` on.
-
-Here is the code to create and show the binarized image using the
-`<` operator with a threshold `t=0.2`:
-
-```python
-t = 0.2
-binary_mask = blurred_image < t
-
-fig, ax = plt.subplots()
-ax.imshow(binary_mask, cmap="gray")
-```
-
-![](fig/colonies-01-mask.png){alt='Binary mask of the bacteria colonies image'}
-
-When you experiment with the threshold a bit, you can see that in
-particular the size of the bacteria colony near the edge of the
-dish in the top right is affected by the choice of the threshold.
-
-
 
 :::::::::::::::::::::::::
 

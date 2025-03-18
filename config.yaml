@@ -11,10 +11,10 @@
 carpentry: 'dc'
 
 # Overall title for pages.
-title: 'Image Processing with Python'
+title: 'JAX: (Bio)Image Processing with Python'
 
 # Date the lesson was created (YYYY-MM-DD, this is empty by default)
-created: '2017-03-14'
+created: '2024-03-14'
 
 # Comma-separated list of keywords for the lesson
 keywords: 'software, data, lesson, The Carpentries'
@@ -27,7 +27,7 @@ life_cycle: 'stable'
 license: 'CC-BY 4.0'
 
 # Link to the source repository for this lesson
-source: 'https://github.com/datacarpentry/image-processing'
+source: 'https://github.com/govekk/image-processing'
 
 # Default branch of your lesson
 branch: 'main'
@@ -67,7 +67,6 @@ episodes:
 - 06-blurring.md
 - 07-thresholding.md
 - 08-connected-components.md
-- 09-challenges.md
 
 # Information for Learners
 learners: 
@@ -84,6 +83,6 @@ profiles:
 # sandpaper and varnish versions) should live
 
 
-url: 'https://datacarpentry.github.io/image-processing'
+url: 'https://govekk.github.io/image-processing'
 analytics: carpentries
 lang: en
