@@ -423,7 +423,7 @@ smaller, but image quality may suffer.</li>
 compression.</li>
 <li>Depending on the camera or sensor, various useful pieces of
 information may be stored in an image file, in the image metadata.</li>
-</ul></section><section id="03-skimage-images"><h2 class="section-heading"><a href="03-skimage-images.html">Working with scikit-image</a></h2>
+</ul></section><section id="03-skimage-images"><h2 class="section-heading"><a href="03-skimage-images.html">Working with scikit-imageload and display original image<a class="anchor" aria-label="anchor" href="#load-and-display-original-image"></a>extract and display sub-image<a class="anchor" aria-label="anchor" href="#extract-and-display-sub-image"></a>save sub-image<a class="anchor" aria-label="anchor" href="#save-sub-image"></a></a></h2>
 <hr class="half-width">
 <ul>
 <li>Images are read from disk with the <code>iio.imread()</code>
@@ -436,7 +436,7 @@ object.</li>
 grayscale directly by passing the argument <code>mode="L"</code> to
 <code>iio.imread()</code>.</li>
 <li>Array slicing can be used to extract sub-images or modify areas of
-images, e.g., <code>clip = image[280:501, 180:521, :]</code>.</li>
+images, e.g., <code>clip = image[45:381, 625:851, :]</code>.</li>
 <li>Metadata is not retained when images are loaded as NumPy arrays
 using <code>iio.imread()</code>.</li>
 </ul></section><section id="04-drawing"><h2 class="section-heading"><a href="04-drawing.html">Drawing and Bitwise Operations</a></h2>

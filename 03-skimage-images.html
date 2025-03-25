@@ -339,7 +339,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Working with scikit-image</h1>
-        <p>Last updated on 2025-03-18 |
+        <p>Last updated on 2025-03-25 |
 
         <a href="https://github.com/govekk/image-processing/edit/main/episodes/03-skimage-images.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -399,57 +399,47 @@ TIFF are supported, along with several more esoteric formats. Check the
 Formats docs</a> for a list of all formats. Matplotlib provides a large
 collection of plotting utilities.</p>
 <p>Let us examine a simple Python program to load, display, and save an
-image to a different format. Here are the first few lines:</p>
+image to a different format.</p>
+<p>The image we will be using for much of this course is hosted on the
+<a href="https://images.jax.org/webclient/?show=image-191146" class="external-link">JAX public
+image data repository</a> and was used in a <a href="https://link.springer.com/article/10.1007/s11357-023-01013-y" class="external-link">published
+manuscript</a> from 2023. For simplicity, a lower resolution (smaller)
+version of the image has been converted to the more universal TIFF
+format for this workshop.</p>
+<p>Here are the first few lines:</p>
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co">"""Python program to open, display, and save an image."""</span></span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co"># read image</span></span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>cells <span class="op">=</span> iio.imread(uri<span class="op">=</span><span class="st">"data/hela-cells-8bit.tif"</span>)</span></code></pre>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>he_image <span class="op">=</span> iio.imread(uri<span class="op">=</span><span class="st">"data/he_scale3.tif"</span>)</span></code></pre>
 </div>
 <p>We use the <code>iio.imread()</code> function to read a TIFF image
-entitled <strong>hela-cells-8bit</strong>. Imageio reads the image,
-converts it from TIFF into a NumPy array, and returns the array; we save
-the array in a variable named <code>cells</code>.</p>
+entitled <strong>he_scale3</strong>. Imageio reads the image, converts
+it from TIFF into a NumPy array, and returns the array; we save the
+array in a variable named <code>he_image</code>.</p>
 <p>Next, we will do something with the image:</p>
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>ax.imshow(cells)</span></code></pre>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>ax.imshow(he_image)</span></code></pre>
 </div>
-<p>Once we have the image in the program, we first call
+<figure><img src="fig/he-image.png" alt="H&amp;E image" class="figure mx-auto d-block"></figure><p>Once we have the image in the program, we first call
 <code>fig, ax = plt.subplots()</code> so that we will have a fresh
 figure with a set of axes independent from our previous calls. Next we
 call <code>ax.imshow()</code> in order to display the image.</p>
 </section><section><h2 class="section-heading" id="saving-images">Saving images<a class="anchor" aria-label="anchor" href="#saving-images"></a></h2>
-<hr class="half-width"><p>Another image we will use will be one of scikit-image’s example
-images. These can be loaded through the skimage.data module.</p>
-<div class="codewrapper sourceCode" id="cb4">
+<hr class="half-width"><div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>hed_image <span class="op">=</span> ski.data.immunohistochemistry()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># save a new version in .jpg format</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>iio.imwrite(uri<span class="op">=</span><span class="st">"data/he_converted.jpg"</span>,image<span class="op">=</span>he_image)</span></code></pre>
 </div>
-<p>Let’s look at this image:</p>
-<div class="codewrapper sourceCode" id="cb5">
-<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>plt.imshow(hed_image)</span></code></pre>
-</div>
-<p>What if we want to keep a local copy?</p>
-<div class="codewrapper sourceCode" id="cb6">
-<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># save a new version in .tif format</span></span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>iio.imwrite(uri<span class="op">=</span><span class="st">"data/immunohistochemistry.tif"</span>, image<span class="op">=</span>hed_image)</span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="co"># save a new version in .jpg format</span></span>
-<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>iio.imwrite(uri<span class="op">=</span><span class="st">"data/immunohistochemistry.jpg"</span>, image<span class="op">=</span>hed_image)</span></code></pre>
-</div>
-<p>The final statement in the program,
-<code>iio.imwrite(uri="data/immunohistochemistry.jpg", image=hed_image)</code>,
-writes the image to a file named <code>immunohistochemistry.jpg</code>
-in the <code>data/</code> directory. The <code>imwrite()</code> function
+<p>This line,
+<code>iio.imwrite(uri="data/he_converted.jpg",image=he_image)</code>,
+writes the image to a file named <code>he_converted.jpg</code> in the
+<code>data/</code> directory. The <code>imwrite()</code> function
 automatically determines the type of the file, based on the file
 extension we provide. In this case, the <code>.tif</code> extension
 causes the image to be saved as a TIFF, and the <code>.jpg</code>
@@ -505,14 +495,13 @@ definition</a> specifies two parameters, the resource to save the image
 to (e.g., a file name, an http address) and the image to write to disk.
 So, we could save the chair image in the sample code above using
 positional arguments like this:</p>
-<p><code>iio.imwrite("data/immunohistochemistry.jpg", hed_image)</code></p>
+<p><code>iio.imwrite("data/he_converted.jpg", he_image)</code></p>
 <p>Since the function expects the first argument to be the file name,
-there is no confusion about what
-<code>"data/immunohistochemistry.jpg"</code> means. The same goes for
-the second argument.</p>
+there is no confusion about what <code>"data/he_converted.jpg"</code>
+means. The same goes for the second argument.</p>
 <p>The style we will use in this workshop is to name each argument, like
 this:</p>
-<p><code>iio.imwrite(uri="data/immunohistochemistry.jpg", image=hed_image)</code></p>
+<p><code>iio.imwrite(uri="data/he_converted.jpg", image=he_image)</code></p>
 <p>This style will make it easier for you to learn how to use the
 variety of functions we will cover in this workshop.</p>
 </div>
@@ -551,48 +540,19 @@ throughout the lesson. You will encounter a similar approach with
 </div>
 </div>
 </div>
-<div class="codewrapper sourceCode" id="cb7">
+<div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co">"""Python script to load a color image as grayscale."""</span></span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="co"># read input image</span></span>
-<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>hed_color <span class="op">=</span> iio.imread(uri<span class="op">=</span><span class="st">"data/immunohistochemistry.tif"</span>)</span>
-<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="co"># display original image</span></span>
-<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>ax.imshow(hed_color)</span>
-<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a></span>
-<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co"># convert to grayscale and display</span></span>
-<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>hed_gray <span class="op">=</span> ski.color.rgb2gray(hed_color)</span>
-<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>ax.imshow(hed_gray, cmap<span class="op">=</span><span class="st">"gray"</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co">"""Python script to load a color image as grayscale."""</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co"># convert to grayscale and display</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>he_gray <span class="op">=</span> ski.color.rgb2gray(he_image)</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>ax.imshow(he_gray, cmap<span class="op">=</span><span class="st">"gray"</span>)</span></code></pre>
 </div>
-<p>We can also load colour images of certain formats as grayscale
-directly by passing the argument <code>mode="L"</code> to
-<code>iio.imread()</code>.</p>
-<div class="codewrapper sourceCode" id="cb8">
-<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co">"""Python script to load a color image as grayscale."""</span></span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co"># read input image, based on filename parameter</span></span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>hed_gray <span class="op">=</span> iio.imread(uri<span class="op">=</span><span class="st">"data/immunohistochemistry.jpg"</span>, mode<span class="op">=</span><span class="st">"L"</span>)</span>
-<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="co"># display grayscale image</span></span>
-<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>ax.imshow(hed_gray, cmap<span class="op">=</span><span class="st">"gray"</span>)</span></code></pre>
-</div>
-<p>The first argument to <code>iio.imread()</code> is the filename of
-the image. The second argument <code>mode="L"</code> determines the type
-and range of the pixel values in the image (e.g., an 8-bit pixel has a
-range of 0-255). This argument is forwarded to the <code>pillow</code>
-backend, a Python imaging library for which mode “L” means 8-bit pixels
-and single-channel (i.e., grayscale). The backend used by
-<code>iio.imread()</code> may be specified as an optional argument: to
-use <code>pillow</code>, you would pass <code>plugin="pillow"</code>. If
-the backend is not specified explicitly, <code>iio.imread()</code>
-determines the backend to use based on the image type.</p>
+<figure><img src="fig/he-grey.png" alt="Grayscale H&amp;E image" class="figure mx-auto d-block"></figure><p>It may not be immediately obvious why we would want to do this, but
+we will see later in the workshop that converting the image to a single
+value is very helpful for downstream processing such as
+segmentation.</p>
 <div id="loading-images-with-imageio-pixel-type-and-depth" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
@@ -600,16 +560,16 @@ determines the backend to use based on the image type.</p>
 <div id="loading-images-with-imageio-pixel-type-and-depth" class="callout-inner">
 <h3 class="callout-title">Loading images with imageio: Pixel type and depth</h3>
 <div class="callout-content">
-<p>When loading an image with <code>mode="L"</code>, the pixel values
-are stored as 8-bit integer numbers that can take values in the range
-0-255. However, pixel values may also be stored with other types and
-ranges. For example, some scikit-image functions return the pixel values
-as floating point numbers in the range 0-1. The type and range of the
-pixel values are important for the colorscale when plotting, and for
-masking and thresholding images as we will see later in the lesson. If
-you are unsure about the type of the pixel values, you can inspect it
-with <code>print(image.dtype)</code>. For the example above, you should
-find that it is <code>dtype('uint8')</code> indicating 8-bit integer
+<p>When loading certain image types in Python, the pixel values are
+stored as 8-bit integer numbers that can take values in the range 0-255.
+However, pixel values may also be stored with other types and ranges.
+For example, some scikit-image functions return the pixel values as
+floating point numbers in the range 0-1. The type and range of the pixel
+values are important for the colorscale when plotting, and for masking
+and thresholding images as we will see later in the lesson. If you are
+unsure about the type of the pixel values, you can inspect it with
+<code>print(image.dtype)</code>. For the example above, you should find
+that it is <code>dtype('uint8')</code> indicating 8-bit integer
 numbers.</p>
 </div>
 </div>
@@ -617,11 +577,11 @@ numbers.</p>
 </section><section><h2 class="section-heading" id="multichannel-images">Multichannel images<a class="anchor" aria-label="anchor" href="#multichannel-images"></a></h2>
 <hr class="half-width"><p>In <a href="02-image-basics.html">the <em>Image Basics</em>
 episode</a> we discussed how color is represented by three numbers in
-RGB images. The immunohistochemistry image we have been using is an RGB
-image. The tissue was stained with hematoxylin (blue) and DAB (brown),
-but if we split apart the RGB color channels, each one isn’t
-particularly useful in identifying that staining:</p>
-<figure><img src="fig/hed-rgb-separate.png" alt="A grid showing each RGB color of the immunohistochemistry image" class="figure mx-auto d-block"></figure><p>In contrast, the image of HeLa cells is a multichannel image. We can
+RGB images. The H&amp;E image we have been using is an RGB image. The
+tissue was stained with hematoxylin (blue) and eosin (pink), but if we
+split apart the RGB color channels, each one isn’t particularly useful
+in identifying that staining:</p>
+<figure><img src="fig/he-rgb-separate.png" alt="A grid showing each RGB color of the H&amp;E image" class="figure mx-auto d-block"></figure><p>In contrast, the image of HeLa cells is a multichannel image. We can
 conveniently read it and view it using the same functions as RGB, since
 it’s still 8bit with three channels. But in reality, those channels
 represent fluorescence of three different parts of the cell: lysosomes,
@@ -629,15 +589,15 @@ mitochondria and nucleus. Currently, the lysosomes are marked in red,
 mitochondria in green, and nucleus in blue, but it doesn’t really matter
 what color each is represented by. It’s often more useful to view
 multichannel images one channel at a time.</p>
-<figure><img src="fig/hela-cells-channels.png" alt="A grid showing each channel of the hela cells image" class="figure mx-auto d-block"></figure><div class="codewrapper sourceCode" id="cb9">
+<figure><img src="fig/hela-cells-channels.png" alt="A grid showing each channel of the hela cells image" class="figure mx-auto d-block"></figure><div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>cells <span class="op">=</span> iio.imread(uri<span class="op">=</span><span class="st">"data/hela-cells-8bit.tif"</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>nuclei <span class="op">=</span> cells[:,:,<span class="dv">2</span>]</span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>mitochondria <span class="op">=</span> cells[:,:,<span class="dv">1</span>]</span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(ncols<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>ax[<span class="dv">0</span>].imshow(nuclei)</span>
-<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>ax[<span class="dv">1</span>].imshow(mitochondria, vmax<span class="op">=</span><span class="dv">255</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>cells <span class="op">=</span> iio.imread(uri<span class="op">=</span><span class="st">"data/hela-cells-8bit.tif"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>nuclei <span class="op">=</span> cells[:,:,<span class="dv">2</span>]</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>mitochondria <span class="op">=</span> cells[:,:,<span class="dv">1</span>]</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(ncols<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>ax[<span class="dv">0</span>].imshow(nuclei)</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>ax[<span class="dv">1</span>].imshow(mitochondria, vmax<span class="op">=</span><span class="dv">255</span>)</span></code></pre>
 </div>
 <div id="plotting-single-channel-images-cmap-vmin-vmax" class="callout">
 <div class="callout-square">
@@ -674,81 +634,59 @@ pixels in the image, and so on. It is important to remember that
 coordinates are specified in <em>(ry, cx)</em> order and that colour
 values are specified in <em>(r, g, b)</em> order when doing these
 manipulations.</p>
-<p>Consider this image of HeLa cells, and suppose that we want to create
-a sub-image with just one of the cells.</p>
-<figure><img src="fig/hela-cells-8bit.jpg" alt="HeLa cells image" class="figure mx-auto d-block"></figure><p>Using <code>matplotlib.pyplot.imshow</code> we can determine the
+<p>Consider our H&amp;E image, and suppose we want to create a sub-image
+of just one of the tissue sections.</p>
+<figure><img src="fig/he-image.png" alt="H&amp;E image" class="figure mx-auto d-block"></figure><p>Using <code>matplotlib.pyplot.imshow</code> we can determine the
 coordinates of the corners of the area we wish to extract by hovering
 the mouse near the points of interest and noting the coordinates
 (remember to run <code>%matplotlib widget</code> first if you haven’t
 already). If we do that, we might settle on a rectangular area with an
-upper-left coordinate of <em>(180, 280)</em> and a lower-right
-coordinate of <em>(520, 500)</em>, as shown in this version of the HeLa
+upper-left coordinate of <em>(625, 45)</em> and a lower-right coordinate
+of <em>(850, 380)</em>, as shown in this version of the HeLa
 picture:</p>
-<figure><img src="fig/hela-cells-coordinates.jpg" alt="Sub picture coordinates for one cell" class="figure mx-auto d-block"></figure><p>Note that the coordinates in the preceding image are specified in
+<figure><img src="fig/he-kidney-coordinates.png" alt="Sub picture coordinates for the kidney tissue section" class="figure mx-auto d-block"></figure><p>Note that the coordinates in the preceding image are specified in
 <em>(cx, ry)</em> order. Now if our entire HeLa cell image is stored as
 a NumPy array named <code>image</code>, we can create a new image of the
 selected region with a statement like this:</p>
-<p><code>clip = image[280:501, 180:521, :]</code></p>
+<p><code>clip = image[45:381, 625:851, :]</code></p>
 <p>Our array slicing specifies the range of y-coordinates or rows first,
-<code>280:501</code>, and then the range of x-coordinates or columns,
-<code>180:521</code>. Note we go one beyond the maximum value in each
-dimension, so that the entire desired area is selected. The third part
-of the slice, <code>:</code>, indicates that we want all three colour
+<code>45:381</code>, and then the range of x-coordinates or columns,
+<code>625:851</code>. Note we go one beyond the maximum value in each
+dimension, so that the entire desired area is selected, because the
+sliced area does not include the upper bound index. The third part of
+the slice, <code>:</code>, indicates that we want all three colour
 channels in our new image.</p>
 <p>A script to create the subimage would start by loading the image:</p>
-<div class="codewrapper sourceCode" id="cb10">
+<div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="co">"""Python script demonstrating image modification and creation via NumPy array slicing."""</span></span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="co"># load and display original image</span></span>
-<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>cells <span class="op">=</span> iio.imread(uri<span class="op">=</span><span class="st">"data/hela-cells-8bit.tif"</span>)</span>
-<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>cells <span class="op">=</span> np.array(cells)</span>
-<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>ax.imshow(cells)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co">"""Python script demonstrating image modification and creation via NumPy array slicing."""</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="co"># load and display original image</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>he_image <span class="op">=</span> iio.imread(uri<span class="op">=</span><span class="st">"data/he_scale3.tif"</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>ax.imshow(he_image)</span></code></pre>
 </div>
 <p>Then we use array slicing to create a new image with our selected
 area and then display the new image.</p>
-<div class="codewrapper sourceCode" id="cb11">
+<div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="co"># extract, display, and save sub-image</span></span>
-<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>cell_one <span class="op">=</span> cells[<span class="dv">280</span>:<span class="dv">501</span>, <span class="dv">180</span>:<span class="dv">521</span>, :]</span>
-<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>ax.imshow(cell_one)</span>
-<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>iio.imwrite(uri<span class="op">=</span><span class="st">"data/cell_one.tif"</span>, image<span class="op">=</span>cell_one)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co"># extract, display, and save sub-image</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>kidney <span class="op">=</span> he_image[<span class="dv">45</span>:<span class="dv">381</span>, <span class="dv">625</span>:<span class="dv">851</span>, :]</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>ax.imshow(kidney)</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>iio.imwrite(uri<span class="op">=</span><span class="st">"data/kidney.tif"</span>, image<span class="op">=</span>kidney)</span></code></pre>
 </div>
-<p>We can also change the values in an image, as shown next.</p>
-<div class="codewrapper sourceCode" id="cb12">
-<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="co"># replace clipped area with sampled color</span></span>
-<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>color <span class="op">=</span> cells[<span class="dv">30</span>,<span class="dv">30</span>]</span>
-<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>cells[<span class="dv">280</span>:<span class="dv">501</span>, <span class="dv">180</span>:<span class="dv">521</span>] <span class="op">=</span> color</span>
-<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>ax.imshow(cells)</span></code></pre>
-</div>
-<p>First, we sample a single pixel’s colour at a particular location of
-the image, saving it in a variable named <code>color</code>, which
-creates a 1 × 1 × 3 NumPy array with the blue, green, and red colour
-values for the pixel located at <em>(ry = 30, cx = 30)</em>. Then, with
-the <code>img[280:501, 180:521] = color</code> command, we modify the
-image in the specified area. From a NumPy perspective, this changes all
-the pixel values within that range to array saved in the
-<code>color</code> variable. In this case, the command “erases” that
-area of the image, replacing the words with the background black color,
-as shown in the final image produced by the program:</p>
-<figure><img src="fig/hela-cells-erased.jpg" alt='"Erased" one cell from hela cells image' class="figure mx-auto d-block"></figure><div id="practicing-with-slices-10-min" class="callout challenge">
+<figure><img src="fig/he-kidney.png" alt="Sub picture of kidney tissue section" class="figure mx-auto d-block"></figure><div id="challenge1" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
-<div id="practicing-with-slices-10-min" class="callout-inner">
-<h3 class="callout-title">Practicing with slices (10 min)</h3>
+<div class="callout-inner">
+<h3 class="callout-title">Challenge</h3>
 <div class="callout-content">
-<p>Repeat the above exercise for the leftmost cell. Using the techniques
-you just learned, write a script that creates, displays, and saves a
-sub-image containing only the leftmost cell from the HeLa cells
-image.</p>
+<p>Practicing with slices (10 min) Repeat the above exercise for the
+leftmost tissue section in the H&amp;E image.</p>
 </div>
 </div>
 </div>
@@ -757,28 +695,25 @@ image.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
-<p>Here is the completed Python program to select only the leftmost cell
-in the image</p>
-<div class="codewrapper sourceCode" id="cb13">
-<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="co">"""Python script to extract a sub-image containing only the leftmost cell in an existing image."""</span></span>
-<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a></span>
-<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="co"># load and display original image</span></span>
-<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>cells <span class="op">=</span> iio.imread(uri<span class="op">=</span><span class="st">"data/hela-cells-8bit.tif"</span>)</span>
-<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>ax.imshow(cells)</span>
-<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a></span>
-<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a><span class="co"># extract and display sub-image</span></span>
-<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a>cell_two <span class="op">=</span> cells[<span class="dv">70</span>:<span class="dv">391</span>, <span class="dv">20</span>:<span class="dv">211</span>, :]</span>
-<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a>ax.imshow(cell_two)</span>
-<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a></span>
-<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a></span>
-<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a><span class="co"># save sub-image</span></span>
-<span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a>iio.imwrite(uri<span class="op">=</span><span class="st">"data/cell_two.jpg"</span>, image<span class="op">=</span>cell_two)</span></code></pre>
+<p>Solution Here is the completed Python program to select only the
+leftmost cell in the image</p>
+<p>“““Python script to extract a sub-image containing only the leftmost
+cell in an existing image.”“”</p>
+<div class="section level1">
+<h1 id="load-and-display-original-image">load and display original image<a class="anchor" aria-label="anchor" href="#load-and-display-original-image"></a></h1>
+<p>he_image = iio.imread(uri=“data/he_scale3.tif”) fig, ax =
+plt.subplots() ax.imshow(he_image)</p>
+</div>
+<div class="section level1">
+<h1 id="extract-and-display-sub-image">extract and display sub-image<a class="anchor" aria-label="anchor" href="#extract-and-display-sub-image"></a></h1>
+<p>tissue = he_image[80:351, 50:311, :] fig, ax = plt.subplots()
+ax.imshow(tissue)</p>
+</div>
+<div class="section level1">
+<h1 id="save-sub-image">save sub-image<a class="anchor" aria-label="anchor" href="#save-sub-image"></a></h1>
+<p>iio.imwrite(uri=“data/tissue.jpg”, image=tissue)</p>
 </div>
 </div>
 </div>
@@ -801,7 +736,7 @@ object.</li>
 grayscale directly by passing the argument <code>mode="L"</code> to
 <code>iio.imread()</code>.</li>
 <li>Array slicing can be used to extract sub-images or modify areas of
-images, e.g., <code>clip = image[280:501, 180:521, :]</code>.</li>
+images, e.g., <code>clip = image[45:381, 625:851, :]</code>.</li>
 <li>Metadata is not retained when images are loaded as NumPy arrays
 using <code>iio.imread()</code>.</li>
 </ul></div>
@@ -865,7 +800,7 @@ using <code>iio.imread()</code>.</li>
   "url": "https://govekk.github.io/image-processing/03-skimage-images.html",
   "identifier": "https://govekk.github.io/image-processing/03-skimage-images.html",
   "dateCreated": "2024-03-14",
-  "dateModified": "2025-03-18",
+  "dateModified": "2025-03-25",
   "datePublished": "2025-03-25"
 }
 
