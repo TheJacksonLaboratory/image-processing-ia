@@ -45,24 +45,29 @@ Matplotlib provides a large collection of plotting utilities.
 
 Let us examine a simple Python program to load, display,
 and save an image to a different format.
+
+The image we will be using for much of this course is hosted on the [JAX public image data repository](https://images.jax.org/webclient/?show=image-191146) and was used in a [published manuscript](https://link.springer.com/article/10.1007/s11357-023-01013-y) from 2023. For simplicity, a lower resolution (smaller) version of the image has been converted to the more universal TIFF format for this workshop.
+
 Here are the first few lines:
 
 ```python
 """Python program to open, display, and save an image."""
 # read image
-cells = iio.imread(uri="data/hela-cells-8bit.tif")
+he_image = iio.imread(uri="data/he_scale3.tif")
 ```
 
-We use the `iio.imread()` function to read a TIFF image entitled **hela-cells-8bit**.
+We use the `iio.imread()` function to read a TIFF image entitled **he_scale3**.
 Imageio reads the image, converts it from TIFF into a NumPy array,
-and returns the array; we save the array in a variable named `cells`.
+and returns the array; we save the array in a variable named `he_image`.
 
 Next, we will do something with the image:
 
 ```python
 fig, ax = plt.subplots()
-ax.imshow(cells)
+ax.imshow(he_image)
 ```
+
+![](fig/he-image.png){alt='H&E image'}
 
 Once we have the image in the program,
 we first call `fig, ax = plt.subplots()` so that we will have
@@ -71,31 +76,13 @@ Next we call `ax.imshow()` in order to display the image.
 
 ## Saving images
 
-Another image we will use will be one of scikit-image's example images. 
-These can be loaded through the skimage.data module.
-
 ```python
-hed_image = ski.data.immunohistochemistry()
-```
-
-Let's look at this image:
-
-```python
-fig, ax = plt.subplots()
-plt.imshow(hed_image)
-```
-
-What if we want to keep a local copy? 
-
-```python
-# save a new version in .tif format
-iio.imwrite(uri="data/immunohistochemistry.tif", image=hed_image)
 # save a new version in .jpg format
-iio.imwrite(uri="data/immunohistochemistry.jpg", image=hed_image)
+iio.imwrite(uri="data/he_converted.jpg",image=he_image)
 ```
 
-The final statement in the program, `iio.imwrite(uri="data/immunohistochemistry.jpg", image=hed_image)`,
-writes the image to a file named `immunohistochemistry.jpg` in the `data/` directory.
+This line, `iio.imwrite(uri="data/he_converted.jpg",image=he_image)`,
+writes the image to a file named `he_converted.jpg` in the `data/` directory.
 The `imwrite()` function automatically determines the type of the file,
 based on the file extension we provide.
 In this case, the `.tif` extension causes the image to be saved as a TIFF, and the `.jpg` extension
@@ -146,15 +133,15 @@ the image to write to disk.
 So, we could save the chair image in the sample code above
 using positional arguments like this:
 
-`iio.imwrite("data/immunohistochemistry.jpg", hed_image)`
+`iio.imwrite("data/he_converted.jpg", he_image)`
 
 Since the function expects the first argument to be the file name,
-there is no confusion about what `"data/immunohistochemistry.jpg"` means. The same goes
+there is no confusion about what `"data/he_converted.jpg"` means. The same goes
 for the second argument.
 
 The style we will use in this workshop is to name each argument, like this:
 
-`iio.imwrite(uri="data/immunohistochemistry.jpg", image=hed_image)`
+`iio.imwrite(uri="data/he_converted.jpg", image=he_image)`
 
 This style will make it easier for you to learn how to use the variety of
 functions we will cover in this workshop.
@@ -193,50 +180,29 @@ You will encounter a similar approach with "centre" and `center`.
 
 ```python
 """Python script to load a color image as grayscale."""
-
-# read input image
-hed_color = iio.imread(uri="data/immunohistochemistry.tif")
-
-# display original image
-fig, ax = plt.subplots()
-ax.imshow(hed_color)
-
 # convert to grayscale and display
-hed_gray = ski.color.rgb2gray(hed_color)
+he_gray = ski.color.rgb2gray(he_image)
 fig, ax = plt.subplots()
-ax.imshow(hed_gray, cmap="gray")
+ax.imshow(he_gray, cmap="gray")
 ```
 
-We can also load colour images of certain formats as grayscale directly by
-passing the argument `mode="L"` to `iio.imread()`.
+![](fig/he-grey.png){alt='Grayscale H&E image'}
 
-```python
-"""Python script to load a color image as grayscale."""
-
-# read input image, based on filename parameter
-hed_gray = iio.imread(uri="data/immunohistochemistry.jpg", mode="L")
-
-# display grayscale image
-fig, ax = plt.subplots()
-ax.imshow(hed_gray, cmap="gray")
-```
-
-The first argument to `iio.imread()` is the filename of the image.
-The second argument `mode="L"` determines the type and range of the pixel values in the image (e.g., an 8-bit pixel has a range of 0-255). This argument is forwarded to the `pillow` backend, a Python imaging library for which mode "L" means 8-bit pixels and single-channel (i.e., grayscale). The backend used by `iio.imread()` may be specified as an optional argument: to use `pillow`, you would pass `plugin="pillow"`. If the backend is not specified explicitly, `iio.imread()` determines the backend to use based on the image type.
+It may not be immediately obvious why we would want to do this, but we will see later in the workshop that converting the image to a single value is very helpful for downstream processing such as segmentation.
 
 :::::::::::::::::::::::::::::::::::::::::  callout
 
 ## Loading images with imageio: Pixel type and depth
 
-When loading an image with `mode="L"`, the pixel values are stored as 8-bit integer numbers that can take values in the range 0-255. However, pixel values may also be stored with other types and ranges. For example, some scikit-image functions return the pixel values as floating point numbers in the range 0-1. The type and range of the pixel values are important for the colorscale when plotting, and for masking and thresholding images as we will see later in the lesson. If you are unsure about the type of the pixel values, you can inspect it with `print(image.dtype)`. For the example above, you should find that it is `dtype('uint8')` indicating 8-bit integer numbers.
+When loading certain image types in Python, the pixel values are stored as 8-bit integer numbers that can take values in the range 0-255. However, pixel values may also be stored with other types and ranges. For example, some scikit-image functions return the pixel values as floating point numbers in the range 0-1. The type and range of the pixel values are important for the colorscale when plotting, and for masking and thresholding images as we will see later in the lesson. If you are unsure about the type of the pixel values, you can inspect it with `print(image.dtype)`. For the example above, you should find that it is `dtype('uint8')` indicating 8-bit integer numbers.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## Multichannel images
 
-In [the *Image Basics* episode](02-image-basics.md) we discussed how color is represented by three numbers in RGB images. The immunohistochemistry image we have been using is an RGB image. The tissue was stained with hematoxylin (blue) and DAB (brown), but if we split apart the RGB color channels, each one isn't particularly useful in identifying that staining:
+In [the *Image Basics* episode](02-image-basics.md) we discussed how color is represented by three numbers in RGB images. The H&E image we have been using is an RGB image. The tissue was stained with hematoxylin (blue) and eosin (pink), but if we split apart the RGB color channels, each one isn't particularly useful in identifying that staining:
 
-![](fig/hed-rgb-separate.png){alt='A grid showing each RGB color of the immunohistochemistry image'}
+![](fig/he-rgb-separate.png){alt='A grid showing each RGB color of the H&E image'}
 
 In contrast, the image of HeLa cells is a multichannel image. We can conveniently read it and view it using the same functions as RGB, since it's still 8bit with three channels. But in reality, those channels represent fluorescence of three different parts of the cell: lysosomes, mitochondria and nucleus. Currently, the lysosomes are marked in red, mitochondria in green, and nucleus in blue, but it doesn't really matter what color each is represented by. It's often more useful to view multichannel images one channel at a time.
 
@@ -285,31 +251,32 @@ It is important to
 remember that coordinates are specified in *(ry, cx)* order and that colour values
 are specified in *(r, g, b)* order when doing these manipulations.
 
-Consider this image of HeLa cells, and suppose that we want to create a sub-image with just one of the cells.
+Consider our H&E image, and suppose we want to create a sub-image of just one of the tissue sections.
 
-![](fig/hela-cells-8bit.jpg){alt='HeLa cells image'}
+![](fig/he-image.png){alt='H&E image'}
 
 Using `matplotlib.pyplot.imshow` 
 we can determine the coordinates of the corners of the area we wish to extract
 by hovering the mouse near the points of interest and noting the coordinates 
 (remember to run `%matplotlib widget` first if you haven't already).
 If we do that, we might settle on a rectangular
-area with an upper-left coordinate of *(180, 280)*
-and a lower-right coordinate of *(520, 500)*,
+area with an upper-left coordinate of *(625, 45)*
+and a lower-right coordinate of *(850, 380)*,
 as shown in this version of the HeLa picture:
 
-![](fig/hela-cells-coordinates.jpg){alt='Sub picture coordinates for one cell'}
+![](fig/he-kidney-coordinates.png){alt='Sub picture coordinates for the kidney tissue section'}
 
 Note that the coordinates in the preceding image are specified in *(cx, ry)* order.
 Now if our entire HeLa cell image is stored as a NumPy array named `image`,
 we can create a new image of the selected region with a statement like this:
 
-`clip = image[280:501, 180:521, :]`
+`clip = image[45:381, 625:851, :]`
 
-Our array slicing specifies the range of y-coordinates or rows first, `280:501`,
-and then the range of x-coordinates or columns, `180:521`.
+Our array slicing specifies the range of y-coordinates or rows first, `45:381`,
+and then the range of x-coordinates or columns, `625:851`.
 Note we go one beyond the maximum value in each dimension,
-so that the entire desired area is selected.
+so that the entire desired area is selected, because the sliced area
+does not include the upper bound index.
 The third part of the slice, `:`,
 indicates that we want all three colour channels in our new image.
 
@@ -319,10 +286,9 @@ A script to create the subimage would start by loading the image:
 """Python script demonstrating image modification and creation via NumPy array slicing."""
 
 # load and display original image
-cells = iio.imread(uri="data/hela-cells-8bit.tif")
-cells = np.array(cells)
+he_image = iio.imread(uri="data/he_scale3.tif")
 fig, ax = plt.subplots()
-ax.imshow(cells)
+ax.imshow(he_image)
 ```
 
 Then we use array slicing to
@@ -330,69 +296,38 @@ create a new image with our selected area and then display the new image.
 
 ```python
 # extract, display, and save sub-image
-cell_one = cells[280:501, 180:521, :]
+kidney = he_image[45:381, 625:851, :]
 fig, ax = plt.subplots()
-ax.imshow(cell_one)
-iio.imwrite(uri="data/cell_one.tif", image=cell_one)
+ax.imshow(kidney)
+iio.imwrite(uri="data/kidney.tif", image=kidney)
 ```
+![](fig/he-kidney.png){alt='Sub picture of kidney tissue section'}
 
-We can also change the values in an image, as shown next.
+::::::::::::::::::::::::::::::::::::::: challenge
 
-```python
-# replace clipped area with sampled color
-color = cells[30,30]
-cells[280:501, 180:521] = color
-fig, ax = plt.subplots()
-ax.imshow(cells)
-```
+Practicing with slices (10 min)
+Repeat the above exercise for the leftmost tissue section in the H&E image.
 
-First, we sample a single pixel's colour at a particular location of the
-image, saving it in a variable named `color`,
-which creates a 1 × 1 × 3 NumPy array with the blue, green, and red colour values
-for the pixel located at *(ry = 30, cx = 30)*.
-Then, with the `img[280:501, 180:521] = color` command,
-we modify the image in the specified area.
-From a NumPy perspective,
-this changes all the pixel values within that range to array saved in
-the `color` variable.
-In this case, the command "erases" that area of the image,
-replacing the words with the background black color,
-as shown in the final image produced by the program:
+::::::::::::::: solution
 
-![](fig/hela-cells-erased.jpg){alt='"Erased" one cell from hela cells image'}
-
-:::::::::::::::::::::::::::::::::::::::  challenge
-
-## Practicing with slices (10 min)
-
-Repeat the above exercise for the leftmost cell. Using the techniques you just learned, 
-write a script that creates, displays, and saves a sub-image containing
-only the leftmost cell from the HeLa cells image.
-
-:::::::::::::::  solution
-
-## Solution
-
+Solution
 Here is the completed Python program to select only the leftmost cell in the image
 
-```python
 """Python script to extract a sub-image containing only the leftmost cell in an existing image."""
 
 # load and display original image
-cells = iio.imread(uri="data/hela-cells-8bit.tif")
+he_image = iio.imread(uri="data/he_scale3.tif")
 fig, ax = plt.subplots()
-ax.imshow(cells)
+ax.imshow(he_image)
 
 # extract and display sub-image
-cell_two = cells[70:391, 20:211, :]
+tissue = he_image[80:351, 50:311, :]
 fig, ax = plt.subplots()
-ax.imshow(cell_two)
+ax.imshow(tissue)
 
 
 # save sub-image
-iio.imwrite(uri="data/cell_two.jpg", image=cell_two)
-```
-
+iio.imwrite(uri="data/tissue.jpg", image=tissue)
 :::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -402,7 +337,7 @@ iio.imwrite(uri="data/cell_two.jpg", image=cell_two)
 - Images are read from disk with the `iio.imread()` function.
 - We create a window that automatically scales the displayed image with Matplotlib and calling `imshow()` on the global figure object.
 - Colour images can be transformed to grayscale using `ski.color.rgb2gray()` or, in many cases, be read as grayscale directly by passing the argument `mode="L"` to `iio.imread()`.
-- Array slicing can be used to extract sub-images or modify areas of images, e.g., `clip = image[280:501, 180:521, :]`.
+- Array slicing can be used to extract sub-images or modify areas of images, e.g., `clip = image[45:381, 625:851, :]`.
 - Metadata is not retained when images are loaded as NumPy arrays using `iio.imread()`.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
