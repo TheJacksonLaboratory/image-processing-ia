@@ -51,25 +51,26 @@ and histograms are also quite handy as a preparatory step before performing
 
 We will start with grayscale images,
 and then move on to colour images.
-We will use this hematoxylin and DAB stained immunohistochemistry image as an example:
-![](data/immunohistochemistry.jpg){alt='HED IHC scikit example image'}
+We will use this H&E image as an example:
+
+![](fig/he-image.png){alt='H&E image'}
 
 Here we load the image in grayscale instead of full colour, and display it:
 
 ```python
-# read the immunohistochemistry image as grayscale from the outset
-hed_image = iio.imread(uri="data/immunohistochemistry.tif")
-hed_image = ski.color.rgb2gray(hed_image)
+# read the H&E image as grayscale from the outset
+he_image = iio.imread(uri="data/he_scale3.tif")
+he_image = ski.color.rgb2gray(he_image)
 
 # convert the image to float dtype with a value range from 0 to 1
-hed_image = ski.util.img_as_float(hed_image)
+he_image = ski.util.img_as_float(he_image)
 
 # display the image
 fig, ax = plt.subplots()
-ax.imshow(hed_image, cmap="gray")
+ax.imshow(he_image, cmap="gray")
 ```
 
-![](fig/ihc-grayscale.jpg){alt='grayscale verson of IHC image'}
+![](fig/he-grey.png){alt='grayscale verson of IHC image'}
 
 Again, we use the `iio.imread()` function to load our image.
 Then, we convert the grayscale image of integer dtype, with 0-255 range, into
@@ -82,7 +83,7 @@ which, after all, is a NumPy array:
 
 ```python
 # create the histogram
-histogram, bin_edges = np.histogram(hed_image, bins=256, range=(0, 1))
+histogram, bin_edges = np.histogram(he_image, bins=256, range=(0, 1))
 ```
 
 The parameter `bins` determines the number of "bins" to use for the histogram.
@@ -149,10 +150,10 @@ Finally, we create the histogram plot itself with
 We use the **left** bin edges as x-positions for the histogram values by
 indexing the `bin_edges` array to ignore the last value
 (the **right** edge of the last bin).
-When we run the program on the immunohistochemistry image,
+When we run the program on the H&E image,
 it produces this histogram:
 
-![](fig/ihc-grayscale-histogram.png){alt='Grayscale immunohistochemistry histogram'}
+![](fig/he-grayscale-histogram.png){alt='Grayscale H&E histogram'}
 
 :::::::::::::::::::::::::::::::::::::::::  callout
 
@@ -172,6 +173,26 @@ instead of
 image into a one-dimensional array).
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
+
+## Histograms with slicing and masks
+
+There are a lot of white background pixels in the image, so it's hard to see where the peak for the tissue color is in the histogram. It's often useful to slice around the regions of interest to get more information from histograms. We will use the slicing from [Working with scikit-image](03-skimage-images.md) to get a histogram of just the kidney section:
+
+```python
+# get the subimage of just the kidney section
+kidney = he_image[45:381, 625:851]
+kidney_histogram, kidney_bin_edges = np.histogram(kidney, bins=256, range=(0, 1))
+
+# configure and draw the histogram figure
+fig, ax = plt.subplots()
+ax.set_title("Grayscale Histogram")
+ax.set_xlabel("grayscale value")
+ax.set_ylabel("pixel count")
+ax.set_xlim([0.0, 1.0])  # <- named arguments do not work here
+
+ax.plot(bin_edges[0:-1], kidney_histogram)  # <- or here
+```
+![](fig/kidney-histogram.png){alt='Grayscale H&E histogram of just kidney section'}
 
 ## Colour Histograms
 
@@ -290,122 +311,6 @@ Note the use of our loop variables, `channel_id` and `color`.
 Finally we label our axes and display the histogram, shown here:
 
 ![](fig/cells-colour-histogram.png){alt='Colour histogram'}
-
-:::::::::::::::::::::::::::::::::::::::::  callout
-
-## Code cheatsheet for "Colour histogram with a mask":
-
-Drawing a mask:
-```python
-# Create mask where background is zeros
-mask = np.zeros(shape=image.shape[0:2], dtype="bool")
-# Draw a circle with center at (yr, xc) with radius r
-circle = ski.draw.disk(center=(yr, xc), radius=r, shape=image.shape[0:2])
-mask[circle] = 1
-
-# Get pixels from image where mask is true (e.g. inside circle)
-image[mask]
-```
-
-Histograms:
-```python
-import imageio.v3 as iio
-import ipympl
-import matplotlib.pyplot as plt
-import numpy as np
-import skimage as ski
-%matplotlib widget
-
-# read original image, in full color, from uri path to image file
-image = iio.imread(uri)
-
-# tuple to select colors of each channel line
-colors = ("red", "green", "blue")
-# create the histogram plot, with three lines, one for
-# each color
-plt.figure()
-plt.xlim([0, 256])
-for channel_id, color in enumerate(colors):
-    histogram, bin_edges = np.histogram(
-        image[:, :, channel_id], bins=256, range=(0, 256)
-    )
-    plt.plot(bin_edges[0:-1], histogram, color=color)
-
-plt.title("Color Histogram")
-plt.xlabel("Color value")
-plt.ylabel("Pixel count")
-```
-
-::::::::::::::::::::::::::::::::::::::::::::::::::
-
-:::::::::::::::::::::::::::::::::::::::  challenge
-
-## Colour histogram with a mask (25 min)
-
-Looking at the histogram above, you will notice that there is a large number of very dark pixels
-in each channel. This is not so surprising, since the image has a mostly black background.
-What if we want to focus on a more foreground part of the image, like just one of the cells.
-This is where a mask enters the picture!
-
-Hover over the image with your mouse to find the centre of that cell
-and the radius (in pixels) of the cell.
-Then, using techniques from [the *Drawing and Bitwise Operations* episode](04-drawing.md), 
-create a circular mask to select only the desired cell.
-Then, use that mask to apply the colour histogram operation to that cell.
-
-Your masked image should look something like this:
-
-![](fig/cells-masked.jpg){alt='Masked cell'}
-
-And, the program should produce a colour histogram that looks like this:
-
-![](fig/cells-masked-histogram.png){alt='Single cell histogram'}
-
-:::::::::::::::  solution
-
-## Solution
-
-```python
-# create a circular mask to select the lowest cell in the image
-mask = np.zeros(shape=cells.shape[0:2], dtype="bool")
-circle = ski.draw.disk(center=(400, 360), radius=80, shape=cells.shape[0:2])
-mask[circle] = 1
-
-# just for display:
-# make a copy of the image, call it masked_image, and
-# zero values where mask is False
-masked_img = np.array(cells)
-masked_img[~mask] = 0
-
-# create a new figure and display masked_img, to verify the
-# validity of your mask
-fig, ax = plt.subplots()
-ax.imshow(masked_img)
-
-# list to select colors of each channel line
-colors = ("red", "green", "blue")
-
-# create the histogram plot, with three lines, one for
-# each color
-fig, ax = plt.subplots()
-ax.set_xlim([0, 256])
-for (channel_id, color) in enumerate(colors):
-    # use your circular mask to apply the histogram
-    # operation to the lowest cell of the image
-    histogram, bin_edges = np.histogram(
-        cells[:, :, channel_id][mask], bins=256, range=(0, 256)
-    )
-
-    ax.plot(histogram, color=color)
-
-ax.set_xlabel("color value")
-ax.set_ylabel("pixel count")
-
-```
-
-:::::::::::::::::::::::::
-
-::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::: keypoints
 

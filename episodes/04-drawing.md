@@ -54,8 +54,7 @@ a circle or a rectangle, say -
 on a black image.
 scikit-image provides tools to do that.
 
-Let's repeat the challenge at the end of [the *Working with scikit-image* episode](03-skimage-images.md),
-to select only the leftmost cell of HeLa cells image using a rectangular selection.
+As an example, we will edit the pixels of the slide label from our H&E macro image. This could be helpful if there were information there we wanted to obfuscate.
 
 A Python program to create a mask to select only that area of the image would
 start with a now-familiar section of code to open and display the original
@@ -63,11 +62,13 @@ image:
 
 ```python
 # Load and display the original image
-cells= iio.imread(uri="data/hela-cells-8bit.tif")
+macro_image = iio.imread(uri="data/he_macro.tif")
 
 fig, ax = plt.subplots()
-ax.imshow(cells)
+ax.imshow(macro_image)
 ```
+
+![](fig/he-macro.png){alt='Macro slide image from H&E ndpi'}
 
 We load and display the initial image in the same way we have done before.
 
@@ -82,7 +83,7 @@ The next section of code shows how:
 
 ```python
 # Create the basic mask
-mask = np.ones(shape=cells.shape[0:2], dtype="bool")
+mask = np.zeros(shape=macro_image.shape[0:2], dtype="bool")
 ```
 
 The first argument to the `ones()` function is the shape of the original image,
@@ -101,8 +102,9 @@ Next, we draw a filled, rectangle on the mask:
 
 ```python
 # Draw filled rectangle on the mask image
-rr, cc = ski.draw.rectangle(start=(70,20), end=(391,211))
-mask[rr, cc] = False
+rr, cc = ski.draw.rectangle(start=(100, 210), end=(381,301))
+mask[rr, cc] = True
+
 
 # Display mask image
 fig, ax = plt.subplots()
@@ -110,9 +112,9 @@ ax.imshow(mask, cmap="gray")
 ```
 
 Here is what our constructed mask looks like:
-![](fig/cells-rectangle-mask.jpg){alt='Cells rectangle mask'}
+![](fig/he-label-mask.png){alt='Mask selecting part of H&E slide label'}
 
-The parameters of the `rectangle()` function `(70,20)` and `(391,211)`,
+The parameters of the `rectangle()` function `(100, 210)` and `(381,301)`,
 are the coordinates of the upper-left (`start`) and lower-right (`end`) corners
 of a rectangle in *(ry, cx)* order.
 The function returns the rectangle as row (`rr`) and column (`cc`) coordinate arrays.
@@ -349,14 +351,15 @@ We load the original image and create the mask in the same way as before:
 
 ```python
 # Load the original image
-cells = iio.imread(uri="data/hela-cells-8bit.tif")
+macro_image = iio.imread(uri="data/he_macro.tif")
+macro_image = np.array(macro_image)
 
 # Create the basic mask
 mask = np.ones(shape=cells.shape[0:2], dtype="bool")
 
 # Draw a filled rectangle on the mask image
-rr, cc = ski.draw.rectangle(start=(70,20), end=(391,211))
-mask[rr, cc] = False
+rr, cc = ski.draw.rectangle(start=(100, 210), end=(381,301))
+mask[rr, cc] = True
 ```
 
 Then, we use NumPy indexing to remove the portions of the image,
@@ -364,19 +367,19 @@ where the mask is `True`:
 
 ```python
 # Apply the mask
-cells[mask] = 0
+macro_image[mask] = 0
 ```
 
 Then, we display the masked image.
 
 ```python
 fig, ax = plt.subplots()
-ax.imshow(cells)
+ax.imshow(macro_image)
 ```
 
 The resulting masked image should look like this:
 
-![](fig/cells-masked-rectangle.jpg){alt='Applied mask'}
+![](fig/he-label-covered.png){alt='Applied mask'}
 
 :::::::::::::::::::::::::::::::::::::::: keypoints
 
