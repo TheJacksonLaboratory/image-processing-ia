@@ -257,11 +257,6 @@ labeled_image, count = ski.measure.label(binary_mask,
                                         connectivity=connectivity, return_num=True)
 ```
 
-
-The first four lines of code are familiar from
-[the *Thresholding* episode](07-thresholding.md).
-
-Then we call the `ski.measure.label` function.
 This function has one positional argument where we pass the `binary_mask`,
 i.e., the binary image to work on.
 With the optional argument `connectivity`,
@@ -541,8 +536,9 @@ filtered_labels = ski.morphology.remove_small_objects(labeled_image, min_size=10
 We display the resulting label image and print the number of objects:
 
 ```python
+color_filtered_labels = ski.color.label2rgb(filtered_labels, bg_label=0)
 fig, ax = plt.subplots()
-ax.imshow(filtered_labels)
+ax.imshow(color_filtered_labels)
 
 print("Found", count, "objects in the image.")
 ```
@@ -610,8 +606,9 @@ print(object_areas)
 
 ```python
 filtered_labels = ski.morphology.remove_small_objects(labeled_image, min_size=1000)
+color_filtered_labels = ski.color.label2rgb(filtered_labels, bg_label=0)
 fig, ax = plt.subplots()
-ax.imshow(filtered_labels)
+ax.imshow(color_filtered_labels)
 ```
 
 ![](fig/he-labels.png){alt='H&E tissue sections segmented'}
