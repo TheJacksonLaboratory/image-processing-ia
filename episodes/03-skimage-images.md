@@ -315,6 +315,7 @@ Here is the completed Python program to select only the leftmost cell in the ima
 
 """Python script to extract a sub-image containing only the leftmost cell in an existing image."""
 
+```python
 # load and display original image
 he_image = iio.imread(uri="data/he_scale3.tif")
 fig, ax = plt.subplots()
@@ -328,6 +329,7 @@ ax.imshow(tissue)
 
 # save sub-image
 iio.imwrite(uri="data/tissue.jpg", image=tissue)
+```
 :::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::

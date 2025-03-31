@@ -39,8 +39,6 @@ select the parts of an image we are interested in.
 ## First, import the packages needed for this episode
 
 ```python
-import glob
-
 import imageio.v3 as iio
 import ipympl
 import matplotlib.pyplot as plt
@@ -52,21 +50,20 @@ import skimage as ski
 
 ## Simple thresholding
 
-Consider the hematoxylin and DAB stained immunohistochemistry image that we saved from the scikit example data
-in [the *Working with scikit-image* episode](03-skimage-images.md).
+We will start with the image of four hela cells:
 
 ```python
 # load the image
-hed_image = iio.imread(uri="data/immunohistochemistry.tif")
+cells = iio.imread(uri="data/hela-cells-8bit.tif")
 
 fig, ax = plt.subplots()
-ax.imshow(hed_image)
+ax.imshow(cells)
 ```
 
-![](data/immunohistochemistry.jpg){alt='HED IHC scikit example image'}
+![](fig/cells.png){alt='Hela cells image'}
 
-Now suppose we want to select only the stained portion of the image.
-In other words, we want to leave the pixels belonging to the stained tissue "on,"
+Now suppose we want to select only the nuclei of the image.
+In other words, we want to leave the pixels belonging to the nuclei tissue "on,"
 while turning the rest of the pixels "off,"
 by setting their colour channel values to zeros.
 The scikit-image library has several different methods of thresholding.
@@ -76,21 +73,23 @@ Specifically, in this simple, *fixed-level thresholding*,
 we have to provide a threshold value `t`.
 
 The process works like this.
-First, we will load the original image, convert it to grayscale,
+First, we will load the original image, convert it to grayscale or select one of the channels,
 and de-noise it as in [the *Blurring Images* episode](06-blurring.md).
 
+Since the nuclei are marked in this multichannel image by high values of the blue channel, we can select just the blue channel instead of converting the whole image to grayscale.
+
 ```python
-# convert the image to grayscale
-hed_gray = ski.color.rgb2gray(hed_image)
+# get nuclei channel
+blue_channel = cells[:,:,2]
 
 # blur the image to denoise
-hed_blurred = ski.filters.gaussian(hed_gray, sigma=1.0)
+blurred_nuclei = ski.filters.gaussian(blue_channel, sigma=1.0)
 
 fig, ax = plt.subplots()
-ax.imshow(hed_blurred, cmap="gray")
+ax.imshow(blurred_nuclei, cmap="gray")
 ```
 
-![](fig/ihc-grayscale-blurred.jpg){alt='Grayscale and blurred ihc image'}
+![](fig/cells-nuclei-gray-blurred.png){alt='Grayscale and blurred nuclei channel'}
 
 :::::::::::::::::::::::::::::::::::::::::  callout
 
@@ -112,8 +111,8 @@ while pixels with grayscale values on the other side will be turned "off".
 How might we do that?
 Remember that grayscale images contain pixel values in the range from 0 to 1,
 so we are looking for a threshold `t` in the closed range [0\.0, 1.0].
-We see in the image that the stained tissue is "darker" than
-the white background but there is also some light gray noise on the background.
+We see in the image that the nuclei are "lighter" than
+the black background.
 One way to determine a "good" value for `t` is
 to look at the grayscale histogram of the image
 and try to identify what grayscale ranges correspond to the staining in the image
@@ -123,8 +122,8 @@ The histogram can be produced as in
 [the *Creating Histograms* episode](05-creating-histograms.md).
 
 ```python
-# create a histogram of the blurred grayscale image
-histogram, bin_edges = np.histogram(hed_blurred, bins=256, range=(0.0, 1.0))
+# create a histogram of the blurred nuclei image
+histogram, bin_edges = np.histogram(blurred_nuclei, bins=256, range=(0.0, 1.0))
 
 fig, ax = plt.subplots()
 ax.plot(bin_edges[0:-1], histogram)
@@ -134,23 +133,23 @@ ax.set_ylabel("pixels")
 ax.set_xlim(0, 1.0)
 ```
 
-![](fig/ihc-blurred-grayscale-histogram.png){alt='Grayscale histogram of the blurred ihc image'}
+![](fig/cells-blue-histogram.png){alt='Histogram of the blue channel from the HeLa cells image'}
 
-Since the image has a white background,
-most of the pixels in the image are almost-white.
+Since the image has a black background,
+most of the pixels in the image have low values.
 This corresponds nicely to what we see in the histogram:
-there is a peak above 0.8.
-If we want to select the stained tissue and not the background,
-we want to turn off the white background pixels,
-while leaving the pixels for the staining turned on.
-So, we should choose a value of `t` somewhere before the large peak and
-turn pixels above that value "off".
-Let us choose `t=0.7`.
+there is a peak around 0.
+If we want to select the fluorescing nuclei and not the background,
+we want to turn off the black background pixels,
+while leaving the pixels for the nuclei turned on.
+So, we should choose a value of `t` somewhere higher the large peak and
+turn pixels below that value "off".
+Let us choose `t=0.1`.
 
 To apply the threshold `t`,
 we can use the NumPy comparison operators to create a mask.
-Here, we want to turn "on" all pixels which have values smaller than the threshold,
-so we use the less operator `<` to compare the `blurred_image` to the threshold `t`.
+Here, we want to turn "on" all pixels which have values bigger than the threshold,
+so we use the greater operator `>` to compare the `blurred_image` to the threshold `t`.
 The operator returns a mask, that we capture in the variable `binary_mask`.
 It has only one channel, and each of its values is either 0 or 1.
 The binary mask created by the thresholding operation can be shown with `ax.imshow`,
@@ -160,14 +159,13 @@ where the `False` entries are shown as black pixels
 
 ```python
 # create a mask based on the threshold
-t = 0.7
-binary_mask = hed_blurred < t
+t = 0.1
+binary_mask = blurred_nuclei > t
 
 fig, ax = plt.subplots()
 ax.imshow(binary_mask, cmap="gray")
 ```
-
-![](fig/ihc-mask.jpg){alt='Binary mask of the stained tissue created by thresholding'}
+![](fig/cells-mask.jpg){alt='Binary mask created by thresholding the HeLa cells image'}
 
 You can see that the areas where the staining was in the original area are now white,
 while the rest of the mask image is black.
@@ -207,14 +205,14 @@ What we are left with is only the stained tissue from the original.
 
 ```python
 # use the binary_mask to select the "interesting" part of the image
-foreground = hed_image.copy()
+foreground = cells.copy()
 foreground[~binary_mask] = 0
 
 fig, ax = plt.subplots()
 ax.imshow(foreground)
 ```
 
-![](fig/ihc-foreground.jpg){alt='Selected foreground after applying binary mask'}
+![](fig/nuclei-selected.jpg){alt='Selected nuclei after applying binary mask to the HeLa cells image'}
 
 :::::::::::::::::::::::::::::::::::::::::  callout
 
@@ -230,8 +228,8 @@ import skimage as ski
 
 # Read in image (from the uri path to the image file)
 image = iio.imread(uri)
-# Select single channel (where c is the index of the channel)
-channel = image[:,:,c]
+# create grayscale image or select single channel (where c is the index of the channel)
+channel = ski.color.rgb2gray(image) # or channel=image[:,:,c]
 # Blur image
 blurred_image = skimage.filters.gaussian(channel, sigma=1.0)
 
@@ -269,54 +267,58 @@ plt.imshow(foreground)
 ## More practice with simple thresholding (20 min)
 
 Now, it is your turn to practice. Suppose we want to use simple thresholding
-to select only the nuclei from the image `data/hela-cells-8bit.tif`:
+to select only the tissue sections from the image `data/he-scale3.tif`:
 
-![](fig/hela-cells-8bit.jpg){alt='HeLa cells color image'}
+![](fig/he-image.png){alt='H&E image'}
 
-Since the nuclei are marked in this multichannel image by high values of the blue channel,
-there are a few differences. Instead of using the grayscale image, select the blue channel using
-`image[:,:,2]`. This will act as your grayscale image, since it also has only one value per pixel.
+As in the [Creating Histograms](./05-creating-histograms.md) episode, we will use a grayscale version of the image, since the individual RGB channels are not informative on their own.
 
-![](fig/cells-nuclei-gray.jpg){alt='HeLa cells gray nuclei'}
+![](fig/he-grey.png){alt='grayscale H&E image'}
 
 :::::::::::::::  solution
 
 ## Solution
 
-The histogram for the blue channel of `data/hela-cells-8bit.tif` image can be shown with
+The histogram for the grayscale of the H&E image can be shown with
 
 ```python
-cells = iio.imread(uri="data/hela-cells-8bit.tif")
-blue_channel = cells[:,:,2]
-blurred_image = skimage.filters.gaussian(blue_channel, sigma=1.0)
+# load the image
+he_image = iio.imread(uri="data/he_scale3.tif")
 
-histogram, bin_edges = np.histogram(blurred_image, bins=256, range=(0.0,1.0))
+# convert the image to grayscale
+he_gray = ski.color.rgb2gray(he_image)
 
-fig,ax = plt.subplots()
+# blur the image to denoise
+he_blurred = ski.filters.gaussian(he_gray, sigma=1.0)
+
+# create a histogram of the blurred grayscale image
+histogram, bin_edges = np.histogram(he_blurred, bins=256, range=(0.0, 1.0))
+
+fig, ax = plt.subplots()
 ax.plot(bin_edges[0:-1], histogram)
-ax.set_title("Blue (nuclei) channel histogram")
-ax.set_xlabel("pixel value")
+ax.set_title("Grayscale Histogram")
+ax.set_xlabel("grayscale value")
 ax.set_ylabel("pixels")
 ax.set_xlim(0, 1.0)
 ```
 
-![](fig/cells-blue-histogram.png){alt='Histogram of the blue channel from the HeLa cells image'}
+![](fig/he-blurred-histogram.png){alt='Histogram of the grayscale H&E image blurred'}
 
-We can see a large spike around 0, and a very low bump around 0.3. The
-spike near 0 represents the darker background, and the bump around 0.3 represents the nuclei signal.
-So it seems like a value between the two would be a good choice. Let's choose `t=0.1`.
+We can see a large spike around 0.9, and a very low bump around 0.2-0.4. The
+spike near 0.9 represents the lighter background, and the bump around 0.2-0.4 represents the darker tissue sections.
+So it seems like a value between the two would be a good choice. Let's choose `t=0.8`.
 
 
 :::::::::::::::::::::::::
 
-Next, create a mask to turn the pixels above the threshold `t` on
-and pixels below the threshold `t` off. Note that unlike the image
-with a white background we used above, here the peak for the
-background colour is darker than the foreground objects or nuclei.
-Therefore, change the comparison operator less `<` to
-greater `>` to create the appropriate mask. Then apply the mask to
+Next, create a mask to turn the pixels below the threshold `t` on
+and pixels above the threshold `t` off. Note that unlike the image
+with a black background we used above, here the peak for the
+background colour is lighter than the foreground objects or nuclei.
+Therefore, change the comparison operator greater `>` to
+less than `<` to create the appropriate mask. Then apply the mask to
 the image and view the thresholded image. If everything works as it
-should, your output should show only the coloured nuclei on a black
+should, your output should show only the coloured tissue sections on a black
 background.
 
 :::::::::::::::  solution
@@ -326,26 +328,28 @@ background.
 Here are the commands to create and view the binary mask
 
 ```python
-t = 0.1
-binary_mask = blurred_image > t
+# create a mask based on the threshold
+t = 0.8
+binary_mask = he_blurred < t
 
 fig, ax = plt.subplots()
 ax.imshow(binary_mask, cmap="gray")
 ```
 
-![](fig/cells-mask.jpg){alt='Binary mask created by thresholding the HeLa cells image'}
+![](fig/he-mask.png){alt='Binary mask created by thresholding the H&E image'}
 
 And here are the commands to apply the mask and view the thresholded image
 
 ```python
-nuclei_only = cells.copy()
-nuclei_only[~binary_mask] = 0
+# use the binary_mask to select the "interesting" part of the image
+foreground = he_image.copy()
+foreground[~binary_mask] = 0
 
 fig, ax = plt.subplots()
-ax.imshow(nuclei_only)
+ax.imshow(foreground)
 ```
 
-![](fig/nuclei-selected.jpg){alt='Selected nuclei after applying binary mask to the HeLa cells image'}
+![](fig/he-foreground.png){alt='H&E image with background set to 0'}
 
 :::::::::::::::::::::::::
 

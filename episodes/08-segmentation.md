@@ -1,5 +1,5 @@
 ---
-title: Connected Component Analysis
+title: Segmentation
 teaching: 70
 exercises: 55
 ---
@@ -205,7 +205,7 @@ can be reached, so the 2-jump neighborhood corresponds to the
 
 ## Connected Component Analysis
 
-In order to find the objects in an image, we want to employ an
+In order to find the objects in an image (also known as segmentation), we want to employ an
 operation that is called Connected Component Analysis (CCA).
 This operation takes a binary image as an input.
 Usually, the `False` value in this image is associated with background pixels,
@@ -229,26 +229,34 @@ import skimage as ski
 %matplotlib widget
 ```
 
-In this episode, we will use the `ski.measure.label` function to perform the CCA.
+In this episode, we will use the `ski.measure.label` function to perform the CCA. For example, we want to label individual
+nuclei from the HeLa cells image.
 
-Next, we define a reusable Python function `segment_multichannel`, for finding connected
-components within a fluorescent (dark background, light objects) multichannel image:
+We start by generating the binary mask of the foreground of the blue (nuclei) channel of the image, as in [the *Thresholding* episode](07-thresholding.md).
 
 ```python
-def segment_multichannel(filename, channel=0, sigma=1.0, t=0.5, connectivity=2):
-    # load the image
-    image = iio.imread(filename)
-    # convert the image to grayscale
-    channel_image = image[:,:,channel]
-    # denoise the image with a Gaussian filter
-    blurred_image = ski.filters.gaussian(channel_image, sigma=sigma)
-    # mask the image according to threshold
-    binary_mask = blurred_image > t
-    # perform connected component analysis
-    labeled_image, count = ski.measure.label(binary_mask,
-                                                 connectivity=connectivity, return_num=True)
-    return labeled_image, count
+# load the image
+cells = iio.imread(uri="data/hela-cells-8bit.tif")
+blue_channel = cells[:,:,2]
+
+sigma=2.0
+t=0.1
+# denoise the image with a Gaussian filter
+blurred_image = ski.filters.gaussian(blue_channel, sigma=sigma)
+# black background so select values greater than threshod
+binary_mask = blurred_image > t
 ```
+We are purposefully separating out the parameters as variables for ease of editing later.
+
+Then we call the `ski.measure.label` function.
+
+```python
+connectivity=2
+# perform connected component analysis
+labeled_image, count = ski.measure.label(binary_mask,
+                                        connectivity=connectivity, return_num=True)
+```
+
 
 The first four lines of code are familiar from
 [the *Thresholding* episode](07-thresholding.md).
@@ -303,78 +311,12 @@ with the optional parameters.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-We can call the above function `segment_multichannel` and
-display the labeled image like so:
+We display the labeled image like so:
 
 ```python
-labeled_image, count = segment_multichannel(filename="data/hela-cells-8bit.tif", channel=2, sigma=2.0, t=0.1, connectivity=2)
-
 fig, ax = plt.subplots()
 ax.imshow(labeled_image)
-ax.set_axis_off();
 ```
-
-::::::::::::::::  spoiler
-
-## Do you see an empty image?
-
-If you are using an older version of Matplotlib you might get a warning
-`UserWarning: Low image data range; displaying image with stretched contrast.`
-or just see a visually empty image.
-
-What went wrong?
-When you hover over the image,
-the pixel values are shown as numbers in the lower corner of the viewer.
-You can see that some pixels have values different from `0`,
-so they are not actually all the same value.
-Let's find out more by examining `labeled_image`.
-Properties that might be interesting in this context are `dtype`,
-the minimum and maximum value.
-We can print them with the following lines:
-
-```python
-print("dtype:", labeled_image.dtype)
-print("min:", np.min(labeled_image))
-print("max:", np.max(labeled_image))
-```
-
-Examining the output can give us a clue why the image appears empty.
-
-```output
-dtype: int32
-min: 0
-max: 11
-```
-
-The `dtype` of `labeled_image` is `int32`.
-This means that values in this image range from `-2 ** 31` to `2 ** 31 - 1`.
-Those are really big numbers.
-From this available space we only use the range from `0` to `11`.
-When showing this image in the viewer,
-it may squeeze the complete range into 256 gray values.
-Therefore, the range of our numbers does not produce any visible variation. One way to rectify this 
-is to explicitly specify the data range we want the colormap to cover:
-
-```python
-fig, ax = plt.subplots()
-ax.imshow(labeled_image, vmin=np.min(labeled_image), vmax=np.max(labeled_image))
-```
-
-Note this is the default behaviour for newer versions of `matplotlib.pyplot.imshow`. 
-Alternatively we could convert the image to RGB and then display it.
-
-
-:::::::::::::::::::::::::
-
-:::::::::::::::::::::::::::::::::::::::::  callout
-
-## Suppressing outputs in Jupyter Notebooks
-
-We just used `ax.set_axis_off();` to hide the axis from the image for a visually cleaner figure. The
-semicolon is added to supress the output(s) of the statement, in this [case](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.axis.html) 
-the axis limits. This is specific to Jupyter Notebooks.
-
-::::::::::::::::::::::::::::::::::::::::::::::::::
 
 We can use the function `ski.color.label2rgb()`
 to convert the 32-bit grayscale labeled image to standard RGB colour
@@ -390,41 +332,11 @@ colored_label_image = ski.color.label2rgb(labeled_image, bg_label=0)
 
 fig, ax = plt.subplots()
 ax.imshow(colored_label_image)
-ax.set_axis_off();
 ```
 
 ![](fig/cells-labeled.jpg){alt='Labeled objects'}
 
-:::::::::::::::::::::::::::::::::::::::::  callout
 
-## Code cheatsheet for "How does parameter choice change how many objects are in the image?"
-
-```python
-import imageio.v3 as iio
-import ipympl
-import matplotlib.pyplot as plt
-import numpy as np
-import skimage as ski
-%matplotlib widget
-
-def segment_multichannel(filename, channel=0, sigma=1.0, t=0.5, connectivity=2):
-    # load the image
-    image = iio.imread(filename)
-    # convert the image to grayscale
-    channel_image = image[:,:,channel]
-    # denoise the image with a Gaussian filter
-    blurred_image = ski.filters.gaussian(channel_image, sigma=sigma)
-    # mask the image according to threshold
-    binary_mask = blurred_image > t
-    # perform connected component analysis
-    labeled_image, count = ski.measure.label(binary_mask,
-                                                 connectivity=connectivity, return_num=True)
-    return labeled_image, count
-
-# Call segmentation function on HeLa cells image file, nuclei channel
-labeled_image, count = segment_multichannel(filename="data/hela-cells-8bit.tif", channel=2, sigma=2.0, t=0.1, connectivity=2)
-```
-::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
@@ -530,14 +442,14 @@ We can get a list of areas of the labeled objects as follows:
 ```python
 # compute object features and extract object areas
 object_features = ski.measure.regionprops(labeled_image)
-object_areas = [objf["area"] for objf in object_features]
+object_areas = [int(objf["area"]) for objf in object_features]
 object_areas
 ```
 
 This will produce the output
 
 ```output
-[20.0, 13722.0, 14147.0, 13308.0, 12629.0, 156.0]
+[20, 13722, 14147, 13308, 12629, 156]
 ```
 
 :::::::::::::::::::::::::::::::::::::::  challenge
@@ -599,109 +511,7 @@ area and keep objects of that size.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-:::::::::::::::::::::::::::::::::::::::::  callout
 
-## Code cheatsheet for "Filter objects by area":
-
-```python
-import imageio.v3 as iio
-import ipympl
-import matplotlib.pyplot as plt
-import numpy as np
-import skimage as ski
-%matplotlib widget
-
-def segment_multichannel(filename, channel=0, sigma=1.0, t=0.5, connectivity=2):
-    # load the image
-    image = iio.imread(filename)
-    # convert the image to grayscale
-    channel_image = image[:,:,channel]
-    # denoise the image with a Gaussian filter
-    blurred_image = ski.filters.gaussian(channel_image, sigma=sigma)
-    # mask the image according to threshold
-    binary_mask = blurred_image > t
-    # perform connected component analysis
-    labeled_image, count = ski.measure.label(binary_mask,
-                                                 connectivity=connectivity, return_num=True)
-    return labeled_image, count
-
-# Call segmentation function on HeLa cells image file, nuclei channel
-labeled_image, count = segment_multichannel(filename="data/hela-cells-8bit.tif", channel=2, sigma=2.0, t=0.1, connectivity=2)
-
-# compute object features and extract object areas
-object_features = ski.measure.regionprops(labeled_image)
-object_areas = [objf["area"] for objf in object_features]
-```
-
-::::::::::::::::::::::::::::::::::::::::::::::::::
-
-:::::::::::::::::::::::::::::::::::::::  challenge
-
-## Filter objects by area (10 min)
-
-Now we would like to use a minimum area criterion to obtain a more
-accurate count of the objects in the image.
-
-1. Find a way to calculate the number of objects by only counting
-  objects above a certain area.
-2. Keep track of which object labels we want to keep, e.g. in a list.
-
-:::::::::::::::  solution
-
-## Solution
-
-One way to count only objects above a certain area is to first
-create a list of those objects, and then take the length of that
-list as the object count. This can be done as follows:
-
-```python
-min_area = 200
-large_objects = []
-for objf in object_features:
-    if objf["area"] > min_area:
-        large_objects.append(objf["label"])
-print("Found", len(large_objects), "objects!")
-```
-
-Another option is to use NumPy arrays to create the list of large objects.
-We first create an array `object_areas` containing the object areas,
-and an array `object_labels` containing the object labels.
-The labels of the objects are also returned by `ski.measure.regionprops`.
-We have already seen that we can create boolean arrays using comparison operators.
-Here we can use `object_areas > min_area`
-to produce an array that has the same dimension as `object_labels`.
-It can then be used to select the labels of objects whose area is
-greater than `min_area` by indexing:
-
-```python
-object_areas = np.array([objf["area"] for objf in object_features])
-object_labels = np.array([objf["label"] for objf in object_features])
-large_objects = object_labels[object_areas > min_area]
-print("Found", len(large_objects), "objects!")
-```
-
-The advantage of using NumPy arrays is that
-`for` loops and `if` statements in Python can be slow,
-and in practice the first approach may not be feasible
-if the image contains a large number of objects.
-In that case, NumPy array functions turn out to be very useful because
-they are much faster.
-
-In this example, we can also use the `np.count_nonzero` function
-that we have seen earlier together with the `>` operator to count
-the objects whose area is above `min_area`.
-
-```python
-n = np.count_nonzero(object_areas > min_area)
-print("Found", n, "objects!")
-```
-
-For all three alternatives, the output is the same and gives the
-expected count of 4 objects.
-
-:::::::::::::::::::::::::
-
-::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::::  callout
 
@@ -715,154 +525,24 @@ look for an availabe function that can solve a given task.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-:::::::::::::::::::::::::::::::::::::::::  callout
 
-## Code cheatsheet for removing small objects
-
-```python
-import imageio.v3 as iio
-import ipympl
-import matplotlib.pyplot as plt
-import numpy as np
-import skimage as ski
-%matplotlib widget
-
-def segment_multichannel(filename, channel=0, sigma=1.0, t=0.5, connectivity=2):
-    # load the image
-    image = iio.imread(filename)
-    # convert the image to grayscale
-    channel_image = image[:,:,channel]
-    # denoise the image with a Gaussian filter
-    blurred_image = ski.filters.gaussian(channel_image, sigma=sigma)
-    # mask the image according to threshold
-    binary_mask = blurred_image > t
-    # perform connected component analysis
-    labeled_image, count = ski.measure.label(binary_mask,
-                                                 connectivity=connectivity, return_num=True)
-    return labeled_image, count
-
-# Call segmentation function on HeLa cells image file, nuclei channel
-labeled_image, count = segment_multichannel(filename="data/hela-cells-8bit.tif", channel=2, sigma=2.0, t=0.1, connectivity=2)
-
-object_features = ski.measure.regionprops(labeled_image)
-object_areas = [objf["area"] for objf in object_features]
-object_areas
-
-# "for loop" way of finding large object labels
-min_area = 200
-large_objects = []
-for objf in object_features:
-    if objf["area"] > min_area:
-        large_objects.append(objf["label"])
-print("Found", len(large_objects), "objects!")
-
-# "numpy" way of finding large object labels
-min_area = 200
-object_areas = np.array([objf["area"] for objf in object_features])
-object_labels = np.array([objf["label"] for objf in object_features])
-large_objects = object_labels[object_areas > min_area]
-print("Found", len(large_objects), "objects!")
-```
-::::::::::::::::::::::::::::::::::::::::::::::::::
-
-:::::::::::::::::::::::::::::::::::::::  challenge
-
-## Remove small objects (20 min)
-
-We might also want to exclude (mask) the small objects when plotting
-the labeled image.
-
-2. Given a labeled image from the `segment_multichannel` function, remove objects
-  from the labeled image that are below a certain area.
-
-:::::::::::::::  solution
-
-## Solution
-
-To remove the small objects from the labeled image,
-we change the value of all pixels that belong to the small objects to
-the background label 0.
-One way to do this is to loop over all objects and
-set the pixels that match the label of the object to 0.
-
-```python
-min_area = 200
-for object_id, objf in enumerate(object_features, start=1):
-    if objf["area"] < min_area:
-        labeled_image[labeled_image == objf["label"]] = 0
-```
-
-Here NumPy functions can also be used to eliminate
-`for` loops and `if` statements.
-Like above, we can create an array of the small object labels with
-the comparison `object_areas < min_area`.
-We can use another NumPy function, `np.isin`,
-to set the pixels of all small objects to 0.
-`np.isin` takes two arrays and returns a boolean array with values
-`True` if the entry of the first array is found in the second array,
-and `False` otherwise.
-This array can then be used to index the `labeled_image` and
-set the entries that belong to small objects to `0`.
-
-```python
-min_area = 200
-object_areas = np.array([objf["area"] for objf in object_features])
-object_labels = np.array([objf["label"] for objf in object_features])
-small_objects = object_labels[object_areas < min_area]
-labeled_image[np.isin(labeled_image, small_objects)] = 0
-```
-
-:::::::::::::::::::::::::
-
-::::::::::::::::::::::::::::::::::::::::::::::::::
-
-An even more elegant way to remove small objects from the image is
+An elegant way to remove small objects from the image is
 to leverage the `ski.morphology` module.
 It provides a function `ski.morphology.remove_small_objects` that
 does exactly what we are looking for.
-It can be applied to a binary image and
+It can be applied to either a binary or a label image and
 returns a mask in which all objects smaller than `min_area` are excluded,
-i.e, their pixel values are set to `False`.
-We can then apply `ski.measure.label` to the masked image:
+i.e, their pixel values are set to `False` or the background label value.
 
 ```python
-object_mask = ski.morphology.remove_small_objects(binary_mask, min_size=min_area)
-labeled_image, n = ski.measure.label(object_mask,
-                                         connectivity=connectivity, return_num=True)
+filtered_labels = ski.morphology.remove_small_objects(labeled_image, min_size=1000)
 ```
 
-Using the scikit-image features, we can implement
-the `enhanced_segment_multichannel` as follows:
+We display the resulting label image and print the number of objects:
 
 ```python
-def enhanced_segment_multichannel(filename, channel=0, sigma=1.0, t=0.5, connectivity=2, min_area=0):
-    # load the image
-    image = iio.imread(filename)
-    # convert the image to grayscale
-    channel_image = image[:,:,channel]
-    # denoise the image with a Gaussian filter
-    blurred_image = ski.filters.gaussian(channel_image, sigma=sigma)
-    # mask the image according to threshold
-    binary_mask = blurred_image > t
-    # remove objects smaller than specified area before labelling
-    object_mask = ski.morphology.remove_small_objects(binary_mask, min_size=min_area)
-    # perform connected component analysis
-    labeled_image, count = ski.measure.label(object_mask,
-                                                 connectivity=connectivity, return_num=True)
-    return labeled_image, count
-```
-
-We can now call the function with a chosen `min_area` and
-display the resulting labeled image:
-
-```python
-labeled_image, count = enhanced_segment_multichannel(filename="data/hela-cells-8bit.jpg", channel=2, sigma=1.0, t=0.1,
-                                                     connectivity=2, min_area=200)
-colored_label_image = ski.color.label2rgb(labeled_image, bg_label=0)
-
 fig, ax = plt.subplots()
-ax.imshow(colored_label_image)
-ax.set_axis_off();
+ax.imshow(filtered_labels)
 
 print("Found", count, "objects in the image.")
 ```
@@ -875,6 +555,71 @@ Found 4 objects in the image.
 
 Note that the small objects are "gone" and we obtain the correct
 number of 4 objects in the image.
+
+:::::::::::::::::::::::::::::::::::::::  challenge
+
+## Segment tissue sections from an H&E image
+
+Repeat the same steps as above for the H&E image to segment the different tissue sections. Identify the best parameter choices for 
+`sigma`, `t`, `connectivity`, and `min_size`. 
+
+Two things to remember:
+- the H&E image has RGB color channels that don't mean anything on their own, so it is best to convert it to
+grayscale before blurring and thresholding
+- the H&E image has a light background, so the pixel values to turn "on" with a threshold will be *less than* (`<`)
+the threshold value `t`.
+
+:::::::::::::::  solution
+
+## Solution
+
+
+```python
+# load the image
+he_image = iio.imread(uri="data/he_scale3.tif")
+# convert the image to grayscale
+he_gray = ski.color.rgb2gray(he_image)
+
+sigma=1.0 # spleen sections are merged at sigma > 1
+t=0.8
+connectivity=2
+# denoise the image with a Gaussian filter
+blurred_image = ski.filters.gaussian(he_gray, sigma=sigma)
+# white background so select values greater than threshod
+binary_mask = blurred_image < t
+# perform connected component analysis
+labeled_image, count = ski.measure.label(binary_mask,
+                                        connectivity=connectivity, return_num=True)
+
+print("Found", count, "objects in the image.")                  
+```
+
+```output
+Found 12 objects in the image.
+```
+
+```python
+object_features = ski.measure.regionprops(labeled_image)
+object_areas = [int(objf["area"]) for objf in object_features]
+print(object_areas)
+```
+
+```output
+[7, 55189, 16201, 14900, 14929, 23419, 4, 24, 2, 27, 2, 2]
+```
+
+```python
+filtered_labels = ski.morphology.remove_small_objects(labeled_image, min_size=1000)
+fig, ax = plt.subplots()
+ax.imshow(filtered_labels)
+```
+
+![](fig/he-labels.png){alt='H&E tissue sections segmented'}
+
+
+:::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::: keypoints
 
