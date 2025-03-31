@@ -322,7 +322,7 @@
 <div class="accordion accordion-flush" id="accordionFlush9">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading9">
-        <a href="08-connected-components.html">8. Connected Component Analysis</a>
+        <a href="08-segmentation.html">8. Segmentation</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -454,7 +454,7 @@
 <figure><img src="../fig/quality-jpg.jpg" alt="Enlarged, compressed" class="figure mx-auto d-block"></figure><hr>
 <h3 id="02-image-basics-figure-18">Figure 18</h3>
 <p aria-hidden="true">Image 1 of 1: ‘Uncompressed histogram’</p>
-<figure><img src="../fig/quality-histogram.jpg" alt="Uncompressed histogram" class="figure mx-auto d-block"></figure><hr></section><section id="03-skimage-images"><h2 class="section-heading"><a href="03-skimage-images.html">Working with scikit-imageload and display original image<a class="anchor" aria-label="anchor" href="#load-and-display-original-image"></a>extract and display sub-image<a class="anchor" aria-label="anchor" href="#extract-and-display-sub-image"></a>save sub-image<a class="anchor" aria-label="anchor" href="#save-sub-image"></a></a></h2>
+<figure><img src="../fig/quality-histogram.jpg" alt="Uncompressed histogram" class="figure mx-auto d-block"></figure><hr></section><section id="03-skimage-images"><h2 class="section-heading"><a href="03-skimage-images.html">Working with scikit-image</a></h2>
 <hr class="half-width">
 <h3 id="03-skimage-images-figure-1">Figure 1</h3>
 <p aria-hidden="true">Image 1 of 1: ‘H&amp;E image’</p>
@@ -506,7 +506,13 @@
 <figure><img src="../fig/kidney-histogram.png" alt="Grayscale H&amp;E histogram of just kidney section" class="figure mx-auto d-block"></figure><hr>
 <h3 id="05-creating-histograms-figure-5">Figure 5</h3>
 <p aria-hidden="true">Image 1 of 1: ‘Colour histogram’</p>
-<figure><img src="../fig/cells-colour-histogram.png" alt="Colour histogram" class="figure mx-auto d-block"></figure><hr></section><section id="06-blurring"><h2 class="section-heading"><a href="06-blurring.html">Blurring Images</a></h2>
+<figure><img src="../fig/cells-colour-histogram.png" alt="Colour histogram" class="figure mx-auto d-block"></figure><hr>
+<h3 id="05-creating-histograms-figure-6">Figure 6</h3>
+<p aria-hidden="true">Image 1 of 1: ‘Masked cell’</p>
+<figure><img src="../fig/cells-masked.jpg" alt="Masked cell" class="figure mx-auto d-block"></figure><hr>
+<h3 id="05-creating-histograms-figure-7">Figure 7</h3>
+<p aria-hidden="true">Image 1 of 1: ‘Single cell histogram’</p>
+<figure><img src="../fig/cells-masked-histogram.png" alt="Single cell histogram" class="figure mx-auto d-block"></figure><hr></section><section id="06-blurring"><h2 class="section-heading"><a href="06-blurring.html">Blurring Images</a></h2>
 <hr class="half-width">
 <h3 id="06-blurring-figure-1">Figure 1</h3>
 <p aria-hidden="true">Image 1 of 1: ‘Cat image’</p>
@@ -584,35 +590,35 @@ how this plot was created with matplotlib</a>. Image credit: <a href="https://gi
 <figure><img src="../fig/rectangle-gaussian-blurred.png" alt="Rectangular kernel blurred image" class="figure mx-auto d-block"></figure><hr></section><section id="07-thresholding"><h2 class="section-heading"><a href="07-thresholding.html">Thresholding</a></h2>
 <hr class="half-width">
 <h3 id="07-thresholding-figure-1">Figure 1</h3>
-<p aria-hidden="true">Image 1 of 1: ‘HED IHC scikit example image’</p>
-<figure><img src="../data/immunohistochemistry.jpg" alt="HED IHC scikit example image" class="figure mx-auto d-block"></figure><hr>
+<p aria-hidden="true">Image 1 of 1: ‘Hela cells image’</p>
+<figure><img src="../fig/cells.png" alt="Hela cells image" class="figure mx-auto d-block"></figure><hr>
 <h3 id="07-thresholding-figure-2">Figure 2</h3>
-<p aria-hidden="true">Image 1 of 1: ‘Grayscale and blurred ihc image’</p>
-<figure><img src="../fig/ihc-grayscale-blurred.jpg" alt="Grayscale and blurred ihc image" class="figure mx-auto d-block"></figure><hr>
+<p aria-hidden="true">Image 1 of 1: ‘Grayscale and blurred nuclei channel’</p>
+<figure><img src="../fig/cells-nuclei-gray-blurred.png" alt="Grayscale and blurred nuclei channel" class="figure mx-auto d-block"></figure><hr>
 <h3 id="07-thresholding-figure-3">Figure 3</h3>
-<p aria-hidden="true">Image 1 of 1: ‘Grayscale histogram of the blurred ihc image’</p>
-<figure><img src="../fig/ihc-blurred-grayscale-histogram.png" alt="Grayscale histogram of the blurred ihc image" class="figure mx-auto d-block"></figure><hr>
-<h3 id="07-thresholding-figure-4">Figure 4</h3>
-<p aria-hidden="true">Image 1 of 1: ‘Binary mask of the stained tissue created by thresholding’</p>
-<figure><img src="../fig/ihc-mask.jpg" alt="Binary mask of the stained tissue created by thresholding" class="figure mx-auto d-block"></figure><hr>
-<h3 id="07-thresholding-figure-5">Figure 5</h3>
-<p aria-hidden="true">Image 1 of 1: ‘Selected foreground after applying binary mask’</p>
-<figure><img src="../fig/ihc-foreground.jpg" alt="Selected foreground after applying binary mask" class="figure mx-auto d-block"></figure><hr>
-<h3 id="07-thresholding-figure-6">Figure 6</h3>
-<p aria-hidden="true">Image 1 of 1: ‘HeLa cells color image’</p>
-<figure><img src="../fig/hela-cells-8bit.jpg" alt="HeLa cells color image" class="figure mx-auto d-block"></figure><hr>
-<h3 id="07-thresholding-figure-7">Figure 7</h3>
-<p aria-hidden="true">Image 1 of 1: ‘HeLa cells gray nuclei’</p>
-<figure><img src="../fig/cells-nuclei-gray.jpg" alt="HeLa cells gray nuclei" class="figure mx-auto d-block"></figure><hr>
-<h3 id="07-thresholding-figure-8">Figure 8</h3>
 <p aria-hidden="true">Image 1 of 1: ‘Histogram of the blue channel from the HeLa cells image’</p>
 <figure><img src="../fig/cells-blue-histogram.png" alt="Histogram of the blue channel from the HeLa cells image" class="figure mx-auto d-block"></figure><hr>
-<h3 id="07-thresholding-figure-9">Figure 9</h3>
+<h3 id="07-thresholding-figure-4">Figure 4</h3>
 <p aria-hidden="true">Image 1 of 1: ‘Binary mask created by thresholding the HeLa cells image’</p>
 <figure><img src="../fig/cells-mask.jpg" alt="Binary mask created by thresholding the HeLa cells image" class="figure mx-auto d-block"></figure><hr>
-<h3 id="07-thresholding-figure-10">Figure 10</h3>
+<h3 id="07-thresholding-figure-5">Figure 5</h3>
 <p aria-hidden="true">Image 1 of 1: ‘Selected nuclei after applying binary mask to the HeLa cells image’</p>
 <figure><img src="../fig/nuclei-selected.jpg" alt="Selected nuclei after applying binary mask to the HeLa cells image" class="figure mx-auto d-block"></figure><hr>
+<h3 id="07-thresholding-figure-6">Figure 6</h3>
+<p aria-hidden="true">Image 1 of 1: ‘H&amp;E image’</p>
+<figure><img src="../fig/he-image.png" alt="H&amp;E image" class="figure mx-auto d-block"></figure><hr>
+<h3 id="07-thresholding-figure-7">Figure 7</h3>
+<p aria-hidden="true">Image 1 of 1: ‘grayscale H&amp;E image’</p>
+<figure><img src="../fig/he-grey.png" alt="grayscale H&amp;E image" class="figure mx-auto d-block"></figure><hr>
+<h3 id="07-thresholding-figure-8">Figure 8</h3>
+<p aria-hidden="true">Image 1 of 1: ‘Histogram of the grayscale H&amp;E image blurred’</p>
+<figure><img src="../fig/he-blurred-histogram.png" alt="Histogram of the grayscale H&amp;E image blurred" class="figure mx-auto d-block"></figure><hr>
+<h3 id="07-thresholding-figure-9">Figure 9</h3>
+<p aria-hidden="true">Image 1 of 1: ‘Binary mask created by thresholding the H&amp;E image’</p>
+<figure><img src="../fig/he-mask.png" alt="Binary mask created by thresholding the H&amp;E image" class="figure mx-auto d-block"></figure><hr>
+<h3 id="07-thresholding-figure-10">Figure 10</h3>
+<p aria-hidden="true">Image 1 of 1: ‘H&amp;E image with background set to 0’</p>
+<figure><img src="../fig/he-foreground.png" alt="H&amp;E image with background set to 0" class="figure mx-auto d-block"></figure><hr>
 <h3 id="07-thresholding-figure-11">Figure 11</h3>
 <p aria-hidden="true">Image 1 of 1: ‘Histogram of the blue channel on the HeLa cells image’</p>
 <figure><img src="../fig/cells-blue-histogram.png" alt="Histogram of the blue channel on the HeLa cells image" class="figure mx-auto d-block"></figure><hr>
@@ -621,26 +627,29 @@ how this plot was created with matplotlib</a>. Image credit: <a href="https://gi
 <figure><img src="../fig/cells-otsu-mask.jpg" alt="Binary mask of nuclei using otsu thresholding" class="figure mx-auto d-block"></figure><hr>
 <h3 id="07-thresholding-figure-13">Figure 13</h3>
 <p aria-hidden="true">Image 1 of 1: ‘Overview test of all automated thresholders in scikit image’</p>
-<figure><img src="../fig/cells-thresholder-test.png" alt="Overview test of all automated thresholders in scikit image" class="figure mx-auto d-block"></figure><hr></section><section id="08-connected-components"><h2 class="section-heading"><a href="08-connected-components.html">Connected Component Analysis</a></h2>
+<figure><img src="../fig/cells-thresholder-test.png" alt="Overview test of all automated thresholders in scikit image" class="figure mx-auto d-block"></figure><hr></section><section id="08-segmentation"><h2 class="section-heading"><a href="08-segmentation.html">Segmentation</a></h2>
 <hr class="half-width">
-<h3 id="08-connected-components-figure-1">Figure 1</h3>
+<h3 id="08-segmentation-figure-1">Figure 1</h3>
 <p aria-hidden="true">Image 1 of 1: ‘Nuclei channel of HeLa cells’</p>
 <figure><img src="../fig/cells-nuclei-gray.jpg" alt="Nuclei channel of HeLa cells" class="figure mx-auto d-block"></figure><hr>
-<h3 id="08-connected-components-figure-2">Figure 2</h3>
+<h3 id="08-segmentation-figure-2">Figure 2</h3>
 <p aria-hidden="true">Image 1 of 1: ‘Mask created by thresholding’</p>
 <figure><img src="../fig/cells-mask.jpg" alt="Mask created by thresholding" class="figure mx-auto d-block"></figure><hr>
-<h3 id="08-connected-components-figure-3">Figure 3</h3>
+<h3 id="08-segmentation-figure-3">Figure 3</h3>
 <p aria-hidden="true">Image 1 of 1: ‘Labeled objects’</p>
 <figure><img src="../fig/cells-labeled.jpg" alt="Labeled objects" class="figure mx-auto d-block"></figure><hr>
-<h3 id="08-connected-components-figure-4">Figure 4</h3>
+<h3 id="08-segmentation-figure-4">Figure 4</h3>
 <p aria-hidden="true">Image 1 of 1: ‘Highlighting small labeled objects in cell image’</p>
 <figure><img src="../fig/cells-labeled-small-box.jpg" alt="Highlighting small labeled objects in cell image" class="figure mx-auto d-block"></figure><hr>
-<h3 id="08-connected-components-figure-5">Figure 5</h3>
+<h3 id="08-segmentation-figure-5">Figure 5</h3>
 <p aria-hidden="true">Image 1 of 1: ‘Histogram of object areas’</p>
 <figure><img src="../fig/cells-area-histogram.png" alt="Histogram of object areas" class="figure mx-auto d-block"></figure><hr>
-<h3 id="08-connected-components-figure-6">Figure 6</h3>
+<h3 id="08-segmentation-figure-6">Figure 6</h3>
 <p aria-hidden="true">Image 1 of 1: ‘Objects filtered by area’</p>
-<figure><img src="../fig/cells-labeled-kept.jpg" alt="Objects filtered by area" class="figure mx-auto d-block"></figure><hr></section>
+<figure><img src="../fig/cells-labeled-kept.jpg" alt="Objects filtered by area" class="figure mx-auto d-block"></figure><hr>
+<h3 id="08-segmentation-figure-7">Figure 7</h3>
+<p aria-hidden="true">Image 1 of 1: ‘H&amp;E tissue sections segmented’</p>
+<figure><img src="../fig/he-labels.png" alt="H&amp;E tissue sections segmented" class="figure mx-auto d-block"></figure><hr></section>
 </div>
     </main>
 </div>
@@ -688,8 +697,8 @@ how this plot was created with matplotlib</a>. Image credit: <a href="https://gi
   "url": "https://govekk.github.io/image-processing/instructor/images.html",
   "identifier": "https://govekk.github.io/image-processing/instructor/images.html",
   "dateCreated": "2024-03-14",
-  "dateModified": "2025-03-25",
-  "datePublished": "2025-03-25"
+  "dateModified": "2025-03-31",
+  "datePublished": "2025-03-31"
 }
 
   </script><script>

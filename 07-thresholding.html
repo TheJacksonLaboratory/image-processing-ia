@@ -273,7 +273,7 @@
 <div class="accordion accordion-flush" id="accordionFlush9">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading9">
-        <a href="08-connected-components.html">8. Connected Component Analysis</a>
+        <a href="08-segmentation.html">8. Segmentation</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -322,7 +322,7 @@
   <div class="col-xl-8 col-lg-12 primary-content">
     <nav class="lesson-content mx-md-4" aria-label="Previous and Next Chapter"><!-- content for small screens --><div class="d-block d-sm-block d-md-none">
         <a class="chapter-link" href="06-blurring.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
-        <a class="chapter-link float-end" href="08-connected-components.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
+        <a class="chapter-link float-end" href="08-segmentation.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
       <!-- content for large screens -->
       <div class="d-none d-sm-none d-md-block">
@@ -330,14 +330,14 @@
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>
           Previous: Blurring Images
         </a>
-        <a class="chapter-link float-end" href="08-connected-components.html" rel="next">
-          Next: Connected Component...
+        <a class="chapter-link float-end" href="08-segmentation.html" rel="next">
+          Next: Segmentation...
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i>
         </a>
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Thresholding</h1>
-        <p>Last updated on 2025-03-18 |
+        <p>Last updated on 2025-03-31 |
 
         <a href="https://github.com/govekk/image-processing/edit/main/episodes/07-thresholding.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -398,52 +398,53 @@ interested in.</p>
 <hr class="half-width"><div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="im">import</span> glob</span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="im">import</span> imageio.v3 <span class="im">as</span> iio</span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="im">import</span> ipympl</span>
-<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="im">import</span> skimage <span class="im">as</span> ski</span>
-<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="op">%</span>matplotlib widget</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="im">import</span> imageio.v3 <span class="im">as</span> iio</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="im">import</span> ipympl</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="im">import</span> skimage <span class="im">as</span> ski</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="op">%</span>matplotlib widget</span></code></pre>
 </div>
 </section><section><h2 class="section-heading" id="simple-thresholding">Simple thresholding<a class="anchor" aria-label="anchor" href="#simple-thresholding"></a></h2>
-<hr class="half-width"><p>Consider the hematoxylin and DAB stained immunohistochemistry image
-that we saved from the scikit example data in <a href="03-skimage-images.html">the <em>Working with scikit-image</em>
-episode</a>.</p>
+<hr class="half-width"><p>We will start with the image of four hela cells:</p>
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># load the image</span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>hed_image <span class="op">=</span> iio.imread(uri<span class="op">=</span><span class="st">"data/immunohistochemistry.tif"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>cells <span class="op">=</span> iio.imread(uri<span class="op">=</span><span class="st">"data/hela-cells-8bit.tif"</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>ax.imshow(hed_image)</span></code></pre>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>ax.imshow(cells)</span></code></pre>
 </div>
-<figure><img src="data/immunohistochemistry.jpg" alt="HED IHC scikit example image" class="figure mx-auto d-block"></figure><p>Now suppose we want to select only the stained portion of the image.
-In other words, we want to leave the pixels belonging to the stained
-tissue “on,” while turning the rest of the pixels “off,” by setting
-their colour channel values to zeros. The scikit-image library has
-several different methods of thresholding. We will start with the
-simplest version, which involves an important step of human input.
-Specifically, in this simple, <em>fixed-level thresholding</em>, we have
-to provide a threshold value <code>t</code>.</p>
+<figure><img src="fig/cells.png" alt="Hela cells image" class="figure mx-auto d-block"></figure><p>Now suppose we want to select only the nuclei of the image. In other
+words, we want to leave the pixels belonging to the nuclei tissue “on,”
+while turning the rest of the pixels “off,” by setting their colour
+channel values to zeros. The scikit-image library has several different
+methods of thresholding. We will start with the simplest version, which
+involves an important step of human input. Specifically, in this simple,
+<em>fixed-level thresholding</em>, we have to provide a threshold value
+<code>t</code>.</p>
 <p>The process works like this. First, we will load the original image,
-convert it to grayscale, and de-noise it as in <a href="06-blurring.html">the <em>Blurring Images</em> episode</a>.</p>
+convert it to grayscale or select one of the channels, and de-noise it
+as in <a href="06-blurring.html">the <em>Blurring Images</em>
+episode</a>.</p>
+<p>Since the nuclei are marked in this multichannel image by high values
+of the blue channel, we can select just the blue channel instead of
+converting the whole image to grayscale.</p>
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># convert the image to grayscale</span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>hed_gray <span class="op">=</span> ski.color.rgb2gray(hed_image)</span>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># get nuclei channel</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>blue_channel <span class="op">=</span> cells[:,:,<span class="dv">2</span>]</span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a></span>
 <span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co"># blur the image to denoise</span></span>
-<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>hed_blurred <span class="op">=</span> ski.filters.gaussian(hed_gray, sigma<span class="op">=</span><span class="fl">1.0</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>blurred_nuclei <span class="op">=</span> ski.filters.gaussian(blue_channel, sigma<span class="op">=</span><span class="fl">1.0</span>)</span>
 <span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a></span>
 <span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>ax.imshow(hed_blurred, cmap<span class="op">=</span><span class="st">"gray"</span>)</span></code></pre>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>ax.imshow(blurred_nuclei, cmap<span class="op">=</span><span class="st">"gray"</span>)</span></code></pre>
 </div>
-<figure><img src="fig/ihc-grayscale-blurred.jpg" alt="Grayscale and blurred ihc image" class="figure mx-auto d-block"></figure><div id="denoising-an-image-before-thresholding" class="callout">
+<figure><img src="fig/cells-nuclei-gray-blurred.png" alt="Grayscale and blurred nuclei channel" class="figure mx-auto d-block"></figure><div id="denoising-an-image-before-thresholding" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
@@ -465,18 +466,17 @@ turned “on”, while pixels with grayscale values on the other side will
 be turned “off”. How might we do that? Remember that grayscale images
 contain pixel values in the range from 0 to 1, so we are looking for a
 threshold <code>t</code> in the closed range [0.0, 1.0]. We see in the
-image that the stained tissue is “darker” than the white background but
-there is also some light gray noise on the background. One way to
-determine a “good” value for <code>t</code> is to look at the grayscale
-histogram of the image and try to identify what grayscale ranges
-correspond to the staining in the image or the background.</p>
+image that the nuclei are “lighter” than the black background. One way
+to determine a “good” value for <code>t</code> is to look at the
+grayscale histogram of the image and try to identify what grayscale
+ranges correspond to the staining in the image or the background.</p>
 <p>The histogram can be produced as in <a href="05-creating-histograms.html">the <em>Creating Histograms</em>
 episode</a>.</p>
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># create a histogram of the blurred grayscale image</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>histogram, bin_edges <span class="op">=</span> np.histogram(hed_blurred, bins<span class="op">=</span><span class="dv">256</span>, <span class="bu">range</span><span class="op">=</span>(<span class="fl">0.0</span>, <span class="fl">1.0</span>))</span>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># create a histogram of the blurred nuclei image</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>histogram, bin_edges <span class="op">=</span> np.histogram(blurred_nuclei, bins<span class="op">=</span><span class="dv">256</span>, <span class="bu">range</span><span class="op">=</span>(<span class="fl">0.0</span>, <span class="fl">1.0</span>))</span>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a></span>
 <span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>ax.plot(bin_edges[<span class="dv">0</span>:<span class="op">-</span><span class="dv">1</span>], histogram)</span>
@@ -485,36 +485,36 @@ episode</a>.</p>
 <span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>ax.set_ylabel(<span class="st">"pixels"</span>)</span>
 <span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>ax.set_xlim(<span class="dv">0</span>, <span class="fl">1.0</span>)</span></code></pre>
 </div>
-<figure><img src="fig/ihc-blurred-grayscale-histogram.png" alt="Grayscale histogram of the blurred ihc image" class="figure mx-auto d-block"></figure><p>Since the image has a white background, most of the pixels in the
-image are almost-white. This corresponds nicely to what we see in the
-histogram: there is a peak above 0.8. If we want to select the stained
-tissue and not the background, we want to turn off the white background
-pixels, while leaving the pixels for the staining turned on. So, we
-should choose a value of <code>t</code> somewhere before the large peak
-and turn pixels above that value “off”. Let us choose
-<code>t=0.7</code>.</p>
+<figure><img src="fig/cells-blue-histogram.png" alt="Histogram of the blue channel from the HeLa cells image" class="figure mx-auto d-block"></figure><p>Since the image has a black background, most of the pixels in the
+image have low values. This corresponds nicely to what we see in the
+histogram: there is a peak around 0. If we want to select the
+fluorescing nuclei and not the background, we want to turn off the black
+background pixels, while leaving the pixels for the nuclei turned on.
+So, we should choose a value of <code>t</code> somewhere higher the
+large peak and turn pixels below that value “off”. Let us choose
+<code>t=0.1</code>.</p>
 <p>To apply the threshold <code>t</code>, we can use the NumPy
 comparison operators to create a mask. Here, we want to turn “on” all
-pixels which have values smaller than the threshold, so we use the less
-operator <code>&lt;</code> to compare the <code>blurred_image</code> to
-the threshold <code>t</code>. The operator returns a mask, that we
-capture in the variable <code>binary_mask</code>. It has only one
-channel, and each of its values is either 0 or 1. The binary mask
-created by the thresholding operation can be shown with
-<code>ax.imshow</code>, where the <code>False</code> entries are shown
-as black pixels (0-valued) and the <code>True</code> entries are shown
-as white pixels (1-valued).</p>
+pixels which have values bigger than the threshold, so we use the
+greater operator <code>&gt;</code> to compare the
+<code>blurred_image</code> to the threshold <code>t</code>. The operator
+returns a mask, that we capture in the variable
+<code>binary_mask</code>. It has only one channel, and each of its
+values is either 0 or 1. The binary mask created by the thresholding
+operation can be shown with <code>ax.imshow</code>, where the
+<code>False</code> entries are shown as black pixels (0-valued) and the
+<code>True</code> entries are shown as white pixels (1-valued).</p>
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># create a mask based on the threshold</span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>t <span class="op">=</span> <span class="fl">0.7</span></span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>binary_mask <span class="op">=</span> hed_blurred <span class="op">&lt;</span> t</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>t <span class="op">=</span> <span class="fl">0.1</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>binary_mask <span class="op">=</span> blurred_nuclei <span class="op">&gt;</span> t</span>
 <span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a></span>
 <span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>ax.imshow(binary_mask, cmap<span class="op">=</span><span class="st">"gray"</span>)</span></code></pre>
 </div>
-<figure><img src="fig/ihc-mask.jpg" alt="Binary mask of the stained tissue created by thresholding" class="figure mx-auto d-block"></figure><p>You can see that the areas where the staining was in the original
+<figure><img src="fig/cells-mask.jpg" alt="Binary mask created by thresholding the HeLa cells image" class="figure mx-auto d-block"></figure><p>You can see that the areas where the staining was in the original
 area are now white, while the rest of the mask image is black.</p>
 <div id="what-makes-a-good-threshold" class="callout">
 <div class="callout-square">
@@ -553,13 +553,13 @@ with is only the stained tissue from the original.</p>
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># use the binary_mask to select the "interesting" part of the image</span></span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>foreground <span class="op">=</span> hed_image.copy()</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>foreground <span class="op">=</span> cells.copy()</span>
 <span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>foreground[<span class="op">~</span>binary_mask] <span class="op">=</span> <span class="dv">0</span></span>
 <span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a></span>
 <span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>ax.imshow(foreground)</span></code></pre>
 </div>
-<figure><img src="fig/ihc-foreground.jpg" alt="Selected foreground after applying binary mask" class="figure mx-auto d-block"></figure><div id="code-cheatsheet-for-more-practice-with-simple-thresholding" class="callout">
+<figure><img src="fig/nuclei-selected.jpg" alt="Selected nuclei after applying binary mask to the HeLa cells image" class="figure mx-auto d-block"></figure><div id="code-cheatsheet-for-more-practice-with-simple-thresholding" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
@@ -578,8 +578,8 @@ with is only the stained tissue from the original.</p>
 <span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a></span>
 <span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co"># Read in image (from the uri path to the image file)</span></span>
 <span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>image <span class="op">=</span> iio.imread(uri)</span>
-<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co"># Select single channel (where c is the index of the channel)</span></span>
-<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>channel <span class="op">=</span> image[:,:,c]</span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co"># create grayscale image or select single channel (where c is the index of the channel)</span></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>channel <span class="op">=</span> ski.color.rgb2gray(image) <span class="co"># or channel=image[:,:,c]</span></span>
 <span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="co"># Blur image</span></span>
 <span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>blurred_image <span class="op">=</span> skimage.filters.gaussian(channel, sigma<span class="op">=</span><span class="fl">1.0</span>)</span>
 <span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a></span>
@@ -620,14 +620,12 @@ with is only the stained tissue from the original.</p>
 <h3 class="callout-title">More practice with simple thresholding (20 min)</h3>
 <div class="callout-content">
 <p>Now, it is your turn to practice. Suppose we want to use simple
-thresholding to select only the nuclei from the image
-<code>data/hela-cells-8bit.tif</code>:</p>
-<figure><img src="fig/hela-cells-8bit.jpg" alt="HeLa cells color image" class="figure mx-auto d-block"></figure><p>Since the nuclei are marked in this multichannel image by high values
-of the blue channel, there are a few differences. Instead of using the
-grayscale image, select the blue channel using
-<code>image[:,:,2]</code>. This will act as your grayscale image, since
-it also has only one value per pixel.</p>
-<figure><img src="fig/cells-nuclei-gray.jpg" alt="HeLa cells gray nuclei" class="figure mx-auto d-block"></figure></div>
+thresholding to select only the tissue sections from the image
+<code>data/he-scale3.tif</code>:</p>
+<figure><img src="fig/he-image.png" alt="H&amp;E image" class="figure mx-auto d-block"></figure><p>As in the <a href="./05-creating-histograms.html">Creating
+Histograms</a> episode, we will use a grayscale version of the image,
+since the individual RGB channels are not informative on their own.</p>
+<figure><img src="fig/he-grey.png" alt="grayscale H&amp;E image" class="figure mx-auto d-block"></figure></div>
 </div>
 </div>
 <div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
@@ -635,30 +633,37 @@ it also has only one value per pixel.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
-<p>The histogram for the blue channel of
-<code>data/hela-cells-8bit.tif</code> image can be shown with</p>
+<p>The histogram for the grayscale of the H&amp;E image can be shown
+with</p>
 <div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>cells <span class="op">=</span> iio.imread(uri<span class="op">=</span><span class="st">"data/hela-cells-8bit.tif"</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>blue_channel <span class="op">=</span> cells[:,:,<span class="dv">2</span>]</span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>blurred_image <span class="op">=</span> skimage.filters.gaussian(blue_channel, sigma<span class="op">=</span><span class="fl">1.0</span>)</span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>histogram, bin_edges <span class="op">=</span> np.histogram(blurred_image, bins<span class="op">=</span><span class="dv">256</span>, <span class="bu">range</span><span class="op">=</span>(<span class="fl">0.0</span>,<span class="fl">1.0</span>))</span>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co"># load the image</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>he_image <span class="op">=</span> iio.imread(uri<span class="op">=</span><span class="st">"data/he_scale3.tif"</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co"># convert the image to grayscale</span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>he_gray <span class="op">=</span> ski.color.rgb2gray(he_image)</span>
 <span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a></span>
-<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>fig,ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>ax.plot(bin_edges[<span class="dv">0</span>:<span class="op">-</span><span class="dv">1</span>], histogram)</span>
-<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>ax.set_title(<span class="st">"Blue (nuclei) channel histogram"</span>)</span>
-<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>ax.set_xlabel(<span class="st">"pixel value"</span>)</span>
-<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>ax.set_ylabel(<span class="st">"pixels"</span>)</span>
-<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a>ax.set_xlim(<span class="dv">0</span>, <span class="fl">1.0</span>)</span></code></pre>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co"># blur the image to denoise</span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>he_blurred <span class="op">=</span> ski.filters.gaussian(he_gray, sigma<span class="op">=</span><span class="fl">1.0</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co"># create a histogram of the blurred grayscale image</span></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>histogram, bin_edges <span class="op">=</span> np.histogram(he_blurred, bins<span class="op">=</span><span class="dv">256</span>, <span class="bu">range</span><span class="op">=</span>(<span class="fl">0.0</span>, <span class="fl">1.0</span>))</span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a>ax.plot(bin_edges[<span class="dv">0</span>:<span class="op">-</span><span class="dv">1</span>], histogram)</span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a>ax.set_title(<span class="st">"Grayscale Histogram"</span>)</span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a>ax.set_xlabel(<span class="st">"grayscale value"</span>)</span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a>ax.set_ylabel(<span class="st">"pixels"</span>)</span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a>ax.set_xlim(<span class="dv">0</span>, <span class="fl">1.0</span>)</span></code></pre>
 </div>
-<figure><img src="fig/cells-blue-histogram.png" alt="Histogram of the blue channel from the HeLa cells image" class="figure mx-auto d-block"></figure><p>We can see a large spike around 0, and a very low bump around 0.3.
-The spike near 0 represents the darker background, and the bump around
-0.3 represents the nuclei signal. So it seems like a value between the
-two would be a good choice. Let’s choose <code>t=0.1</code>.</p>
+<figure><img src="fig/he-blurred-histogram.png" alt="Histogram of the grayscale H&amp;E image blurred" class="figure mx-auto d-block"></figure><p>We can see a large spike around 0.9, and a very low bump around
+0.2-0.4. The spike near 0.9 represents the lighter background, and the
+bump around 0.2-0.4 represents the darker tissue sections. So it seems
+like a value between the two would be a good choice. Let’s choose
+<code>t=0.8</code>.</p>
 </div>
 </div>
 </div>
@@ -672,15 +677,15 @@ two would be a good choice. Let’s choose <code>t=0.1</code>.</p>
 min)<em> (continued)</em>
 </h3>
 <div class="callout-content">
-<p>Next, create a mask to turn the pixels above the threshold
-<code>t</code> on and pixels below the threshold <code>t</code> off.
-Note that unlike the image with a white background we used above, here
-the peak for the background colour is darker than the foreground objects
-or nuclei. Therefore, change the comparison operator less
-<code>&lt;</code> to greater <code>&gt;</code> to create the appropriate
-mask. Then apply the mask to the image and view the thresholded image.
-If everything works as it should, your output should show only the
-coloured nuclei on a black background.</p>
+<p>Next, create a mask to turn the pixels below the threshold
+<code>t</code> on and pixels above the threshold <code>t</code> off.
+Note that unlike the image with a black background we used above, here
+the peak for the background colour is lighter than the foreground
+objects or nuclei. Therefore, change the comparison operator greater
+<code>&gt;</code> to less than <code>&lt;</code> to create the
+appropriate mask. Then apply the mask to the image and view the
+thresholded image. If everything works as it should, your output should
+show only the coloured tissue sections on a black background.</p>
 </div>
 </div>
 </div>
@@ -689,30 +694,32 @@ coloured nuclei on a black background.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>Here are the commands to create and view the binary mask</p>
 <div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>t <span class="op">=</span> <span class="fl">0.1</span></span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>binary_mask <span class="op">=</span> blurred_image <span class="op">&gt;</span> t</span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>ax.imshow(binary_mask, cmap<span class="op">=</span><span class="st">"gray"</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># create a mask based on the threshold</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>t <span class="op">=</span> <span class="fl">0.8</span></span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>binary_mask <span class="op">=</span> he_blurred <span class="op">&lt;</span> t</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>ax.imshow(binary_mask, cmap<span class="op">=</span><span class="st">"gray"</span>)</span></code></pre>
 </div>
-<figure><img src="fig/cells-mask.jpg" alt="Binary mask created by thresholding the HeLa cells image" class="figure mx-auto d-block"></figure><p>And here are the commands to apply the mask and view the thresholded
+<figure><img src="fig/he-mask.png" alt="Binary mask created by thresholding the H&amp;E image" class="figure mx-auto d-block"></figure><p>And here are the commands to apply the mask and view the thresholded
 image</p>
 <div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>nuclei_only <span class="op">=</span> cells.copy()</span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>nuclei_only[<span class="op">~</span>binary_mask] <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>ax.imshow(nuclei_only)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="co"># use the binary_mask to select the "interesting" part of the image</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>foreground <span class="op">=</span> he_image.copy()</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>foreground[<span class="op">~</span>binary_mask] <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>ax.imshow(foreground)</span></code></pre>
 </div>
-<figure><img src="fig/nuclei-selected.jpg" alt="Selected nuclei after applying binary mask to the HeLa cells image" class="figure mx-auto d-block"></figure></div>
+<figure><img src="fig/he-foreground.png" alt="H&amp;E image with background set to 0" class="figure mx-auto d-block"></figure></div>
 </div>
 </div>
 </div>
@@ -863,7 +870,7 @@ kept by two different automated threshold methods.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Solution with Triangle and Yen thresholding methods </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb20">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -909,7 +916,7 @@ detection or finding contours.</li>
 </section></div> <!-- / div.lesson-content -->
     </main><!-- / main#main-content.main-content --><nav class="bottom-pagination mx-md-4" aria-label="Previous and Next Chapter"><div class="d-block d-sm-block d-md-none">
         <a class="chapter-link" href="06-blurring.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
-        <a class="chapter-link float-end" href="08-connected-components.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
+        <a class="chapter-link float-end" href="08-segmentation.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
       <!-- content for large screens -->
       <div class="d-none d-sm-none d-md-block">
@@ -917,8 +924,8 @@ detection or finding contours.</li>
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>
           Previous: Blurring Images
         </a>
-        <a class="chapter-link float-end" href="08-connected-components.html" rel="next">
-          Next: Connected Component...
+        <a class="chapter-link float-end" href="08-segmentation.html" rel="next">
+          Next: Segmentation...
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i>
         </a>
       </div>
@@ -964,8 +971,8 @@ detection or finding contours.</li>
   "url": "https://govekk.github.io/image-processing/07-thresholding.html",
   "identifier": "https://govekk.github.io/image-processing/07-thresholding.html",
   "dateCreated": "2024-03-14",
-  "dateModified": "2025-03-18",
-  "datePublished": "2025-03-25"
+  "dateModified": "2025-03-31",
+  "datePublished": "2025-03-31"
 }
 
   </script><script>

@@ -274,7 +274,7 @@
 <div class="accordion accordion-flush" id="accordionFlush9">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading9">
-        <a href="08-connected-components.html">8. Connected Component Analysis</a>
+        <a href="08-segmentation.html">8. Segmentation</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -338,7 +338,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Creating Histograms</h1>
-        <p>Last updated on 2025-03-25 |
+        <p>Last updated on 2025-03-31 |
 
         <a href="https://github.com/govekk/image-processing/edit/main/episodes/05-creating-histograms.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -648,7 +648,79 @@ the plot with the</p>
 <p>function call. Note the use of our loop variables,
 <code>channel_id</code> and <code>color</code>.</p>
 <p>Finally we label our axes and display the histogram, shown here:</p>
-<figure><img src="../fig/cells-colour-histogram.png" alt="Colour histogram" class="figure mx-auto d-block"></figure><div id="keypoints1" class="callout keypoints">
+<figure><img src="../fig/cells-colour-histogram.png" alt="Colour histogram" class="figure mx-auto d-block"></figure><div id="colour-histogram-with-a-mask-25-min" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<div id="colour-histogram-with-a-mask-25-min" class="callout-inner">
+<h3 class="callout-title">Colour histogram with a mask (25 min)</h3>
+<div class="callout-content">
+<p>Looking at the histogram above, you will notice that there is a large
+number of very dark pixels in each channel. This is not so surprising,
+since the image has a mostly black background. What if we want to focus
+on a more foreground part of the image, like just one of the cells. This
+is where a mask enters the picture!</p>
+<p>Hover over the image with your mouse to find the centre of that cell
+and the radius (in pixels) of the cell. Then, using techniques from <a href="04-drawing.html">the <em>Drawing and Bitwise Operations</em>
+episode</a>, create a circular mask to select only the desired cell.
+Then, use that mask to apply the colour histogram operation to that
+cell.</p>
+<p>Your masked image should look something like this:</p>
+<figure><img src="../fig/cells-masked.jpg" alt="Masked cell" class="figure mx-auto d-block"></figure><p>And, the program should produce a colour histogram that looks like
+this:</p>
+<figure><img src="../fig/cells-masked-histogram.png" alt="Single cell histogram" class="figure mx-auto d-block"></figure></div>
+</div>
+</div>
+<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
+  <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
+</button>
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div class="accordion-body">
+<div class="codewrapper sourceCode" id="cb10">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="co"># create a circular mask to select the lowest cell in the image</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>mask <span class="op">=</span> np.zeros(shape<span class="op">=</span>cells.shape[<span class="dv">0</span>:<span class="dv">2</span>], dtype<span class="op">=</span><span class="st">"bool"</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>circle <span class="op">=</span> ski.draw.disk(center<span class="op">=</span>(<span class="dv">400</span>, <span class="dv">360</span>), radius<span class="op">=</span><span class="dv">80</span>, shape<span class="op">=</span>cells.shape[<span class="dv">0</span>:<span class="dv">2</span>])</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>mask[circle] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="co"># just for display:</span></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="co"># make a copy of the image, call it masked_image, and</span></span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="co"># zero values where mask is False</span></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>masked_img <span class="op">=</span> np.array(cells)</span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a>masked_img[<span class="op">~</span>mask] <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a><span class="co"># create a new figure and display masked_img, to verify the</span></span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a><span class="co"># validity of your mask</span></span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a>ax.imshow(masked_img)</span>
+<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a><span class="co"># list to select colors of each channel line</span></span>
+<span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a>colors <span class="op">=</span> (<span class="st">"red"</span>, <span class="st">"green"</span>, <span class="st">"blue"</span>)</span>
+<span id="cb10-19"><a href="#cb10-19" tabindex="-1"></a></span>
+<span id="cb10-20"><a href="#cb10-20" tabindex="-1"></a><span class="co"># create the histogram plot, with three lines, one for</span></span>
+<span id="cb10-21"><a href="#cb10-21" tabindex="-1"></a><span class="co"># each color</span></span>
+<span id="cb10-22"><a href="#cb10-22" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb10-23"><a href="#cb10-23" tabindex="-1"></a>ax.set_xlim([<span class="dv">0</span>, <span class="dv">256</span>])</span>
+<span id="cb10-24"><a href="#cb10-24" tabindex="-1"></a><span class="cf">for</span> (channel_id, color) <span class="kw">in</span> <span class="bu">enumerate</span>(colors):</span>
+<span id="cb10-25"><a href="#cb10-25" tabindex="-1"></a>    <span class="co"># use your circular mask to apply the histogram</span></span>
+<span id="cb10-26"><a href="#cb10-26" tabindex="-1"></a>    <span class="co"># operation to the lowest cell of the image</span></span>
+<span id="cb10-27"><a href="#cb10-27" tabindex="-1"></a>    histogram, bin_edges <span class="op">=</span> np.histogram(</span>
+<span id="cb10-28"><a href="#cb10-28" tabindex="-1"></a>        cells[:, :, channel_id][mask], bins<span class="op">=</span><span class="dv">256</span>, <span class="bu">range</span><span class="op">=</span>(<span class="dv">0</span>, <span class="dv">256</span>)</span>
+<span id="cb10-29"><a href="#cb10-29" tabindex="-1"></a>    )</span>
+<span id="cb10-30"><a href="#cb10-30" tabindex="-1"></a></span>
+<span id="cb10-31"><a href="#cb10-31" tabindex="-1"></a>    ax.plot(histogram, color<span class="op">=</span>color)</span>
+<span id="cb10-32"><a href="#cb10-32" tabindex="-1"></a></span>
+<span id="cb10-33"><a href="#cb10-33" tabindex="-1"></a>ax.set_xlabel(<span class="st">"color value"</span>)</span>
+<span id="cb10-34"><a href="#cb10-34" tabindex="-1"></a>ax.set_ylabel(<span class="st">"pixel count"</span>)</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
 </div>
@@ -727,8 +799,8 @@ separately.</li>
   "url": "https://govekk.github.io/image-processing/instructor/05-creating-histograms.html",
   "identifier": "https://govekk.github.io/image-processing/instructor/05-creating-histograms.html",
   "dateCreated": "2024-03-14",
-  "dateModified": "2025-03-25",
-  "datePublished": "2025-03-25"
+  "dateModified": "2025-03-31",
+  "datePublished": "2025-03-31"
 }
 
   </script><script>

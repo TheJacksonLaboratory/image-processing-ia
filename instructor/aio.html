@@ -322,7 +322,7 @@
 <div class="accordion accordion-flush" id="accordionFlush9">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading9">
-        <a href="08-connected-components.html">8. Connected Component Analysis</a>
+        <a href="08-segmentation.html">8. Segmentation</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -1619,7 +1619,7 @@ information may be stored in an image file, in the image metadata.</li>
 </div>
 </section></section><section id="aio-03-skimage-images"><p>Content from <a href="03-skimage-images.html">Working with scikit-image</a></p>
 <hr>
-<p>Last updated on 2025-03-25 |
+<p>Last updated on 2025-03-31 |
 
         <a href="https://github.com/govekk/image-processing/edit/main/episodes/03-skimage-images.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 120 minutes</p>
@@ -1992,22 +1992,22 @@ leftmost tissue section in the H&amp;E image.</p>
 leftmost cell in the image</p>
 <p>“““Python script to extract a sub-image containing only the leftmost
 cell in an existing image.”“”</p>
-<div class="section level1">
-<h1 id="load-and-display-original-image">load and display original image<a class="anchor" aria-label="anchor" href="#load-and-display-original-image"></a>
-</h1>
-<p>he_image = iio.imread(uri=“data/he_scale3.tif”) fig, ax =
-plt.subplots() ax.imshow(he_image)</p>
-</div>
-<div class="section level1">
-<h1 id="extract-and-display-sub-image">extract and display sub-image<a class="anchor" aria-label="anchor" href="#extract-and-display-sub-image"></a>
-</h1>
-<p>tissue = he_image[80:351, 50:311, :] fig, ax = plt.subplots()
-ax.imshow(tissue)</p>
-</div>
-<div class="section level1">
-<h1 id="save-sub-image">save sub-image<a class="anchor" aria-label="anchor" href="#save-sub-image"></a>
-</h1>
-<p>iio.imwrite(uri=“data/tissue.jpg”, image=tissue)</p>
+<div class="codewrapper sourceCode" id="cb9">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># load and display original image</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>he_image <span class="op">=</span> iio.imread(uri<span class="op">=</span><span class="st">"data/he_scale3.tif"</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>ax.imshow(he_image)</span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="co"># extract and display sub-image</span></span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>tissue <span class="op">=</span> he_image[<span class="dv">80</span>:<span class="dv">351</span>, <span class="dv">50</span>:<span class="dv">311</span>, :]</span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>ax.imshow(tissue)</span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a><span class="co"># save sub-image</span></span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a>iio.imwrite(uri<span class="op">=</span><span class="st">"data/tissue.jpg"</span>, image<span class="op">=</span>tissue)</span></code></pre>
 </div>
 </div>
 </div>
@@ -2040,7 +2040,7 @@ using <code>iio.imread()</code>.</li>
 </div>
 </section></section><section id="aio-04-drawing"><p>Content from <a href="04-drawing.html">Drawing and Bitwise Operations</a></p>
 <hr>
-<p>Last updated on 2025-03-25 |
+<p>Last updated on 2025-03-31 |
 
         <a href="https://github.com/govekk/image-processing/edit/main/episodes/04-drawing.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 90 minutes</p>
@@ -2259,7 +2259,7 @@ image, perhaps something like this:</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>Drawing a circle:</p>
 <div class="codewrapper sourceCode" id="cb6">
@@ -2408,7 +2408,7 @@ the portion of the image we want to remove are all
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>When indexing the image using the mask, we access only those pixels
 at positions where the mask is <code>True</code>. So, when indexing with
@@ -2472,7 +2472,7 @@ directly.</li>
 </div>
 </section></section><section id="aio-05-creating-histograms"><p>Content from <a href="05-creating-histograms.html">Creating Histograms</a></p>
 <hr>
-<p>Last updated on 2025-03-25 |
+<p>Last updated on 2025-03-31 |
 
         <a href="https://github.com/govekk/image-processing/edit/main/episodes/05-creating-histograms.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 80 minutes</p>
@@ -2789,7 +2789,80 @@ the plot with the</p>
 <p>function call. Note the use of our loop variables,
 <code>channel_id</code> and <code>color</code>.</p>
 <p>Finally we label our axes and display the histogram, shown here:</p>
-<figure><img src="../fig/cells-colour-histogram.png" alt="Colour histogram" class="figure mx-auto d-block"></figure><div id="keypoints1" class="callout keypoints">
+<figure><img src="../fig/cells-colour-histogram.png" alt="Colour histogram" class="figure mx-auto d-block"></figure><div id="colour-histogram-with-a-mask-25-min" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<div id="colour-histogram-with-a-mask-25-min" class="callout-inner">
+<h3 class="callout-title">Colour histogram with a mask (25 min)</h3>
+<div class="callout-content">
+<p>Looking at the histogram above, you will notice that there is a large
+number of very dark pixels in each channel. This is not so surprising,
+since the image has a mostly black background. What if we want to focus
+on a more foreground part of the image, like just one of the cells. This
+is where a mask enters the picture!</p>
+<p>Hover over the image with your mouse to find the centre of that cell
+and the radius (in pixels) of the cell. Then, using techniques from <a href="04-drawing.html">the <em>Drawing and Bitwise Operations</em>
+episode</a>, create a circular mask to select only the desired cell.
+Then, use that mask to apply the colour histogram operation to that
+cell.</p>
+<p>Your masked image should look something like this:</p>
+<figure><img src="../fig/cells-masked.jpg" alt="Masked cell" class="figure mx-auto d-block"></figure><p>And, the program should produce a colour histogram that looks like
+this:</p>
+<figure><img src="../fig/cells-masked-histogram.png" alt="Single cell histogram" class="figure mx-auto d-block"></figure>
+</div>
+</div>
+</div>
+<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
+  <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
+</button>
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div class="accordion-body">
+<div class="codewrapper sourceCode" id="cb10">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="co"># create a circular mask to select the lowest cell in the image</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>mask <span class="op">=</span> np.zeros(shape<span class="op">=</span>cells.shape[<span class="dv">0</span>:<span class="dv">2</span>], dtype<span class="op">=</span><span class="st">"bool"</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>circle <span class="op">=</span> ski.draw.disk(center<span class="op">=</span>(<span class="dv">400</span>, <span class="dv">360</span>), radius<span class="op">=</span><span class="dv">80</span>, shape<span class="op">=</span>cells.shape[<span class="dv">0</span>:<span class="dv">2</span>])</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>mask[circle] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="co"># just for display:</span></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="co"># make a copy of the image, call it masked_image, and</span></span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="co"># zero values where mask is False</span></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>masked_img <span class="op">=</span> np.array(cells)</span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a>masked_img[<span class="op">~</span>mask] <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a><span class="co"># create a new figure and display masked_img, to verify the</span></span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a><span class="co"># validity of your mask</span></span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a>ax.imshow(masked_img)</span>
+<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a><span class="co"># list to select colors of each channel line</span></span>
+<span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a>colors <span class="op">=</span> (<span class="st">"red"</span>, <span class="st">"green"</span>, <span class="st">"blue"</span>)</span>
+<span id="cb10-19"><a href="#cb10-19" tabindex="-1"></a></span>
+<span id="cb10-20"><a href="#cb10-20" tabindex="-1"></a><span class="co"># create the histogram plot, with three lines, one for</span></span>
+<span id="cb10-21"><a href="#cb10-21" tabindex="-1"></a><span class="co"># each color</span></span>
+<span id="cb10-22"><a href="#cb10-22" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb10-23"><a href="#cb10-23" tabindex="-1"></a>ax.set_xlim([<span class="dv">0</span>, <span class="dv">256</span>])</span>
+<span id="cb10-24"><a href="#cb10-24" tabindex="-1"></a><span class="cf">for</span> (channel_id, color) <span class="kw">in</span> <span class="bu">enumerate</span>(colors):</span>
+<span id="cb10-25"><a href="#cb10-25" tabindex="-1"></a>    <span class="co"># use your circular mask to apply the histogram</span></span>
+<span id="cb10-26"><a href="#cb10-26" tabindex="-1"></a>    <span class="co"># operation to the lowest cell of the image</span></span>
+<span id="cb10-27"><a href="#cb10-27" tabindex="-1"></a>    histogram, bin_edges <span class="op">=</span> np.histogram(</span>
+<span id="cb10-28"><a href="#cb10-28" tabindex="-1"></a>        cells[:, :, channel_id][mask], bins<span class="op">=</span><span class="dv">256</span>, <span class="bu">range</span><span class="op">=</span>(<span class="dv">0</span>, <span class="dv">256</span>)</span>
+<span id="cb10-29"><a href="#cb10-29" tabindex="-1"></a>    )</span>
+<span id="cb10-30"><a href="#cb10-30" tabindex="-1"></a></span>
+<span id="cb10-31"><a href="#cb10-31" tabindex="-1"></a>    ax.plot(histogram, color<span class="op">=</span>color)</span>
+<span id="cb10-32"><a href="#cb10-32" tabindex="-1"></a></span>
+<span id="cb10-33"><a href="#cb10-33" tabindex="-1"></a>ax.set_xlabel(<span class="st">"color value"</span>)</span>
+<span id="cb10-34"><a href="#cb10-34" tabindex="-1"></a>ax.set_ylabel(<span class="st">"pixel count"</span>)</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
 </div>
@@ -2993,7 +3066,7 @@ moved over to apply the filter to the next pixel in the image.</p>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Terminology about image boundaries </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>Take care to avoid mixing up the term “edge” to describe the edges of
 objects <em>within</em> an image and the outer boundaries of the images
@@ -3306,7 +3379,7 @@ on the blurred image?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>Generally speaking, the larger the sigma value, the more blurry the
 result. A larger sigma will tend to get rid of more noise in the image,
@@ -3337,7 +3410,7 @@ in the cx direction.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb14">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -3395,7 +3468,7 @@ detail from an image.</li>
 </div>
 </section></section><section id="aio-07-thresholding"><p>Content from <a href="07-thresholding.html">Thresholding</a></p>
 <hr>
-<p>Last updated on 2025-03-18 |
+<p>Last updated on 2025-03-31 |
 
         <a href="https://github.com/govekk/image-processing/edit/main/episodes/07-thresholding.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 110 minutes</p>
@@ -3457,54 +3530,55 @@ interested in.</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="im">import</span> glob</span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="im">import</span> imageio.v3 <span class="im">as</span> iio</span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="im">import</span> ipympl</span>
-<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="im">import</span> skimage <span class="im">as</span> ski</span>
-<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="op">%</span>matplotlib widget</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="im">import</span> imageio.v3 <span class="im">as</span> iio</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="im">import</span> ipympl</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="im">import</span> skimage <span class="im">as</span> ski</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="op">%</span>matplotlib widget</span></code></pre>
 </div>
 </section><section><h2 class="section-heading" id="simple-thresholding">Simple thresholding<a class="anchor" aria-label="anchor" href="#simple-thresholding"></a>
 </h2>
 <hr class="half-width">
-<p>Consider the hematoxylin and DAB stained immunohistochemistry image
-that we saved from the scikit example data in <a href="03-skimage-images.html">the <em>Working with scikit-image</em>
-episode</a>.</p>
+<p>We will start with the image of four hela cells:</p>
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># load the image</span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>hed_image <span class="op">=</span> iio.imread(uri<span class="op">=</span><span class="st">"data/immunohistochemistry.tif"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>cells <span class="op">=</span> iio.imread(uri<span class="op">=</span><span class="st">"data/hela-cells-8bit.tif"</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>ax.imshow(hed_image)</span></code></pre>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>ax.imshow(cells)</span></code></pre>
 </div>
-<figure><img src="../data/immunohistochemistry.jpg" alt="HED IHC scikit example image" class="figure mx-auto d-block"></figure><p>Now suppose we want to select only the stained portion of the image.
-In other words, we want to leave the pixels belonging to the stained
-tissue “on,” while turning the rest of the pixels “off,” by setting
-their colour channel values to zeros. The scikit-image library has
-several different methods of thresholding. We will start with the
-simplest version, which involves an important step of human input.
-Specifically, in this simple, <em>fixed-level thresholding</em>, we have
-to provide a threshold value <code>t</code>.</p>
+<figure><img src="../fig/cells.png" alt="Hela cells image" class="figure mx-auto d-block"></figure><p>Now suppose we want to select only the nuclei of the image. In other
+words, we want to leave the pixels belonging to the nuclei tissue “on,”
+while turning the rest of the pixels “off,” by setting their colour
+channel values to zeros. The scikit-image library has several different
+methods of thresholding. We will start with the simplest version, which
+involves an important step of human input. Specifically, in this simple,
+<em>fixed-level thresholding</em>, we have to provide a threshold value
+<code>t</code>.</p>
 <p>The process works like this. First, we will load the original image,
-convert it to grayscale, and de-noise it as in <a href="06-blurring.html">the <em>Blurring Images</em> episode</a>.</p>
+convert it to grayscale or select one of the channels, and de-noise it
+as in <a href="06-blurring.html">the <em>Blurring Images</em>
+episode</a>.</p>
+<p>Since the nuclei are marked in this multichannel image by high values
+of the blue channel, we can select just the blue channel instead of
+converting the whole image to grayscale.</p>
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># convert the image to grayscale</span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>hed_gray <span class="op">=</span> ski.color.rgb2gray(hed_image)</span>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># get nuclei channel</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>blue_channel <span class="op">=</span> cells[:,:,<span class="dv">2</span>]</span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a></span>
 <span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co"># blur the image to denoise</span></span>
-<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>hed_blurred <span class="op">=</span> ski.filters.gaussian(hed_gray, sigma<span class="op">=</span><span class="fl">1.0</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>blurred_nuclei <span class="op">=</span> ski.filters.gaussian(blue_channel, sigma<span class="op">=</span><span class="fl">1.0</span>)</span>
 <span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a></span>
 <span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>ax.imshow(hed_blurred, cmap<span class="op">=</span><span class="st">"gray"</span>)</span></code></pre>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>ax.imshow(blurred_nuclei, cmap<span class="op">=</span><span class="st">"gray"</span>)</span></code></pre>
 </div>
-<figure><img src="../fig/ihc-grayscale-blurred.jpg" alt="Grayscale and blurred ihc image" class="figure mx-auto d-block"></figure><div id="denoising-an-image-before-thresholding" class="callout">
+<figure><img src="../fig/cells-nuclei-gray-blurred.png" alt="Grayscale and blurred nuclei channel" class="figure mx-auto d-block"></figure><div id="denoising-an-image-before-thresholding" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
@@ -3526,18 +3600,17 @@ turned “on”, while pixels with grayscale values on the other side will
 be turned “off”. How might we do that? Remember that grayscale images
 contain pixel values in the range from 0 to 1, so we are looking for a
 threshold <code>t</code> in the closed range [0.0, 1.0]. We see in the
-image that the stained tissue is “darker” than the white background but
-there is also some light gray noise on the background. One way to
-determine a “good” value for <code>t</code> is to look at the grayscale
-histogram of the image and try to identify what grayscale ranges
-correspond to the staining in the image or the background.</p>
+image that the nuclei are “lighter” than the black background. One way
+to determine a “good” value for <code>t</code> is to look at the
+grayscale histogram of the image and try to identify what grayscale
+ranges correspond to the staining in the image or the background.</p>
 <p>The histogram can be produced as in <a href="05-creating-histograms.html">the <em>Creating Histograms</em>
 episode</a>.</p>
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># create a histogram of the blurred grayscale image</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>histogram, bin_edges <span class="op">=</span> np.histogram(hed_blurred, bins<span class="op">=</span><span class="dv">256</span>, <span class="bu">range</span><span class="op">=</span>(<span class="fl">0.0</span>, <span class="fl">1.0</span>))</span>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># create a histogram of the blurred nuclei image</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>histogram, bin_edges <span class="op">=</span> np.histogram(blurred_nuclei, bins<span class="op">=</span><span class="dv">256</span>, <span class="bu">range</span><span class="op">=</span>(<span class="fl">0.0</span>, <span class="fl">1.0</span>))</span>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a></span>
 <span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>ax.plot(bin_edges[<span class="dv">0</span>:<span class="op">-</span><span class="dv">1</span>], histogram)</span>
@@ -3546,36 +3619,36 @@ episode</a>.</p>
 <span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>ax.set_ylabel(<span class="st">"pixels"</span>)</span>
 <span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>ax.set_xlim(<span class="dv">0</span>, <span class="fl">1.0</span>)</span></code></pre>
 </div>
-<figure><img src="../fig/ihc-blurred-grayscale-histogram.png" alt="Grayscale histogram of the blurred ihc image" class="figure mx-auto d-block"></figure><p>Since the image has a white background, most of the pixels in the
-image are almost-white. This corresponds nicely to what we see in the
-histogram: there is a peak above 0.8. If we want to select the stained
-tissue and not the background, we want to turn off the white background
-pixels, while leaving the pixels for the staining turned on. So, we
-should choose a value of <code>t</code> somewhere before the large peak
-and turn pixels above that value “off”. Let us choose
-<code>t=0.7</code>.</p>
+<figure><img src="../fig/cells-blue-histogram.png" alt="Histogram of the blue channel from the HeLa cells image" class="figure mx-auto d-block"></figure><p>Since the image has a black background, most of the pixels in the
+image have low values. This corresponds nicely to what we see in the
+histogram: there is a peak around 0. If we want to select the
+fluorescing nuclei and not the background, we want to turn off the black
+background pixels, while leaving the pixels for the nuclei turned on.
+So, we should choose a value of <code>t</code> somewhere higher the
+large peak and turn pixels below that value “off”. Let us choose
+<code>t=0.1</code>.</p>
 <p>To apply the threshold <code>t</code>, we can use the NumPy
 comparison operators to create a mask. Here, we want to turn “on” all
-pixels which have values smaller than the threshold, so we use the less
-operator <code>&lt;</code> to compare the <code>blurred_image</code> to
-the threshold <code>t</code>. The operator returns a mask, that we
-capture in the variable <code>binary_mask</code>. It has only one
-channel, and each of its values is either 0 or 1. The binary mask
-created by the thresholding operation can be shown with
-<code>ax.imshow</code>, where the <code>False</code> entries are shown
-as black pixels (0-valued) and the <code>True</code> entries are shown
-as white pixels (1-valued).</p>
+pixels which have values bigger than the threshold, so we use the
+greater operator <code>&gt;</code> to compare the
+<code>blurred_image</code> to the threshold <code>t</code>. The operator
+returns a mask, that we capture in the variable
+<code>binary_mask</code>. It has only one channel, and each of its
+values is either 0 or 1. The binary mask created by the thresholding
+operation can be shown with <code>ax.imshow</code>, where the
+<code>False</code> entries are shown as black pixels (0-valued) and the
+<code>True</code> entries are shown as white pixels (1-valued).</p>
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># create a mask based on the threshold</span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>t <span class="op">=</span> <span class="fl">0.7</span></span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>binary_mask <span class="op">=</span> hed_blurred <span class="op">&lt;</span> t</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>t <span class="op">=</span> <span class="fl">0.1</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>binary_mask <span class="op">=</span> blurred_nuclei <span class="op">&gt;</span> t</span>
 <span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a></span>
 <span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>ax.imshow(binary_mask, cmap<span class="op">=</span><span class="st">"gray"</span>)</span></code></pre>
 </div>
-<figure><img src="../fig/ihc-mask.jpg" alt="Binary mask of the stained tissue created by thresholding" class="figure mx-auto d-block"></figure><p>You can see that the areas where the staining was in the original
+<figure><img src="../fig/cells-mask.jpg" alt="Binary mask created by thresholding the HeLa cells image" class="figure mx-auto d-block"></figure><p>You can see that the areas where the staining was in the original
 area are now white, while the rest of the mask image is black.</p>
 <div id="what-makes-a-good-threshold" class="callout">
 <div class="callout-square">
@@ -3614,13 +3687,13 @@ with is only the stained tissue from the original.</p>
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># use the binary_mask to select the "interesting" part of the image</span></span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>foreground <span class="op">=</span> hed_image.copy()</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>foreground <span class="op">=</span> cells.copy()</span>
 <span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>foreground[<span class="op">~</span>binary_mask] <span class="op">=</span> <span class="dv">0</span></span>
 <span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a></span>
 <span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>ax.imshow(foreground)</span></code></pre>
 </div>
-<figure><img src="../fig/ihc-foreground.jpg" alt="Selected foreground after applying binary mask" class="figure mx-auto d-block"></figure><div id="code-cheatsheet-for-more-practice-with-simple-thresholding" class="callout">
+<figure><img src="../fig/nuclei-selected.jpg" alt="Selected nuclei after applying binary mask to the HeLa cells image" class="figure mx-auto d-block"></figure><div id="code-cheatsheet-for-more-practice-with-simple-thresholding" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
@@ -3639,8 +3712,8 @@ with is only the stained tissue from the original.</p>
 <span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a></span>
 <span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co"># Read in image (from the uri path to the image file)</span></span>
 <span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>image <span class="op">=</span> iio.imread(uri)</span>
-<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co"># Select single channel (where c is the index of the channel)</span></span>
-<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>channel <span class="op">=</span> image[:,:,c]</span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co"># create grayscale image or select single channel (where c is the index of the channel)</span></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>channel <span class="op">=</span> ski.color.rgb2gray(image) <span class="co"># or channel=image[:,:,c]</span></span>
 <span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="co"># Blur image</span></span>
 <span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>blurred_image <span class="op">=</span> skimage.filters.gaussian(channel, sigma<span class="op">=</span><span class="fl">1.0</span>)</span>
 <span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a></span>
@@ -3681,14 +3754,12 @@ with is only the stained tissue from the original.</p>
 <h3 class="callout-title">More practice with simple thresholding (20 min)</h3>
 <div class="callout-content">
 <p>Now, it is your turn to practice. Suppose we want to use simple
-thresholding to select only the nuclei from the image
-<code>data/hela-cells-8bit.tif</code>:</p>
-<figure><img src="../fig/hela-cells-8bit.jpg" alt="HeLa cells color image" class="figure mx-auto d-block"></figure><p>Since the nuclei are marked in this multichannel image by high values
-of the blue channel, there are a few differences. Instead of using the
-grayscale image, select the blue channel using
-<code>image[:,:,2]</code>. This will act as your grayscale image, since
-it also has only one value per pixel.</p>
-<figure><img src="../fig/cells-nuclei-gray.jpg" alt="HeLa cells gray nuclei" class="figure mx-auto d-block"></figure>
+thresholding to select only the tissue sections from the image
+<code>data/he-scale3.tif</code>:</p>
+<figure><img src="../fig/he-image.png" alt="H&amp;E image" class="figure mx-auto d-block"></figure><p>As in the <a href="./05-creating-histograms.html">Creating
+Histograms</a> episode, we will use a grayscale version of the image,
+since the individual RGB channels are not informative on their own.</p>
+<figure><img src="../fig/he-grey.png" alt="grayscale H&amp;E image" class="figure mx-auto d-block"></figure>
 </div>
 </div>
 </div>
@@ -3697,30 +3768,37 @@ it also has only one value per pixel.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
-<p>The histogram for the blue channel of
-<code>data/hela-cells-8bit.tif</code> image can be shown with</p>
+<p>The histogram for the grayscale of the H&amp;E image can be shown
+with</p>
 <div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>cells <span class="op">=</span> iio.imread(uri<span class="op">=</span><span class="st">"data/hela-cells-8bit.tif"</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>blue_channel <span class="op">=</span> cells[:,:,<span class="dv">2</span>]</span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>blurred_image <span class="op">=</span> skimage.filters.gaussian(blue_channel, sigma<span class="op">=</span><span class="fl">1.0</span>)</span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>histogram, bin_edges <span class="op">=</span> np.histogram(blurred_image, bins<span class="op">=</span><span class="dv">256</span>, <span class="bu">range</span><span class="op">=</span>(<span class="fl">0.0</span>,<span class="fl">1.0</span>))</span>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co"># load the image</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>he_image <span class="op">=</span> iio.imread(uri<span class="op">=</span><span class="st">"data/he_scale3.tif"</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co"># convert the image to grayscale</span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>he_gray <span class="op">=</span> ski.color.rgb2gray(he_image)</span>
 <span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a></span>
-<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>fig,ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>ax.plot(bin_edges[<span class="dv">0</span>:<span class="op">-</span><span class="dv">1</span>], histogram)</span>
-<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>ax.set_title(<span class="st">"Blue (nuclei) channel histogram"</span>)</span>
-<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>ax.set_xlabel(<span class="st">"pixel value"</span>)</span>
-<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>ax.set_ylabel(<span class="st">"pixels"</span>)</span>
-<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a>ax.set_xlim(<span class="dv">0</span>, <span class="fl">1.0</span>)</span></code></pre>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co"># blur the image to denoise</span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>he_blurred <span class="op">=</span> ski.filters.gaussian(he_gray, sigma<span class="op">=</span><span class="fl">1.0</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co"># create a histogram of the blurred grayscale image</span></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>histogram, bin_edges <span class="op">=</span> np.histogram(he_blurred, bins<span class="op">=</span><span class="dv">256</span>, <span class="bu">range</span><span class="op">=</span>(<span class="fl">0.0</span>, <span class="fl">1.0</span>))</span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a>ax.plot(bin_edges[<span class="dv">0</span>:<span class="op">-</span><span class="dv">1</span>], histogram)</span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a>ax.set_title(<span class="st">"Grayscale Histogram"</span>)</span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a>ax.set_xlabel(<span class="st">"grayscale value"</span>)</span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a>ax.set_ylabel(<span class="st">"pixels"</span>)</span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a>ax.set_xlim(<span class="dv">0</span>, <span class="fl">1.0</span>)</span></code></pre>
 </div>
-<figure><img src="../fig/cells-blue-histogram.png" alt="Histogram of the blue channel from the HeLa cells image" class="figure mx-auto d-block"></figure><p>We can see a large spike around 0, and a very low bump around 0.3.
-The spike near 0 represents the darker background, and the bump around
-0.3 represents the nuclei signal. So it seems like a value between the
-two would be a good choice. Let’s choose <code>t=0.1</code>.</p>
+<figure><img src="../fig/he-blurred-histogram.png" alt="Histogram of the grayscale H&amp;E image blurred" class="figure mx-auto d-block"></figure><p>We can see a large spike around 0.9, and a very low bump around
+0.2-0.4. The spike near 0.9 represents the lighter background, and the
+bump around 0.2-0.4 represents the darker tissue sections. So it seems
+like a value between the two would be a good choice. Let’s choose
+<code>t=0.8</code>.</p>
 </div>
 </div>
 </div>
@@ -3734,15 +3812,15 @@ two would be a good choice. Let’s choose <code>t=0.1</code>.</p>
 min)<em> (continued)</em>
 </h3>
 <div class="callout-content">
-<p>Next, create a mask to turn the pixels above the threshold
-<code>t</code> on and pixels below the threshold <code>t</code> off.
-Note that unlike the image with a white background we used above, here
-the peak for the background colour is darker than the foreground objects
-or nuclei. Therefore, change the comparison operator less
-<code>&lt;</code> to greater <code>&gt;</code> to create the appropriate
-mask. Then apply the mask to the image and view the thresholded image.
-If everything works as it should, your output should show only the
-coloured nuclei on a black background.</p>
+<p>Next, create a mask to turn the pixels below the threshold
+<code>t</code> on and pixels above the threshold <code>t</code> off.
+Note that unlike the image with a black background we used above, here
+the peak for the background colour is lighter than the foreground
+objects or nuclei. Therefore, change the comparison operator greater
+<code>&gt;</code> to less than <code>&lt;</code> to create the
+appropriate mask. Then apply the mask to the image and view the
+thresholded image. If everything works as it should, your output should
+show only the coloured tissue sections on a black background.</p>
 </div>
 </div>
 </div>
@@ -3751,30 +3829,32 @@ coloured nuclei on a black background.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>Here are the commands to create and view the binary mask</p>
 <div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>t <span class="op">=</span> <span class="fl">0.1</span></span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>binary_mask <span class="op">=</span> blurred_image <span class="op">&gt;</span> t</span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>ax.imshow(binary_mask, cmap<span class="op">=</span><span class="st">"gray"</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># create a mask based on the threshold</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>t <span class="op">=</span> <span class="fl">0.8</span></span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>binary_mask <span class="op">=</span> he_blurred <span class="op">&lt;</span> t</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>ax.imshow(binary_mask, cmap<span class="op">=</span><span class="st">"gray"</span>)</span></code></pre>
 </div>
-<figure><img src="../fig/cells-mask.jpg" alt="Binary mask created by thresholding the HeLa cells image" class="figure mx-auto d-block"></figure><p>And here are the commands to apply the mask and view the thresholded
+<figure><img src="../fig/he-mask.png" alt="Binary mask created by thresholding the H&amp;E image" class="figure mx-auto d-block"></figure><p>And here are the commands to apply the mask and view the thresholded
 image</p>
 <div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>nuclei_only <span class="op">=</span> cells.copy()</span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>nuclei_only[<span class="op">~</span>binary_mask] <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>ax.imshow(nuclei_only)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="co"># use the binary_mask to select the "interesting" part of the image</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>foreground <span class="op">=</span> he_image.copy()</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>foreground[<span class="op">~</span>binary_mask] <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>ax.imshow(foreground)</span></code></pre>
 </div>
-<figure><img src="../fig/nuclei-selected.jpg" alt="Selected nuclei after applying binary mask to the HeLa cells image" class="figure mx-auto d-block"></figure>
+<figure><img src="../fig/he-foreground.png" alt="H&amp;E image with background set to 0" class="figure mx-auto d-block"></figure>
 </div>
 </div>
 </div>
@@ -3827,7 +3907,7 @@ background depending on the data and application.</p>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>The histogram may prompt questions from learners about the
 interpretation of the peaks and the broader region. The focus here is on
@@ -3948,7 +4028,7 @@ kept by two different automated threshold methods.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Solution with Triangle and Yen thresholding methods </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb20">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -3993,11 +4073,11 @@ detection or finding contours.</li>
 </div>
 </div>
 </div>
-</section></section><section id="aio-08-connected-components"><p>Content from <a href="08-connected-components.html">Connected Component Analysis</a></p>
+</section></section><section id="aio-08-segmentation"><p>Content from <a href="08-segmentation.html">Segmentation</a></p>
 <hr>
-<p>Last updated on 2025-03-18 |
+<p>Last updated on 2025-03-31 |
 
-        <a href="https://github.com/govekk/image-processing/edit/main/episodes/08-connected-components.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
+        <a href="https://github.com/govekk/image-processing/edit/main/episodes/08-segmentation.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 125 minutes</p>
 <div class="text-end">
           <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
@@ -4239,18 +4319,18 @@ two orthogonal jumps are allowed, eight pixels can be reached, so the
 </section><section><h2 class="section-heading" id="connected-component-analysis">Connected Component Analysis<a class="anchor" aria-label="anchor" href="#connected-component-analysis"></a>
 </h2>
 <hr class="half-width">
-<p>In order to find the objects in an image, we want to employ an
-operation that is called Connected Component Analysis (CCA). This
-operation takes a binary image as an input. Usually, the
-<code>False</code> value in this image is associated with background
-pixels, and the <code>True</code> value indicates foreground, or object
-pixels. Such an image can be produced, e.g., with thresholding. Given a
-thresholded image, the connected component analysis produces a new
-<em>labeled</em> image with integer pixel values. Pixels with the same
-value, belong to the same object. scikit-image provides connected
-component analysis in the function <code>ski.measure.label()</code>. Let
-us add this function to the already familiar steps of thresholding an
-image.</p>
+<p>In order to find the objects in an image (also known as
+segmentation), we want to employ an operation that is called Connected
+Component Analysis (CCA). This operation takes a binary image as an
+input. Usually, the <code>False</code> value in this image is associated
+with background pixels, and the <code>True</code> value indicates
+foreground, or object pixels. Such an image can be produced, e.g., with
+thresholding. Given a thresholded image, the connected component
+analysis produces a new <em>labeled</em> image with integer pixel
+values. Pixels with the same value, belong to the same object.
+scikit-image provides connected component analysis in the function
+<code>ski.measure.label()</code>. Let us add this function to the
+already familiar steps of thresholding an image.</p>
 <p>First, import the packages needed for this episode:</p>
 <div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -4264,27 +4344,35 @@ image.</p>
 <span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="op">%</span>matplotlib widget</span></code></pre>
 </div>
 <p>In this episode, we will use the <code>ski.measure.label</code>
-function to perform the CCA.</p>
-<p>Next, we define a reusable Python function
-<code>segment_multichannel</code>, for finding connected components
-within a fluorescent (dark background, light objects) multichannel
-image:</p>
+function to perform the CCA. For example, we want to label individual
+nuclei from the HeLa cells image.</p>
+<p>We start by generating the binary mask of the foreground of the blue
+(nuclei) channel of the image, as in <a href="07-thresholding.html">the
+<em>Thresholding</em> episode</a>.</p>
 <div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="kw">def</span> segment_multichannel(filename, channel<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span><span class="fl">1.0</span>, t<span class="op">=</span><span class="fl">0.5</span>, connectivity<span class="op">=</span><span class="dv">2</span>):</span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>    <span class="co"># load the image</span></span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>    image <span class="op">=</span> iio.imread(filename)</span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>    <span class="co"># convert the image to grayscale</span></span>
-<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>    channel_image <span class="op">=</span> image[:,:,channel]</span>
-<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>    <span class="co"># denoise the image with a Gaussian filter</span></span>
-<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>    blurred_image <span class="op">=</span> ski.filters.gaussian(channel_image, sigma<span class="op">=</span>sigma)</span>
-<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>    <span class="co"># mask the image according to threshold</span></span>
-<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>    binary_mask <span class="op">=</span> blurred_image <span class="op">&gt;</span> t</span>
-<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>    <span class="co"># perform connected component analysis</span></span>
-<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a>    labeled_image, count <span class="op">=</span> ski.measure.label(binary_mask,</span>
-<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a>                                                 connectivity<span class="op">=</span>connectivity, return_num<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a>    <span class="cf">return</span> labeled_image, count</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># load the image</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>cells <span class="op">=</span> iio.imread(uri<span class="op">=</span><span class="st">"data/hela-cells-8bit.tif"</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>blue_channel <span class="op">=</span> cells[:,:,<span class="dv">2</span>]</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>sigma<span class="op">=</span><span class="fl">2.0</span></span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>t<span class="op">=</span><span class="fl">0.1</span></span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a><span class="co"># denoise the image with a Gaussian filter</span></span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>blurred_image <span class="op">=</span> ski.filters.gaussian(blue_channel, sigma<span class="op">=</span>sigma)</span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a><span class="co"># black background so select values greater than threshod</span></span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>binary_mask <span class="op">=</span> blurred_image <span class="op">&gt;</span> t</span></code></pre>
+</div>
+<p>We are purposefully separating out the parameters as variables for
+ease of editing later.</p>
+<p>Then we call the <code>ski.measure.label</code> function.</p>
+<div class="codewrapper sourceCode" id="cb10">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>connectivity<span class="op">=</span><span class="dv">2</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="co"># perform connected component analysis</span></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>labeled_image, count <span class="op">=</span> ski.measure.label(binary_mask,</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>                                        connectivity<span class="op">=</span>connectivity, return_num<span class="op">=</span><span class="va">True</span>)</span></code></pre>
 </div>
 <p>The first four lines of code are familiar from <a href="07-thresholding.html">the <em>Thresholding</em> episode</a>.</p>
 <p>Then we call the <code>ski.measure.label</code> function. This
@@ -4312,17 +4400,17 @@ number of labels is only returned if <code>return_num</code> is
 This means that we have to pay attention when assigning the return value
 to a variable. If we omit the optional parameter <code>return_num</code>
 or pass <code>return_num=False</code>, we can call the function as</p>
-<div class="codewrapper sourceCode" id="cb10">
-<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>labeled_image <span class="op">=</span> ski.measure.label(binary_mask)</span></code></pre>
-</div>
-<p>If we pass <code>return_num=True</code>, the function returns a tuple
-and we can assign it as</p>
 <div class="codewrapper sourceCode" id="cb11">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>labeled_image, count <span class="op">=</span> ski.measure.label(binary_mask, return_num<span class="op">=</span><span class="va">True</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>labeled_image <span class="op">=</span> ski.measure.label(binary_mask)</span></code></pre>
+</div>
+<p>If we pass <code>return_num=True</code>, the function returns a tuple
+and we can assign it as</p>
+<div class="codewrapper sourceCode" id="cb12">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>labeled_image, count <span class="op">=</span> ski.measure.label(binary_mask, return_num<span class="op">=</span><span class="va">True</span>)</span></code></pre>
 </div>
 <p>If we used the same assignment as in the first case, the variable
 <code>labeled_image</code> would become a tuple, in which
@@ -4336,86 +4424,12 @@ the optional parameters.</p>
 </div>
 </div>
 </div>
-<p>We can call the above function <code>segment_multichannel</code> and
-display the labeled image like so:</p>
-<div class="codewrapper sourceCode" id="cb12">
-<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>labeled_image, count <span class="op">=</span> segment_multichannel(filename<span class="op">=</span><span class="st">"data/hela-cells-8bit.tif"</span>, channel<span class="op">=</span><span class="dv">2</span>, sigma<span class="op">=</span><span class="fl">2.0</span>, t<span class="op">=</span><span class="fl">0.1</span>, connectivity<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>ax.imshow(labeled_image)</span>
-<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>ax.set_axis_off()<span class="op">;</span></span></code></pre>
-</div>
-<div id="accordionSpoiler1" class="accordion spoiler-accordion accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
-  <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Do you see an empty image? </h3>
-</button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
-<div class="accordion-body">
-<p>If you are using an older version of Matplotlib you might get a
-warning
-<code>UserWarning: Low image data range; displaying image with stretched contrast.</code>
-or just see a visually empty image.</p>
-<p>What went wrong? When you hover over the image, the pixel values are
-shown as numbers in the lower corner of the viewer. You can see that
-some pixels have values different from <code>0</code>, so they are not
-actually all the same value. Let’s find out more by examining
-<code>labeled_image</code>. Properties that might be interesting in this
-context are <code>dtype</code>, the minimum and maximum value. We can
-print them with the following lines:</p>
+<p>We display the labeled image like so:</p>
 <div class="codewrapper sourceCode" id="cb13">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"dtype:"</span>, labeled_image.dtype)</span>
-<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"min:"</span>, np.<span class="bu">min</span>(labeled_image))</span>
-<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"max:"</span>, np.<span class="bu">max</span>(labeled_image))</span></code></pre>
-</div>
-<p>Examining the output can give us a clue why the image appears
-empty.</p>
-<div class="codewrapper">
-<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="output" tabindex="0"><code><span><span class="va">dtype</span><span class="op">:</span> <span class="va">int32</span></span>
-<span><span class="va">min</span><span class="op">:</span> <span class="fl">0</span></span>
-<span><span class="va">max</span><span class="op">:</span> <span class="fl">11</span></span></code></pre>
-</div>
-<p>The <code>dtype</code> of <code>labeled_image</code> is
-<code>int32</code>. This means that values in this image range from
-<code>-2 ** 31</code> to <code>2 ** 31 - 1</code>. Those are really big
-numbers. From this available space we only use the range from
-<code>0</code> to <code>11</code>. When showing this image in the
-viewer, it may squeeze the complete range into 256 gray values.
-Therefore, the range of our numbers does not produce any visible
-variation. One way to rectify this is to explicitly specify the data
-range we want the colormap to cover:</p>
-<div class="codewrapper sourceCode" id="cb15">
-<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>ax.imshow(labeled_image, vmin<span class="op">=</span>np.<span class="bu">min</span>(labeled_image), vmax<span class="op">=</span>np.<span class="bu">max</span>(labeled_image))</span></code></pre>
-</div>
-<p>Note this is the default behaviour for newer versions of
-<code>matplotlib.pyplot.imshow</code>. Alternatively we could convert
-the image to RGB and then display it.</p>
-</div>
-</div>
-</div>
-</div>
-<div id="suppressing-outputs-in-jupyter-notebooks" class="callout">
-<div class="callout-square">
-<i class="callout-icon" data-feather="bell"></i>
-</div>
-<div id="suppressing-outputs-in-jupyter-notebooks" class="callout-inner">
-<h3 class="callout-title">Suppressing outputs in Jupyter Notebooks</h3>
-<div class="callout-content">
-<p>We just used <code>ax.set_axis_off();</code> to hide the axis from
-the image for a visually cleaner figure. The semicolon is added to
-supress the output(s) of the statement, in this <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.axis.html" class="external-link">case</a>
-the axis limits. This is specific to Jupyter Notebooks.</p>
-</div>
-</div>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>ax.imshow(labeled_image)</span></code></pre>
 </div>
 <p>We can use the function <code>ski.color.label2rgb()</code> to convert
 the 32-bit grayscale labeled image to standard RGB colour (recall that
@@ -4424,54 +4438,16 @@ convert to grayscale). With <code>ski.color.label2rgb()</code>, all
 objects are coloured according to a list of colours that can be
 customised. We can use the following commands to convert and show the
 image:</p>
-<div class="codewrapper sourceCode" id="cb16">
+<div class="codewrapper sourceCode" id="cb14">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="co"># convert the label image to color image</span></span>
-<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>colored_label_image <span class="op">=</span> ski.color.label2rgb(labeled_image, bg_label<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a></span>
-<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a>ax.imshow(colored_label_image)</span>
-<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a>ax.set_axis_off()<span class="op">;</span></span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="co"># convert the label image to color image</span></span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>colored_label_image <span class="op">=</span> ski.color.label2rgb(labeled_image, bg_label<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>ax.imshow(colored_label_image)</span></code></pre>
 </div>
-<figure><img src="../fig/cells-labeled.jpg" alt="Labeled objects" class="figure mx-auto d-block"></figure><div id="code-cheatsheet-for-how-does-parameter-choice-change-how-many-objects-are-in-the-image" class="callout">
-<div class="callout-square">
-<i class="callout-icon" data-feather="bell"></i>
-</div>
-<div id="code-cheatsheet-for-how-does-parameter-choice-change-how-many-objects-are-in-the-image" class="callout-inner">
-<h3 class="callout-title">Code cheatsheet for “How does parameter choice change how many objects are in the image?”</h3>
-<div class="callout-content">
-<div class="codewrapper sourceCode" id="cb17">
-<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="im">import</span> imageio.v3 <span class="im">as</span> iio</span>
-<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="im">import</span> ipympl</span>
-<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a><span class="im">import</span> skimage <span class="im">as</span> ski</span>
-<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a><span class="op">%</span>matplotlib widget</span>
-<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a></span>
-<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a><span class="kw">def</span> segment_multichannel(filename, channel<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span><span class="fl">1.0</span>, t<span class="op">=</span><span class="fl">0.5</span>, connectivity<span class="op">=</span><span class="dv">2</span>):</span>
-<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a>    <span class="co"># load the image</span></span>
-<span id="cb17-10"><a href="#cb17-10" tabindex="-1"></a>    image <span class="op">=</span> iio.imread(filename)</span>
-<span id="cb17-11"><a href="#cb17-11" tabindex="-1"></a>    <span class="co"># convert the image to grayscale</span></span>
-<span id="cb17-12"><a href="#cb17-12" tabindex="-1"></a>    channel_image <span class="op">=</span> image[:,:,channel]</span>
-<span id="cb17-13"><a href="#cb17-13" tabindex="-1"></a>    <span class="co"># denoise the image with a Gaussian filter</span></span>
-<span id="cb17-14"><a href="#cb17-14" tabindex="-1"></a>    blurred_image <span class="op">=</span> ski.filters.gaussian(channel_image, sigma<span class="op">=</span>sigma)</span>
-<span id="cb17-15"><a href="#cb17-15" tabindex="-1"></a>    <span class="co"># mask the image according to threshold</span></span>
-<span id="cb17-16"><a href="#cb17-16" tabindex="-1"></a>    binary_mask <span class="op">=</span> blurred_image <span class="op">&gt;</span> t</span>
-<span id="cb17-17"><a href="#cb17-17" tabindex="-1"></a>    <span class="co"># perform connected component analysis</span></span>
-<span id="cb17-18"><a href="#cb17-18" tabindex="-1"></a>    labeled_image, count <span class="op">=</span> ski.measure.label(binary_mask,</span>
-<span id="cb17-19"><a href="#cb17-19" tabindex="-1"></a>                                                 connectivity<span class="op">=</span>connectivity, return_num<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb17-20"><a href="#cb17-20" tabindex="-1"></a>    <span class="cf">return</span> labeled_image, count</span>
-<span id="cb17-21"><a href="#cb17-21" tabindex="-1"></a></span>
-<span id="cb17-22"><a href="#cb17-22" tabindex="-1"></a><span class="co"># Call segmentation function on HeLa cells image file, nuclei channel</span></span>
-<span id="cb17-23"><a href="#cb17-23" tabindex="-1"></a>labeled_image, count <span class="op">=</span> segment_multichannel(filename<span class="op">=</span><span class="st">"data/hela-cells-8bit.tif"</span>, channel<span class="op">=</span><span class="dv">2</span>, sigma<span class="op">=</span><span class="fl">2.0</span>, t<span class="op">=</span><span class="fl">0.1</span>, connectivity<span class="op">=</span><span class="dv">2</span>)</span></code></pre>
-</div>
-</div>
-</div>
-</div>
-<div id="how-does-parameter-choice-change-how-many-objects-are-in-the-image-15-min" class="callout challenge">
+<figure><img src="../fig/cells-labeled.jpg" alt="Labeled objects" class="figure mx-auto d-block"></figure><div id="how-does-parameter-choice-change-how-many-objects-are-in-the-image-15-min" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
@@ -4497,10 +4473,10 @@ values influence the result?</p>
 <p>As you might have guessed, the return value <code>count</code>
 already contains the number of objects found in the image. So it can
 simply be printed with</p>
-<div class="codewrapper sourceCode" id="cb18">
+<div class="codewrapper sourceCode" id="cb15">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Found"</span>, count, <span class="st">"objects in the image."</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Found"</span>, count, <span class="st">"objects in the image."</span>)</span></code></pre>
 </div>
 <p>But there is also a way to obtain the number of found objects from
 the labeled image itself. Recall that all pixels that belong to a single
@@ -4512,11 +4488,11 @@ finding the object with the maximum value, we also know how many objects
 there are in the image. We can thus use the <code>np.max</code> function
 from NumPy to find the maximum value that equals the number of found
 objects:</p>
-<div class="codewrapper sourceCode" id="cb19">
+<div class="codewrapper sourceCode" id="cb16">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>num_objects <span class="op">=</span> np.<span class="bu">max</span>(labeled_image)</span>
-<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Found"</span>, num_objects, <span class="st">"objects in the image."</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>num_objects <span class="op">=</span> np.<span class="bu">max</span>(labeled_image)</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Found"</span>, num_objects, <span class="st">"objects in the image."</span>)</span></code></pre>
 </div>
 <p>Invoking the function with <code>sigma=1.0</code>, and
 <code>threshold=0.1</code>, both methods will print</p>
@@ -4572,19 +4548,19 @@ type. Here we will use the properties <code>"area"</code> and
 scikit-image documentation on regionprops</a> to learn about other
 properties available.</p>
 <p>We can get a list of areas of the labeled objects as follows:</p>
-<div class="codewrapper sourceCode" id="cb21">
+<div class="codewrapper sourceCode" id="cb18">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="co"># compute object features and extract object areas</span></span>
-<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>object_features <span class="op">=</span> ski.measure.regionprops(labeled_image)</span>
-<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a>object_areas <span class="op">=</span> [objf[<span class="st">"area"</span>] <span class="cf">for</span> objf <span class="kw">in</span> object_features]</span>
-<span id="cb21-4"><a href="#cb21-4" tabindex="-1"></a>object_areas</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="co"># compute object features and extract object areas</span></span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>object_features <span class="op">=</span> ski.measure.regionprops(labeled_image)</span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>object_areas <span class="op">=</span> [<span class="bu">int</span>(objf[<span class="st">"area"</span>]) <span class="cf">for</span> objf <span class="kw">in</span> object_features]</span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a>object_areas</span></code></pre>
 </div>
 <p>This will produce the output</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>[20.0, 13722.0, 14147.0, 13308.0, 12629.0, 156.0]</code></pre>
+<pre class="output" tabindex="0"><code>[20, 13722, 14147, 13308, 12629, 156]</code></pre>
 </div>
 <div id="plot-a-histogram-of-the-object-area-distribution-10-min" class="callout challenge">
 <div class="callout-square">
@@ -4612,13 +4588,13 @@ obtained with <code>ski.measure.regionprops</code>.</li>
 <div id="collapseSolution4" class="accordion-collapse collapse" data-bs-parent="#accordionSolution4" aria-labelledby="headingSolution4">
 <div class="accordion-body">
 <p>The histogram can be plotted with</p>
-<div class="codewrapper sourceCode" id="cb23">
+<div class="codewrapper sourceCode" id="cb20">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a>ax.hist(object_areas)</span>
-<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Area (pixels)"</span>)</span>
-<span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Number of objects"</span>)<span class="op">;</span></span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>ax.hist(object_areas)</span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Area (pixels)"</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Number of objects"</span>)<span class="op">;</span></span></code></pre>
 </div>
 <figure><img src="../fig/cells-area-histogram.png" alt="Histogram of object areas" class="figure mx-auto d-block"></figure><p>The histogram shows the number of objects (vertical axis) whose area
 is within a certain range (horizontal axis). The height of the bars in
@@ -4645,124 +4621,6 @@ pixels per cell area and keep objects of that size.</p>
 </div>
 </div>
 </div>
-<div id="code-cheatsheet-for-filter-objects-by-area" class="callout">
-<div class="callout-square">
-<i class="callout-icon" data-feather="bell"></i>
-</div>
-<div id="code-cheatsheet-for-filter-objects-by-area" class="callout-inner">
-<h3 class="callout-title">Code cheatsheet for “Filter objects by area”:</h3>
-<div class="callout-content">
-<div class="codewrapper sourceCode" id="cb24">
-<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="im">import</span> imageio.v3 <span class="im">as</span> iio</span>
-<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a><span class="im">import</span> ipympl</span>
-<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb24-5"><a href="#cb24-5" tabindex="-1"></a><span class="im">import</span> skimage <span class="im">as</span> ski</span>
-<span id="cb24-6"><a href="#cb24-6" tabindex="-1"></a><span class="op">%</span>matplotlib widget</span>
-<span id="cb24-7"><a href="#cb24-7" tabindex="-1"></a></span>
-<span id="cb24-8"><a href="#cb24-8" tabindex="-1"></a><span class="kw">def</span> segment_multichannel(filename, channel<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span><span class="fl">1.0</span>, t<span class="op">=</span><span class="fl">0.5</span>, connectivity<span class="op">=</span><span class="dv">2</span>):</span>
-<span id="cb24-9"><a href="#cb24-9" tabindex="-1"></a>    <span class="co"># load the image</span></span>
-<span id="cb24-10"><a href="#cb24-10" tabindex="-1"></a>    image <span class="op">=</span> iio.imread(filename)</span>
-<span id="cb24-11"><a href="#cb24-11" tabindex="-1"></a>    <span class="co"># convert the image to grayscale</span></span>
-<span id="cb24-12"><a href="#cb24-12" tabindex="-1"></a>    channel_image <span class="op">=</span> image[:,:,channel]</span>
-<span id="cb24-13"><a href="#cb24-13" tabindex="-1"></a>    <span class="co"># denoise the image with a Gaussian filter</span></span>
-<span id="cb24-14"><a href="#cb24-14" tabindex="-1"></a>    blurred_image <span class="op">=</span> ski.filters.gaussian(channel_image, sigma<span class="op">=</span>sigma)</span>
-<span id="cb24-15"><a href="#cb24-15" tabindex="-1"></a>    <span class="co"># mask the image according to threshold</span></span>
-<span id="cb24-16"><a href="#cb24-16" tabindex="-1"></a>    binary_mask <span class="op">=</span> blurred_image <span class="op">&gt;</span> t</span>
-<span id="cb24-17"><a href="#cb24-17" tabindex="-1"></a>    <span class="co"># perform connected component analysis</span></span>
-<span id="cb24-18"><a href="#cb24-18" tabindex="-1"></a>    labeled_image, count <span class="op">=</span> ski.measure.label(binary_mask,</span>
-<span id="cb24-19"><a href="#cb24-19" tabindex="-1"></a>                                                 connectivity<span class="op">=</span>connectivity, return_num<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb24-20"><a href="#cb24-20" tabindex="-1"></a>    <span class="cf">return</span> labeled_image, count</span>
-<span id="cb24-21"><a href="#cb24-21" tabindex="-1"></a></span>
-<span id="cb24-22"><a href="#cb24-22" tabindex="-1"></a><span class="co"># Call segmentation function on HeLa cells image file, nuclei channel</span></span>
-<span id="cb24-23"><a href="#cb24-23" tabindex="-1"></a>labeled_image, count <span class="op">=</span> segment_multichannel(filename<span class="op">=</span><span class="st">"data/hela-cells-8bit.tif"</span>, channel<span class="op">=</span><span class="dv">2</span>, sigma<span class="op">=</span><span class="fl">2.0</span>, t<span class="op">=</span><span class="fl">0.1</span>, connectivity<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb24-24"><a href="#cb24-24" tabindex="-1"></a></span>
-<span id="cb24-25"><a href="#cb24-25" tabindex="-1"></a><span class="co"># compute object features and extract object areas</span></span>
-<span id="cb24-26"><a href="#cb24-26" tabindex="-1"></a>object_features <span class="op">=</span> ski.measure.regionprops(labeled_image)</span>
-<span id="cb24-27"><a href="#cb24-27" tabindex="-1"></a>object_areas <span class="op">=</span> [objf[<span class="st">"area"</span>] <span class="cf">for</span> objf <span class="kw">in</span> object_features]</span></code></pre>
-</div>
-</div>
-</div>
-</div>
-<div id="filter-objects-by-area-10-min" class="callout challenge">
-<div class="callout-square">
-<i class="callout-icon" data-feather="zap"></i>
-</div>
-<div id="filter-objects-by-area-10-min" class="callout-inner">
-<h3 class="callout-title">Filter objects by area (10 min)</h3>
-<div class="callout-content">
-<p>Now we would like to use a minimum area criterion to obtain a more
-accurate count of the objects in the image.</p>
-<ol style="list-style-type: decimal">
-<li>Find a way to calculate the number of objects by only counting
-objects above a certain area.</li>
-<li>Keep track of which object labels we want to keep, e.g. in a
-list.</li>
-</ol>
-</div>
-</div>
-</div>
-<div id="accordionSolution5" class="accordion challenge-accordion accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution5" aria-expanded="false" aria-controls="collapseSolution5">
-  <h4 class="accordion-header" id="headingSolution5"> Show me the solution </h4>
-</button>
-<div id="collapseSolution5" class="accordion-collapse collapse" data-bs-parent="#accordionSolution5" aria-labelledby="headingSolution5">
-<div class="accordion-body">
-<p>One way to count only objects above a certain area is to first create
-a list of those objects, and then take the length of that list as the
-object count. This can be done as follows:</p>
-<div class="codewrapper sourceCode" id="cb25">
-<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a>min_area <span class="op">=</span> <span class="dv">200</span></span>
-<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a>large_objects <span class="op">=</span> []</span>
-<span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a><span class="cf">for</span> objf <span class="kw">in</span> object_features:</span>
-<span id="cb25-4"><a href="#cb25-4" tabindex="-1"></a>    <span class="cf">if</span> objf[<span class="st">"area"</span>] <span class="op">&gt;</span> min_area:</span>
-<span id="cb25-5"><a href="#cb25-5" tabindex="-1"></a>        large_objects.append(objf[<span class="st">"label"</span>])</span>
-<span id="cb25-6"><a href="#cb25-6" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Found"</span>, <span class="bu">len</span>(large_objects), <span class="st">"objects!"</span>)</span></code></pre>
-</div>
-<p>Another option is to use NumPy arrays to create the list of large
-objects. We first create an array <code>object_areas</code> containing
-the object areas, and an array <code>object_labels</code> containing the
-object labels. The labels of the objects are also returned by
-<code>ski.measure.regionprops</code>. We have already seen that we can
-create boolean arrays using comparison operators. Here we can use
-<code>object_areas &gt; min_area</code> to produce an array that has the
-same dimension as <code>object_labels</code>. It can then be used to
-select the labels of objects whose area is greater than
-<code>min_area</code> by indexing:</p>
-<div class="codewrapper sourceCode" id="cb26">
-<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a>object_areas <span class="op">=</span> np.array([objf[<span class="st">"area"</span>] <span class="cf">for</span> objf <span class="kw">in</span> object_features])</span>
-<span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a>object_labels <span class="op">=</span> np.array([objf[<span class="st">"label"</span>] <span class="cf">for</span> objf <span class="kw">in</span> object_features])</span>
-<span id="cb26-3"><a href="#cb26-3" tabindex="-1"></a>large_objects <span class="op">=</span> object_labels[object_areas <span class="op">&gt;</span> min_area]</span>
-<span id="cb26-4"><a href="#cb26-4" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Found"</span>, <span class="bu">len</span>(large_objects), <span class="st">"objects!"</span>)</span></code></pre>
-</div>
-<p>The advantage of using NumPy arrays is that <code>for</code> loops
-and <code>if</code> statements in Python can be slow, and in practice
-the first approach may not be feasible if the image contains a large
-number of objects. In that case, NumPy array functions turn out to be
-very useful because they are much faster.</p>
-<p>In this example, we can also use the <code>np.count_nonzero</code>
-function that we have seen earlier together with the <code>&gt;</code>
-operator to count the objects whose area is above
-<code>min_area</code>.</p>
-<div class="codewrapper sourceCode" id="cb27">
-<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a>n <span class="op">=</span> np.count_nonzero(object_areas <span class="op">&gt;</span> min_area)</span>
-<span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Found"</span>, n, <span class="st">"objects!"</span>)</span></code></pre>
-</div>
-<p>For all three alternatives, the output is the same and gives the
-expected count of 4 objects.</p>
-</div>
-</div>
-</div>
-</div>
 <div id="using-functions-from-numpy-and-other-python-packages" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
@@ -4777,170 +4635,27 @@ for an availabe function that can solve a given task.</p>
 </div>
 </div>
 </div>
-<div id="code-cheatsheet-for-removing-small-objects" class="callout">
-<div class="callout-square">
-<i class="callout-icon" data-feather="bell"></i>
-</div>
-<div id="code-cheatsheet-for-removing-small-objects" class="callout-inner">
-<h3 class="callout-title">Code cheatsheet for removing small objects</h3>
-<div class="callout-content">
-<div class="codewrapper sourceCode" id="cb28">
-<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a><span class="im">import</span> imageio.v3 <span class="im">as</span> iio</span>
-<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a><span class="im">import</span> ipympl</span>
-<span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb28-4"><a href="#cb28-4" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb28-5"><a href="#cb28-5" tabindex="-1"></a><span class="im">import</span> skimage <span class="im">as</span> ski</span>
-<span id="cb28-6"><a href="#cb28-6" tabindex="-1"></a><span class="op">%</span>matplotlib widget</span>
-<span id="cb28-7"><a href="#cb28-7" tabindex="-1"></a></span>
-<span id="cb28-8"><a href="#cb28-8" tabindex="-1"></a><span class="kw">def</span> segment_multichannel(filename, channel<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span><span class="fl">1.0</span>, t<span class="op">=</span><span class="fl">0.5</span>, connectivity<span class="op">=</span><span class="dv">2</span>):</span>
-<span id="cb28-9"><a href="#cb28-9" tabindex="-1"></a>    <span class="co"># load the image</span></span>
-<span id="cb28-10"><a href="#cb28-10" tabindex="-1"></a>    image <span class="op">=</span> iio.imread(filename)</span>
-<span id="cb28-11"><a href="#cb28-11" tabindex="-1"></a>    <span class="co"># convert the image to grayscale</span></span>
-<span id="cb28-12"><a href="#cb28-12" tabindex="-1"></a>    channel_image <span class="op">=</span> image[:,:,channel]</span>
-<span id="cb28-13"><a href="#cb28-13" tabindex="-1"></a>    <span class="co"># denoise the image with a Gaussian filter</span></span>
-<span id="cb28-14"><a href="#cb28-14" tabindex="-1"></a>    blurred_image <span class="op">=</span> ski.filters.gaussian(channel_image, sigma<span class="op">=</span>sigma)</span>
-<span id="cb28-15"><a href="#cb28-15" tabindex="-1"></a>    <span class="co"># mask the image according to threshold</span></span>
-<span id="cb28-16"><a href="#cb28-16" tabindex="-1"></a>    binary_mask <span class="op">=</span> blurred_image <span class="op">&gt;</span> t</span>
-<span id="cb28-17"><a href="#cb28-17" tabindex="-1"></a>    <span class="co"># perform connected component analysis</span></span>
-<span id="cb28-18"><a href="#cb28-18" tabindex="-1"></a>    labeled_image, count <span class="op">=</span> ski.measure.label(binary_mask,</span>
-<span id="cb28-19"><a href="#cb28-19" tabindex="-1"></a>                                                 connectivity<span class="op">=</span>connectivity, return_num<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb28-20"><a href="#cb28-20" tabindex="-1"></a>    <span class="cf">return</span> labeled_image, count</span>
-<span id="cb28-21"><a href="#cb28-21" tabindex="-1"></a></span>
-<span id="cb28-22"><a href="#cb28-22" tabindex="-1"></a><span class="co"># Call segmentation function on HeLa cells image file, nuclei channel</span></span>
-<span id="cb28-23"><a href="#cb28-23" tabindex="-1"></a>labeled_image, count <span class="op">=</span> segment_multichannel(filename<span class="op">=</span><span class="st">"data/hela-cells-8bit.tif"</span>, channel<span class="op">=</span><span class="dv">2</span>, sigma<span class="op">=</span><span class="fl">2.0</span>, t<span class="op">=</span><span class="fl">0.1</span>, connectivity<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb28-24"><a href="#cb28-24" tabindex="-1"></a></span>
-<span id="cb28-25"><a href="#cb28-25" tabindex="-1"></a>object_features <span class="op">=</span> ski.measure.regionprops(labeled_image)</span>
-<span id="cb28-26"><a href="#cb28-26" tabindex="-1"></a>object_areas <span class="op">=</span> [objf[<span class="st">"area"</span>] <span class="cf">for</span> objf <span class="kw">in</span> object_features]</span>
-<span id="cb28-27"><a href="#cb28-27" tabindex="-1"></a>object_areas</span>
-<span id="cb28-28"><a href="#cb28-28" tabindex="-1"></a></span>
-<span id="cb28-29"><a href="#cb28-29" tabindex="-1"></a><span class="co"># "for loop" way of finding large object labels</span></span>
-<span id="cb28-30"><a href="#cb28-30" tabindex="-1"></a>min_area <span class="op">=</span> <span class="dv">200</span></span>
-<span id="cb28-31"><a href="#cb28-31" tabindex="-1"></a>large_objects <span class="op">=</span> []</span>
-<span id="cb28-32"><a href="#cb28-32" tabindex="-1"></a><span class="cf">for</span> objf <span class="kw">in</span> object_features:</span>
-<span id="cb28-33"><a href="#cb28-33" tabindex="-1"></a>    <span class="cf">if</span> objf[<span class="st">"area"</span>] <span class="op">&gt;</span> min_area:</span>
-<span id="cb28-34"><a href="#cb28-34" tabindex="-1"></a>        large_objects.append(objf[<span class="st">"label"</span>])</span>
-<span id="cb28-35"><a href="#cb28-35" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Found"</span>, <span class="bu">len</span>(large_objects), <span class="st">"objects!"</span>)</span>
-<span id="cb28-36"><a href="#cb28-36" tabindex="-1"></a></span>
-<span id="cb28-37"><a href="#cb28-37" tabindex="-1"></a><span class="co"># "numpy" way of finding large object labels</span></span>
-<span id="cb28-38"><a href="#cb28-38" tabindex="-1"></a>min_area <span class="op">=</span> <span class="dv">200</span></span>
-<span id="cb28-39"><a href="#cb28-39" tabindex="-1"></a>object_areas <span class="op">=</span> np.array([objf[<span class="st">"area"</span>] <span class="cf">for</span> objf <span class="kw">in</span> object_features])</span>
-<span id="cb28-40"><a href="#cb28-40" tabindex="-1"></a>object_labels <span class="op">=</span> np.array([objf[<span class="st">"label"</span>] <span class="cf">for</span> objf <span class="kw">in</span> object_features])</span>
-<span id="cb28-41"><a href="#cb28-41" tabindex="-1"></a>large_objects <span class="op">=</span> object_labels[object_areas <span class="op">&gt;</span> min_area]</span>
-<span id="cb28-42"><a href="#cb28-42" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Found"</span>, <span class="bu">len</span>(large_objects), <span class="st">"objects!"</span>)</span></code></pre>
-</div>
-</div>
-</div>
-</div>
-<div id="remove-small-objects-20-min" class="callout challenge">
-<div class="callout-square">
-<i class="callout-icon" data-feather="zap"></i>
-</div>
-<div id="remove-small-objects-20-min" class="callout-inner">
-<h3 class="callout-title">Remove small objects (20 min)</h3>
-<div class="callout-content">
-<p>We might also want to exclude (mask) the small objects when plotting
-the labeled image.</p>
-<ol start="2" style="list-style-type: decimal">
-<li>Given a labeled image from the <code>segment_multichannel</code>
-function, remove objects from the labeled image that are below a certain
-area.</li>
-</ol>
-</div>
-</div>
-</div>
-<div id="accordionSolution6" class="accordion challenge-accordion accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution6" aria-expanded="false" aria-controls="collapseSolution6">
-  <h4 class="accordion-header" id="headingSolution6"> Show me the solution </h4>
-</button>
-<div id="collapseSolution6" class="accordion-collapse collapse" data-bs-parent="#accordionSolution6" aria-labelledby="headingSolution6">
-<div class="accordion-body">
-<p>To remove the small objects from the labeled image, we change the
-value of all pixels that belong to the small objects to the background
-label 0. One way to do this is to loop over all objects and set the
-pixels that match the label of the object to 0.</p>
-<div class="codewrapper sourceCode" id="cb29">
-<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a>min_area <span class="op">=</span> <span class="dv">200</span></span>
-<span id="cb29-2"><a href="#cb29-2" tabindex="-1"></a><span class="cf">for</span> object_id, objf <span class="kw">in</span> <span class="bu">enumerate</span>(object_features, start<span class="op">=</span><span class="dv">1</span>):</span>
-<span id="cb29-3"><a href="#cb29-3" tabindex="-1"></a>    <span class="cf">if</span> objf[<span class="st">"area"</span>] <span class="op">&lt;</span> min_area:</span>
-<span id="cb29-4"><a href="#cb29-4" tabindex="-1"></a>        labeled_image[labeled_image <span class="op">==</span> objf[<span class="st">"label"</span>]] <span class="op">=</span> <span class="dv">0</span></span></code></pre>
-</div>
-<p>Here NumPy functions can also be used to eliminate <code>for</code>
-loops and <code>if</code> statements. Like above, we can create an array
-of the small object labels with the comparison
-<code>object_areas &lt; min_area</code>. We can use another NumPy
-function, <code>np.isin</code>, to set the pixels of all small objects
-to 0. <code>np.isin</code> takes two arrays and returns a boolean array
-with values <code>True</code> if the entry of the first array is found
-in the second array, and <code>False</code> otherwise. This array can
-then be used to index the <code>labeled_image</code> and set the entries
-that belong to small objects to <code>0</code>.</p>
-<div class="codewrapper sourceCode" id="cb30">
-<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a>min_area <span class="op">=</span> <span class="dv">200</span></span>
-<span id="cb30-2"><a href="#cb30-2" tabindex="-1"></a>object_areas <span class="op">=</span> np.array([objf[<span class="st">"area"</span>] <span class="cf">for</span> objf <span class="kw">in</span> object_features])</span>
-<span id="cb30-3"><a href="#cb30-3" tabindex="-1"></a>object_labels <span class="op">=</span> np.array([objf[<span class="st">"label"</span>] <span class="cf">for</span> objf <span class="kw">in</span> object_features])</span>
-<span id="cb30-4"><a href="#cb30-4" tabindex="-1"></a>small_objects <span class="op">=</span> object_labels[object_areas <span class="op">&lt;</span> min_area]</span>
-<span id="cb30-5"><a href="#cb30-5" tabindex="-1"></a>labeled_image[np.isin(labeled_image, small_objects)] <span class="op">=</span> <span class="dv">0</span></span></code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<p>An even more elegant way to remove small objects from the image is to
-leverage the <code>ski.morphology</code> module. It provides a function
+<p>An elegant way to remove small objects from the image is to leverage
+the <code>ski.morphology</code> module. It provides a function
 <code>ski.morphology.remove_small_objects</code> that does exactly what
-we are looking for. It can be applied to a binary image and returns a
-mask in which all objects smaller than <code>min_area</code> are
-excluded, i.e, their pixel values are set to <code>False</code>. We can
-then apply <code>ski.measure.label</code> to the masked image:</p>
-<div class="codewrapper sourceCode" id="cb31">
+we are looking for. It can be applied to either a binary or a label
+image and returns a mask in which all objects smaller than
+<code>min_area</code> are excluded, i.e, their pixel values are set to
+<code>False</code> or the background label value.</p>
+<div class="codewrapper sourceCode" id="cb21">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a>object_mask <span class="op">=</span> ski.morphology.remove_small_objects(binary_mask, min_size<span class="op">=</span>min_area)</span>
-<span id="cb31-2"><a href="#cb31-2" tabindex="-1"></a>labeled_image, n <span class="op">=</span> ski.measure.label(object_mask,</span>
-<span id="cb31-3"><a href="#cb31-3" tabindex="-1"></a>                                         connectivity<span class="op">=</span>connectivity, return_num<span class="op">=</span><span class="va">True</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a>filtered_labels <span class="op">=</span> ski.morphology.remove_small_objects(labeled_image, min_size<span class="op">=</span><span class="dv">1000</span>)</span></code></pre>
 </div>
-<p>Using the scikit-image features, we can implement the
-<code>enhanced_segment_multichannel</code> as follows:</p>
-<div class="codewrapper sourceCode" id="cb32">
+<p>We display the resulting label image and print the number of
+objects:</p>
+<div class="codewrapper sourceCode" id="cb22">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a><span class="kw">def</span> enhanced_segment_multichannel(filename, channel<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span><span class="fl">1.0</span>, t<span class="op">=</span><span class="fl">0.5</span>, connectivity<span class="op">=</span><span class="dv">2</span>, min_area<span class="op">=</span><span class="dv">0</span>):</span>
-<span id="cb32-2"><a href="#cb32-2" tabindex="-1"></a>    <span class="co"># load the image</span></span>
-<span id="cb32-3"><a href="#cb32-3" tabindex="-1"></a>    image <span class="op">=</span> iio.imread(filename)</span>
-<span id="cb32-4"><a href="#cb32-4" tabindex="-1"></a>    <span class="co"># convert the image to grayscale</span></span>
-<span id="cb32-5"><a href="#cb32-5" tabindex="-1"></a>    channel_image <span class="op">=</span> image[:,:,channel]</span>
-<span id="cb32-6"><a href="#cb32-6" tabindex="-1"></a>    <span class="co"># denoise the image with a Gaussian filter</span></span>
-<span id="cb32-7"><a href="#cb32-7" tabindex="-1"></a>    blurred_image <span class="op">=</span> ski.filters.gaussian(channel_image, sigma<span class="op">=</span>sigma)</span>
-<span id="cb32-8"><a href="#cb32-8" tabindex="-1"></a>    <span class="co"># mask the image according to threshold</span></span>
-<span id="cb32-9"><a href="#cb32-9" tabindex="-1"></a>    binary_mask <span class="op">=</span> blurred_image <span class="op">&gt;</span> t</span>
-<span id="cb32-10"><a href="#cb32-10" tabindex="-1"></a>    <span class="co"># remove objects smaller than specified area before labelling</span></span>
-<span id="cb32-11"><a href="#cb32-11" tabindex="-1"></a>    object_mask <span class="op">=</span> ski.morphology.remove_small_objects(binary_mask, min_size<span class="op">=</span>min_area)</span>
-<span id="cb32-12"><a href="#cb32-12" tabindex="-1"></a>    <span class="co"># perform connected component analysis</span></span>
-<span id="cb32-13"><a href="#cb32-13" tabindex="-1"></a>    labeled_image, count <span class="op">=</span> ski.measure.label(object_mask,</span>
-<span id="cb32-14"><a href="#cb32-14" tabindex="-1"></a>                                                 connectivity<span class="op">=</span>connectivity, return_num<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb32-15"><a href="#cb32-15" tabindex="-1"></a>    <span class="cf">return</span> labeled_image, count</span></code></pre>
-</div>
-<p>We can now call the function with a chosen <code>min_area</code> and
-display the resulting labeled image:</p>
-<div class="codewrapper sourceCode" id="cb33">
-<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a>labeled_image, count <span class="op">=</span> enhanced_segment_multichannel(filename<span class="op">=</span><span class="st">"data/hela-cells-8bit.jpg"</span>, channel<span class="op">=</span><span class="dv">2</span>, sigma<span class="op">=</span><span class="fl">1.0</span>, t<span class="op">=</span><span class="fl">0.1</span>,</span>
-<span id="cb33-2"><a href="#cb33-2" tabindex="-1"></a>                                                     connectivity<span class="op">=</span><span class="dv">2</span>, min_area<span class="op">=</span><span class="dv">200</span>)</span>
-<span id="cb33-3"><a href="#cb33-3" tabindex="-1"></a>colored_label_image <span class="op">=</span> ski.color.label2rgb(labeled_image, bg_label<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb33-4"><a href="#cb33-4" tabindex="-1"></a></span>
-<span id="cb33-5"><a href="#cb33-5" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb33-6"><a href="#cb33-6" tabindex="-1"></a>ax.imshow(colored_label_image)</span>
-<span id="cb33-7"><a href="#cb33-7" tabindex="-1"></a>ax.set_axis_off()<span class="op">;</span></span>
-<span id="cb33-8"><a href="#cb33-8" tabindex="-1"></a></span>
-<span id="cb33-9"><a href="#cb33-9" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Found"</span>, count, <span class="st">"objects in the image."</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>ax.imshow(filtered_labels)</span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Found"</span>, count, <span class="st">"objects in the image."</span>)</span></code></pre>
 </div>
 <figure><img src="../fig/cells-labeled-kept.jpg" alt="Objects filtered by area" class="figure mx-auto d-block"></figure><div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -4949,6 +4664,83 @@ display the resulting labeled image:</p>
 </div>
 <p>Note that the small objects are “gone” and we obtain the correct
 number of 4 objects in the image.</p>
+<div id="segment-tissue-sections-from-an-he-image" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<div id="segment-tissue-sections-from-an-he-image" class="callout-inner">
+<h3 class="callout-title">Segment tissue sections from an H&amp;E image</h3>
+<div class="callout-content">
+<p>Repeat the same steps as above for the H&amp;E image to segment the
+different tissue sections. Identify the best parameter choices for
+<code>sigma</code>, <code>t</code>, <code>connectivity</code>, and
+<code>min_size</code>.</p>
+<p>Two things to remember: - the H&amp;E image has RGB color channels
+that don’t mean anything on their own, so it is best to convert it to
+grayscale before blurring and thresholding - the H&amp;E image has a
+light background, so the pixel values to turn “on” with a threshold will
+be <em>less than</em> (<code>&lt;</code>) the threshold value
+<code>t</code>.</p>
+</div>
+</div>
+</div>
+<div id="accordionSolution5" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution5" aria-expanded="false" aria-controls="collapseSolution5">
+  <h4 class="accordion-header" id="headingSolution5"> Show me the solution </h4>
+</button>
+<div id="collapseSolution5" class="accordion-collapse collapse" data-bs-parent="#accordionSolution5" aria-labelledby="headingSolution5">
+<div class="accordion-body">
+<div class="codewrapper sourceCode" id="cb24">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="co"># load the image</span></span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a>he_image <span class="op">=</span> iio.imread(uri<span class="op">=</span><span class="st">"data/he_scale3.tif"</span>)</span>
+<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a><span class="co"># convert the image to grayscale</span></span>
+<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a>he_gray <span class="op">=</span> ski.color.rgb2gray(he_image)</span>
+<span id="cb24-5"><a href="#cb24-5" tabindex="-1"></a></span>
+<span id="cb24-6"><a href="#cb24-6" tabindex="-1"></a>sigma<span class="op">=</span><span class="fl">1.0</span> <span class="co"># spleen sections are merged at sigma &gt; 1</span></span>
+<span id="cb24-7"><a href="#cb24-7" tabindex="-1"></a>t<span class="op">=</span><span class="fl">0.8</span></span>
+<span id="cb24-8"><a href="#cb24-8" tabindex="-1"></a>connectivity<span class="op">=</span><span class="dv">2</span></span>
+<span id="cb24-9"><a href="#cb24-9" tabindex="-1"></a><span class="co"># denoise the image with a Gaussian filter</span></span>
+<span id="cb24-10"><a href="#cb24-10" tabindex="-1"></a>blurred_image <span class="op">=</span> ski.filters.gaussian(he_gray, sigma<span class="op">=</span>sigma)</span>
+<span id="cb24-11"><a href="#cb24-11" tabindex="-1"></a><span class="co"># white background so select values greater than threshod</span></span>
+<span id="cb24-12"><a href="#cb24-12" tabindex="-1"></a>binary_mask <span class="op">=</span> blurred_image <span class="op">&lt;</span> t</span>
+<span id="cb24-13"><a href="#cb24-13" tabindex="-1"></a><span class="co"># perform connected component analysis</span></span>
+<span id="cb24-14"><a href="#cb24-14" tabindex="-1"></a>labeled_image, count <span class="op">=</span> ski.measure.label(binary_mask,</span>
+<span id="cb24-15"><a href="#cb24-15" tabindex="-1"></a>                                        connectivity<span class="op">=</span>connectivity, return_num<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb24-16"><a href="#cb24-16" tabindex="-1"></a></span>
+<span id="cb24-17"><a href="#cb24-17" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Found"</span>, count, <span class="st">"objects in the image."</span>)                  </span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>Found 12 objects in the image.</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb26">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a>object_features <span class="op">=</span> ski.measure.regionprops(labeled_image)</span>
+<span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a>object_areas <span class="op">=</span> [<span class="bu">int</span>(objf[<span class="st">"area"</span>]) <span class="cf">for</span> objf <span class="kw">in</span> object_features]</span>
+<span id="cb26-3"><a href="#cb26-3" tabindex="-1"></a><span class="bu">print</span>(object_areas)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>[7, 55189, 16201, 14900, 14929, 23419, 4, 24, 2, 27, 2, 2]</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb28">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a>filtered_labels <span class="op">=</span> ski.morphology.remove_small_objects(labeled_image, min_size<span class="op">=</span><span class="dv">1000</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a>ax.imshow(filtered_labels)</span></code></pre>
+</div>
+<figure><img src="../fig/he-labels.png" alt="H&amp;E tissue sections segmented" class="figure mx-auto d-block"></figure>
+</div>
+</div>
+</div>
+</div>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -5017,8 +4809,8 @@ label.</li>
   "url": "https://govekk.github.io/image-processing/instructor/aio.html",
   "identifier": "https://govekk.github.io/image-processing/instructor/aio.html",
   "dateCreated": "2024-03-14",
-  "dateModified": "2025-03-25",
-  "datePublished": "2025-03-25"
+  "dateModified": "2025-03-31",
+  "datePublished": "2025-03-31"
 }
 
   </script><script>
