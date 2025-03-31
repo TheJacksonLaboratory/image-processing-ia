@@ -1986,7 +1986,7 @@ leftmost tissue section in the H&amp;E image.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>Solution Here is the completed Python program to select only the
 leftmost cell in the image</p>
@@ -2259,7 +2259,7 @@ image, perhaps something like this:</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>Drawing a circle:</p>
 <div class="codewrapper sourceCode" id="cb6">
@@ -2408,7 +2408,7 @@ the portion of the image we want to remove are all
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>When indexing the image using the mask, we access only those pixels
 at positions where the mask is <code>True</code>. So, when indexing with
@@ -3066,7 +3066,7 @@ moved over to apply the filter to the next pixel in the image.</p>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Terminology about image boundaries </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>Take care to avoid mixing up the term “edge” to describe the edges of
 objects <em>within</em> an image and the outer boundaries of the images
@@ -3379,7 +3379,7 @@ on the blurred image?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>Generally speaking, the larger the sigma value, the more blurry the
 result. A larger sigma will tend to get rid of more noise in the image,
@@ -3410,7 +3410,7 @@ in the cx direction.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb14">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -4374,9 +4374,7 @@ ease of editing later.</p>
 <span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>labeled_image, count <span class="op">=</span> ski.measure.label(binary_mask,</span>
 <span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>                                        connectivity<span class="op">=</span>connectivity, return_num<span class="op">=</span><span class="va">True</span>)</span></code></pre>
 </div>
-<p>The first four lines of code are familiar from <a href="07-thresholding.html">the <em>Thresholding</em> episode</a>.</p>
-<p>Then we call the <code>ski.measure.label</code> function. This
-function has one positional argument where we pass the
+<p>This function has one positional argument where we pass the
 <code>binary_mask</code>, i.e., the binary image to work on. With the
 optional argument <code>connectivity</code>, we specify the neighborhood
 in units of orthogonal jumps. For example, by setting
@@ -4652,10 +4650,11 @@ objects:</p>
 <div class="codewrapper sourceCode" id="cb22">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>ax.imshow(filtered_labels)</span>
-<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a></span>
-<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Found"</span>, count, <span class="st">"objects in the image."</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a>color_filtered_labels <span class="op">=</span> ski.color.label2rgb(filtered_labels, bg_label<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>ax.imshow(color_filtered_labels)</span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Found"</span>, count, <span class="st">"objects in the image."</span>)</span></code></pre>
 </div>
 <figure><img src="../fig/cells-labeled-kept.jpg" alt="Objects filtered by area" class="figure mx-auto d-block"></figure><div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -4733,8 +4732,9 @@ be <em>less than</em> (<code>&lt;</code>) the threshold value
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a>filtered_labels <span class="op">=</span> ski.morphology.remove_small_objects(labeled_image, min_size<span class="op">=</span><span class="dv">1000</span>)</span>
-<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a>ax.imshow(filtered_labels)</span></code></pre>
+<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a>color_filtered_labels <span class="op">=</span> ski.color.label2rgb(filtered_labels, bg_label<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb28-4"><a href="#cb28-4" tabindex="-1"></a>ax.imshow(color_filtered_labels)</span></code></pre>
 </div>
 <figure><img src="../fig/he-labels.png" alt="H&amp;E tissue sections segmented" class="figure mx-auto d-block"></figure>
 </div>
