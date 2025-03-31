@@ -381,6 +381,8 @@ The resulting masked image should look like this:
 
 ![](fig/he-label-covered.png){alt='Applied mask'}
 
+
+
 :::::::::::::::::::::::::::::::::::::::: keypoints
 
 - We can use the NumPy `zeros()` function to create a blank, black image.

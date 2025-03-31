@@ -312,6 +312,75 @@ Finally we label our axes and display the histogram, shown here:
 
 ![](fig/cells-colour-histogram.png){alt='Colour histogram'}
 
+:::::::::::::::::::::::::::::::::::::::  challenge
+
+## Colour histogram with a mask (25 min)
+
+Looking at the histogram above, you will notice that there is a large number of very dark pixels
+in each channel. This is not so surprising, since the image has a mostly black background.
+What if we want to focus on a more foreground part of the image, like just one of the cells.
+This is where a mask enters the picture!
+
+Hover over the image with your mouse to find the centre of that cell
+and the radius (in pixels) of the cell.
+Then, using techniques from [the *Drawing and Bitwise Operations* episode](04-drawing.md), 
+create a circular mask to select only the desired cell.
+Then, use that mask to apply the colour histogram operation to that cell.
+
+Your masked image should look something like this:
+
+![](fig/cells-masked.jpg){alt='Masked cell'}
+
+And, the program should produce a colour histogram that looks like this:
+
+![](fig/cells-masked-histogram.png){alt='Single cell histogram'}
+
+:::::::::::::::  solution
+
+## Solution
+
+```python
+# create a circular mask to select the lowest cell in the image
+mask = np.zeros(shape=cells.shape[0:2], dtype="bool")
+circle = ski.draw.disk(center=(400, 360), radius=80, shape=cells.shape[0:2])
+mask[circle] = 1
+
+# just for display:
+# make a copy of the image, call it masked_image, and
+# zero values where mask is False
+masked_img = np.array(cells)
+masked_img[~mask] = 0
+
+# create a new figure and display masked_img, to verify the
+# validity of your mask
+fig, ax = plt.subplots()
+ax.imshow(masked_img)
+
+# list to select colors of each channel line
+colors = ("red", "green", "blue")
+
+# create the histogram plot, with three lines, one for
+# each color
+fig, ax = plt.subplots()
+ax.set_xlim([0, 256])
+for (channel_id, color) in enumerate(colors):
+    # use your circular mask to apply the histogram
+    # operation to the lowest cell of the image
+    histogram, bin_edges = np.histogram(
+        cells[:, :, channel_id][mask], bins=256, range=(0, 256)
+    )
+
+    ax.plot(histogram, color=color)
+
+ax.set_xlabel("color value")
+ax.set_ylabel("pixel count")
+
+```
+
+:::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
 :::::::::::::::::::::::::::::::::::::::: keypoints
 
 - We can create histograms of images with the `np.histogram` function.

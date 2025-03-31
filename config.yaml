@@ -66,7 +66,7 @@ episodes:
 - 05-creating-histograms.md
 - 06-blurring.md
 - 07-thresholding.md
-- 08-connected-components.md
+- 08-segmentation.md
 
 # Information for Learners
 learners: 
