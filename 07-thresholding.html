@@ -337,7 +337,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Thresholding</h1>
-        <p>Last updated on 2025-03-31 |
+        <p>Last updated on 2025-04-01 |
 
         <a href="https://github.com/govekk/image-processing/edit/main/episodes/07-thresholding.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -804,8 +804,7 @@ a visual test of all of them at once.</p>
 <div class="codewrapper sourceCode" id="cb15">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>fig, ax <span class="op">=</span> ski.filters.try_all_threshold(blurred_image, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>), verbose<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>ax.show()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>fig, ax <span class="op">=</span> ski.filters.try_all_threshold(blurred_image, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>), verbose<span class="op">=</span><span class="va">False</span>)</span></code></pre>
 </div>
 <figure><img src="fig/cells-thresholder-test.png" alt="Overview test of all automated thresholders in scikit image" class="figure mx-auto d-block"></figure></section><section><h2 class="section-heading" id="measuring-thresholded-areas">Measuring thresholded areas<a class="anchor" aria-label="anchor" href="#measuring-thresholded-areas"></a></h2>
 <hr class="half-width"><p>There are many reasons why we might want to measure the percentage or
@@ -813,45 +812,33 @@ size of a thresholded foreground in an image, for instance to assess
 tumor percentage in a tissue section or confluence of a cell culture.
 Here we will use it to compare the results of different automated
 thresholding methods.</p>
-<div class="codewrapper sourceCode" id="cb16">
-<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="co"># Load and denoise the image</span></span>
-<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>hed_image <span class="op">=</span> iio.imread(uri<span class="op">=</span><span class="st">"data/immunohistochemistry.tif"</span>)</span>
-<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>gray_image <span class="op">=</span> skimage.color.rgb2gray(hed_image)</span>
-<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>blurred_image <span class="op">=</span> skimage.filters.gaussian(gray_image, sigma<span class="op">=</span><span class="fl">1.0</span>)</span>
-<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a></span>
-<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a><span class="co"># Visually compare automated thresholding methods</span></span>
-<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a>fig, ax <span class="op">=</span> ski.filters.try_all_threshold(blurred_image, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>), verbose<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a>plt.show()</span></code></pre>
-</div>
 <p>Write a function to calculate the percentage of thresholded
 foreground in the image by counting the number of nonzero (or true)
 pixels in the binary mask and dividing by the total count of pixels.</p>
-<div class="codewrapper sourceCode" id="cb17">
+<div class="codewrapper sourceCode" id="cb16">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="kw">def</span> measure_foreground(blurred_image, t):</span>
-<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>    binary_mask <span class="op">=</span> blurred_image <span class="op">&lt;</span> t</span>
-<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>    foreground_pixels <span class="op">=</span> np.count_nonzero(binary_mask)</span>
-<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>    w <span class="op">=</span> binary_mask.shape[<span class="dv">1</span>]</span>
-<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a>    h <span class="op">=</span> binary_mask.shape[<span class="dv">0</span>]</span>
-<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a>    percentage <span class="op">=</span> foreground_pixels <span class="op">/</span> (w <span class="op">*</span> h) <span class="op">*</span> <span class="dv">100</span></span>
-<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a>    <span class="cf">return</span>(percentage)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="kw">def</span> measure_foreground(blurred_image, t):</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>    binary_mask <span class="op">=</span> blurred_image <span class="op">&lt;</span> t</span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>    foreground_pixels <span class="op">=</span> np.count_nonzero(binary_mask)</span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>    w <span class="op">=</span> binary_mask.shape[<span class="dv">1</span>]</span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a>    h <span class="op">=</span> binary_mask.shape[<span class="dv">0</span>]</span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a>    percentage <span class="op">=</span> foreground_pixels <span class="op">/</span> (w <span class="op">*</span> h) <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a>    <span class="cf">return</span>(percentage)</span></code></pre>
 </div>
 <p>Calculate the percentage pixels kept by the Otsu thresholding
 method</p>
-<div class="codewrapper sourceCode" id="cb18">
+<div class="codewrapper sourceCode" id="cb17">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>t_otsu <span class="op">=</span> ski.filters.threshold_otsu(blurred_image)</span>
-<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>percentage_otsu <span class="op">=</span> measure_foreground(blurred_image, t_otsu)</span>
-<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Otsu thresholding: </span><span class="sc">{:.2f}</span><span class="st">%"</span>.<span class="bu">format</span>(percentage_otsu))</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a>t_otsu <span class="op">=</span> ski.filters.threshold_otsu(blurred_image)</span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>percentage_otsu <span class="op">=</span> measure_foreground(blurred_image, t_otsu)</span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Otsu thresholding: </span><span class="sc">{:.2f}</span><span class="st">%"</span>.<span class="bu">format</span>(percentage_otsu))</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>Otsu thresholding: 57.96%</code></pre>
+<pre class="output" tabindex="0"><code>Otsu thresholding: 13.21%</code></pre>
 </div>
 <div id="measure-results-of-automated-threshold-methods" class="callout challenge">
 <div class="callout-square">
@@ -872,22 +859,22 @@ kept by two different automated threshold methods.</p>
 </button>
 <div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb20">
+<div class="codewrapper sourceCode" id="cb19">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>t_triangle <span class="op">=</span> ski.filters.threshold_triangle(blurred_image)</span>
-<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>percentage_triangle <span class="op">=</span> measure_foreground(blurred_image, t_triangle)</span>
-<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Triangle thresholding: </span><span class="sc">{:.2f}</span><span class="st">%"</span>.<span class="bu">format</span>(percentage_triangle))</span>
-<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a></span>
-<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a>t_yen <span class="op">=</span> ski.filters.threshold_yen(blurred_image)</span>
-<span id="cb20-6"><a href="#cb20-6" tabindex="-1"></a>percentage_yen <span class="op">=</span> measure_foreground(blurred_image, t_yen)</span>
-<span id="cb20-7"><a href="#cb20-7" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Yen thresholding: </span><span class="sc">{:.2f}</span><span class="st">%"</span>.<span class="bu">format</span>(percentage_yen))</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>t_triangle <span class="op">=</span> ski.filters.threshold_li(blurred_image)</span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>percentage_triangle <span class="op">=</span> measure_foreground(blurred_image, t_triangle)</span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Li thresholding: </span><span class="sc">{:.2f}</span><span class="st">%"</span>.<span class="bu">format</span>(percentage_triangle))</span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a>t_yen <span class="op">=</span> ski.filters.threshold_yen(blurred_image)</span>
+<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a>percentage_yen <span class="op">=</span> measure_foreground(blurred_image, t_yen)</span>
+<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Yen thresholding: </span><span class="sc">{:.2f}</span><span class="st">%"</span>.<span class="bu">format</span>(percentage_yen))</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>Triangle thresholding: 96.88%
-Yen thresholding: 48.77%</code></pre>
+<pre class="output" tabindex="0"><code>Li thresholding: 15.05%
+Yen thresholding: 16.45%</code></pre>
 </div>
 </div>
 </div>
@@ -971,7 +958,7 @@ detection or finding contours.</li>
   "url": "https://govekk.github.io/image-processing/07-thresholding.html",
   "identifier": "https://govekk.github.io/image-processing/07-thresholding.html",
   "dateCreated": "2024-03-14",
-  "dateModified": "2025-03-31",
+  "dateModified": "2025-04-01",
   "datePublished": "2025-04-01"
 }
 
