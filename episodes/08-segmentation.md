@@ -560,9 +560,11 @@ Repeat the same steps as above for the H&E image to segment the different tissue
 `sigma`, `t`, `connectivity`, and `min_size`. 
 
 Two things to remember:
-- the H&E image has RGB color channels that don't mean anything on their own, so it is best to convert it to
+
+- The H&E image has RGB color channels that don't mean anything on their own, so it is best to convert it to
 grayscale before blurring and thresholding
-- the H&E image has a light background, so the pixel values to turn "on" with a threshold will be *less than* (`<`)
+
+- The H&E image has a light background, so the pixel values to turn "on" with a threshold will be *less than* (`<`)
 the threshold value `t`.
 
 :::::::::::::::  solution
