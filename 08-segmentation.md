@@ -436,16 +436,53 @@ We can get a list of areas of the labeled objects as follows:
 
 ```python
 # compute object features and extract object areas
+np.set_printoptions(legacy='1.25')
 object_features = ski.measure.regionprops(labeled_image)
-object_areas = [int(objf["area"]) for objf in object_features]
+object_areas = [objf["area"] for objf in object_features]
 object_areas
 ```
 
 This will produce the output
 
 ```output
-[20, 13722, 14147, 13308, 12629, 156]
+[20.0, 13722.0, 14147.0, 13308.0, 12629.0, 156.0]
 ```
+
+:::::::::::::::::::::::::::::::::::::::::  callout
+
+## Numpy print options
+
+For our purposes, it's nicer to only print the numbers from the object features
+rather than including the datatypes, as newer Numpy versions print. We can do this
+by setting the Numpy print options to a legacy version:
+
+```python
+np.set_printoptions(legacy='1.25')
+```
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::  challenge
+
+## Investigate other regionprops
+
+Use the [skimage.measure.regionprops documentation](https://scikit-image.org/docs/stable/api/skimage.measure.html#skimage.measure.regionprops)
+for to identify other object features. Print out some of those features.
+
+:::::::::::::::  solution
+
+## Solution
+
+For example, to print centroids:
+```python
+object_features = ski.measure.regionprops(labeled_image)
+object_centroids = [objf["centroid"] for objf in object_features]
+print(object_centroids)
+```
+It may be necessary to convert the feature values to a different data type (e.g. `int`, as for the areas).
+
+:::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
@@ -517,7 +554,6 @@ require less code to write.
 It is a good idea to browse the reference pages of `numpy` and `skimage` to
 look for an availabe function that can solve a given task.
 
-
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
@@ -560,9 +596,11 @@ Repeat the same steps as above for the H&E image to segment the different tissue
 `sigma`, `t`, `connectivity`, and `min_size`. 
 
 Two things to remember:
-- the H&E image has RGB color channels that don't mean anything on their own, so it is best to convert it to
+
+- The H&E image has RGB color channels that don't mean anything on their own, so it is best to convert it to
 grayscale before blurring and thresholding
-- the H&E image has a light background, so the pixel values to turn "on" with a threshold will be *less than* (`<`)
+
+- The H&E image has a light background, so the pixel values to turn "on" with a threshold will be *less than* (`<`)
 the threshold value `t`.
 
 :::::::::::::::  solution

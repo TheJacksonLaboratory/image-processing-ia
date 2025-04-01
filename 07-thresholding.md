@@ -448,24 +448,12 @@ Scikit image provides a method that can give a visual test of all of them at onc
 
 ```python
 fig, ax = ski.filters.try_all_threshold(blurred_image, figsize=(10, 8), verbose=False)
-ax.show()
 ```
 
 ![](fig/cells-thresholder-test.png){alt='Overview test of all automated thresholders in scikit image'}
 
 ## Measuring thresholded areas
 There are many reasons why we might want to measure the percentage or size of a thresholded foreground in an image, for instance to assess tumor percentage in a tissue section or confluence of a cell culture. Here we will use it to compare the results of different automated thresholding methods.
-
-```python
-# Load and denoise the image
-hed_image = iio.imread(uri="data/immunohistochemistry.tif")
-gray_image = skimage.color.rgb2gray(hed_image)
-blurred_image = skimage.filters.gaussian(gray_image, sigma=1.0)
-
-# Visually compare automated thresholding methods
-fig, ax = ski.filters.try_all_threshold(blurred_image, figsize=(10, 8), verbose=False)
-plt.show()
-```
 
 Write a function to calculate the percentage of thresholded foreground in the image by counting the number of nonzero (or true) pixels in the binary mask and dividing by the total count of pixels.
 ```python
@@ -486,7 +474,7 @@ print("Otsu thresholding: {:.2f}%".format(percentage_otsu))
 ```
 
 ```output
-Otsu thresholding: 57.96%
+Otsu thresholding: 13.21%
 ```
 
 :::::::::::::::::::::::::::::::::::::::  challenge
@@ -500,9 +488,9 @@ Following the pipeline from above, measure the percentage of pixels kept by two 
 ## Solution with Triangle and Yen thresholding methods
 
 ```python
-t_triangle = ski.filters.threshold_triangle(blurred_image)
+t_triangle = ski.filters.threshold_li(blurred_image)
 percentage_triangle = measure_foreground(blurred_image, t_triangle)
-print("Triangle thresholding: {:.2f}%".format(percentage_triangle))
+print("Li thresholding: {:.2f}%".format(percentage_triangle))
 
 t_yen = ski.filters.threshold_yen(blurred_image)
 percentage_yen = measure_foreground(blurred_image, t_yen)
@@ -510,8 +498,8 @@ print("Yen thresholding: {:.2f}%".format(percentage_yen))
 ```
 
 ```output
-Triangle thresholding: 96.88%
-Yen thresholding: 48.77%
+Li thresholding: 15.05%
+Yen thresholding: 16.45%
 ```
 
 :::::::::::::::::::::::::
